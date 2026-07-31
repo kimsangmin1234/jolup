@@ -65,22 +65,41 @@ SUMMARY_COLUMNS = ("Textrank_summary", "Luhn_summary", "Lsa_summary",
 # --------------------------------------------------------------------------
 
 def load_price_csv(path: Path) -> dict[str, np.ndarray]:
-    """FNSPID 주가 CSV를 읽어 날짜순 정렬된 배열로 반환한다."""
+    """FNSPID 주가 CSV를 읽어 날짜순 정렬된 배열로 반환한다.
+
+    HuggingFace 배포판은 열 이름이 소문자(``date,open,high,low,close,...``)이고
+    날짜 내림차순으로 저장되어 있다. GitHub 저장소 예시(대문자)와 다르므로
+    열 이름을 소문자로 정규화해 두 형식을 모두 받아들인다.
+    """
     dates: list[str] = []
     rows: list[tuple[float, float, float, float]] = []
 
     with path.open(encoding="utf-8", newline="") as f:
-        for row in csv.DictReader(f):
+        reader = csv.DictReader(f)
+        if not reader.fieldnames:
+            raise ValueError(f"{path}: 헤더가 없습니다.")
+        # 원본 열 이름 → 소문자 키 매핑
+        lookup = {name.strip().lower(): name for name in reader.fieldnames}
+        try:
+            col_date = lookup["date"]
+            col_high, col_low = lookup["high"], lookup["low"]
+            col_close, col_volume = lookup["close"], lookup["volume"]
+        except KeyError as exc:
+            raise ValueError(
+                f"{path}: 필요한 열을 찾지 못했습니다 {reader.fieldnames}"
+            ) from exc
+
+        for row in reader:
             try:
-                high = float(row["High"])
-                low = float(row["Low"])
-                close = float(row["Close"])
-                volume = float(row["Volume"])
+                high = float(row[col_high])
+                low = float(row[col_low])
+                close = float(row[col_close])
+                volume = float(row[col_volume])
             except (KeyError, TypeError, ValueError):
                 continue  # 결측/손상 행은 건너뛴다
             if not all(np.isfinite([high, low, close, volume])) or close <= 0:
                 continue
-            dates.append(str(row["Date"])[:10])
+            dates.append(str(row[col_date])[:10])
             rows.append((high, low, close, volume))
 
     if not rows:
@@ -98,9 +117,15 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
 
 
 def build_indicator_table(
-    price_dir: Path, tickers: list[str]
+    price_dir: Path, tickers: list[str], price_start: str = ""
 ) -> tuple[dict[str, np.ndarray], dict[str, dict[str, int]], dict[str, dict[str, float]]]:
-    """종목별 9종 지표 행렬, 날짜 인덱스, 다음 거래일 등락률을 만든다."""
+    """종목별 9종 지표 행렬, 날짜 인덱스, 다음 거래일 등락률을 만든다.
+
+    ``price_start`` 를 주면 그 날짜 이후 가격만 사용해 지표를 계산한다.
+    FNSPID 주가는 2020-07-06 을 경계로 미조정 시세와 분할 소급 조정 시세가
+    이어붙여져 있어, 경계를 걸치는 구간은 인위적 급등락이 생긴다. 30일 룩백이
+    경계를 넘지 않도록 잘라내는 용도이다.
+    """
     arrays: dict[str, np.ndarray] = {}
     index: dict[str, dict[str, int]] = {}
     labels: dict[str, dict[str, float]] = {}
@@ -112,6 +137,13 @@ def build_indicator_table(
             continue
 
         series = load_price_csv(path)
+        if price_start:
+            keep = series["dates"] >= price_start
+            if keep.sum() < 60:
+                logger.warning("%s: %s 이후 거래일이 %d일뿐이라 건너뜁니다.",
+                               ticker, price_start, int(keep.sum()))
+                continue
+            series = {key: value[keep] for key, value in series.items()}
         arrays[ticker] = compute_indicators(
             series["high"], series["low"], series["close"], series["volume"]
         )
@@ -290,12 +322,17 @@ def main() -> None:
     parser.add_argument("--news", required=True, help="nasdaq_exteral_data.csv 경로")
     parser.add_argument("--price-dir", required=True, help="full_history 디렉터리")
     parser.add_argument("--tickers", required=True, help="쉼표 구분 종목 코드")
-    parser.add_argument("--start", default="2015-01-01")
+    parser.add_argument("--start", default="2015-01-01", help="뉴스 시작일")
+    parser.add_argument("--price-start", default="",
+                        help="이 날짜 이후 주가만 사용해 지표를 계산한다. "
+                             "FNSPID의 2020-07-06 소스 이어붙임 경계를 피할 때 쓴다.")
     parser.add_argument("--end", default="2023-12-31")
     parser.add_argument("--max-per-ticker", type=int, default=5000)
     parser.add_argument("--out-records", default="data/news_cache.jsonl")
     parser.add_argument("--out-indicators", default="data/indicators.npz")
-    parser.add_argument("--embedding", choices=("openai", "local"), default="openai")
+    parser.add_argument("--embedding", choices=("openai", "local", "none"), default="openai",
+                        help="none이면 감성·임베딩을 건너뛰고 데이터만 준비한다 "
+                             "(이후 enrich_records.py 로 채운다)")
     parser.add_argument("--batch-size", type=int, default=64)
     args = parser.parse_args()
 
@@ -305,7 +342,9 @@ def main() -> None:
     logger.info("대상 종목: %s", ", ".join(tickers))
 
     # 1) 주가 → 지표 + 라벨
-    arrays, index, labels = build_indicator_table(Path(args.price_dir), tickers)
+    arrays, index, labels = build_indicator_table(
+        Path(args.price_dir), tickers, args.price_start
+    )
     if not arrays:
         raise SystemExit("처리된 종목이 없습니다. --price-dir 경로를 확인하십시오.")
 
@@ -317,9 +356,14 @@ def main() -> None:
         raise SystemExit("조건에 맞는 뉴스가 없습니다. 기간·종목을 확인하십시오.")
 
     # 3) 감성 점수 보완 + 임베딩
-    if any("sentiment" not in r for r in records):
-        fill_missing_sentiment(records, args.batch_size)
-    embed_records(records, args.embedding, args.batch_size)
+    if args.embedding == "none":
+        logger.warning(
+            "감성·임베딩을 건너뜁니다. 학습 전에 enrich_records.py 로 채워야 합니다."
+        )
+    else:
+        if any("sentiment" not in r for r in records):
+            fill_missing_sentiment(records, args.batch_size)
+        embed_records(records, args.embedding, args.batch_size)
 
     # 4) 저장
     out_records = Path(args.out_records)

@@ -8,3 +8,8 @@ checkpoints/
 *.jsonl
 .env
 .pytest_cache/
+
+# FNSPID 파생 데이터셋은 예외로 추적한다 (재생성에 22GB 스트리밍 31분 소요)
+!data/fnspid/
+!data/fnspid/*.npz
+!data/fnspid/*.gz
