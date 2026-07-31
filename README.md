@@ -104,6 +104,36 @@ OPENAI_API_KEY=... python preprocess.py --input news_raw.jsonl --output data/new
 
 요약·감성·임베딩 추출은 비용이 크므로 학습 루프 밖에서 한 번만 수행하고 캐시합니다. 이미 처리한 `news_id`는 건너뛰므로 중단 후 재실행해도 안전합니다.
 
+### 2-1. FNSPID 데이터셋으로 준비 (권장)
+
+[FNSPID](https://huggingface.co/datasets/Zihan1004/FNSPID) (KDD 2024)는 S&P500 4,775개 종목의 뉴스 1,570만 건과 주가 2,970만 건을 담고 있으며, GPT 감성 점수와 요약문이 이미 포함되어 있습니다.
+
+```bash
+wget https://huggingface.co/datasets/Zihan1004/FNSPID/resolve/main/Stock_news/nasdaq_exteral_data.csv
+wget https://huggingface.co/datasets/Zihan1004/FNSPID/resolve/main/Stock_price/full_history.zip
+unzip full_history.zip
+
+python prepare_fnspid.py \
+    --news nasdaq_exteral_data.csv \
+    --price-dir full_history \
+    --tickers AAPL,MSFT,NVDA,AMZN,GOOGL \
+    --start 2015-01-01 --end 2023-12-31 \
+    --out-records data/news_cache.jsonl \
+    --out-indicators data/indicators.npz \
+    --embedding openai
+```
+
+`prepare_fnspid.py`가 처리하는 내용:
+
+- 5GB 뉴스 CSV를 청크 없이 한 줄씩 스트리밍하여 대상 종목·기간만 추출
+- FNSPID의 `Sentiment_gpt`(1~5 척도)를 논문의 **-1 ~ +1** 범위로 선형 변환 (열이 없으면 GPT-4o-mini 호출)
+- `Textrank_summary`를 요약문으로 사용하여 임베딩 생성
+- 주가에서 9종 지표 계산 + **다음 거래일 등락률**을 라벨로 산출
+
+이 단계를 거치면 3번을 건너뛰고 바로 4번(학습)으로 갑니다.
+
+`--embedding local` 옵션은 외부 API를 쓸 수 없는 환경용 대안입니다. 다만 차원이 논문의 1536과 다르므로 `NewsEncoderConfig.embedding_dim`을 함께 맞춰야 하며, 논문 사양에서 벗어납니다.
+
 ### 3. 기술적 지표 준비
 
 종목별 OHLCV로 9종 지표를 계산하여 npz로 저장합니다.
