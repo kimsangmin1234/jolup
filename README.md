@@ -82,12 +82,30 @@ pip install -r requirements.txt
 
 ## 사용법
 
-### 1. 검증 (API 키 불필요)
+### 1. 검증 (API 키·네트워크 불필요)
 
-임의 텐서로 모든 모듈의 형태와 불변식(어텐션 가중치 합=1, 인과성, 게이트 범위 등)을 확인합니다.
+**모듈 단위** — 임의 텐서로 형태와 불변식(어텐션 가중치 합=1, 인과성, 게이트 범위 등)을 확인합니다.
 
 ```bash
 python tests/test_modules.py
+```
+
+**전체 파이프라인** — OpenAI 호환 목(mock) 서버를 띄워 실제 `openai` SDK로 전처리 → FNSPID 변환 → 학습을 끝까지 실행합니다. API 키 없이 더미 키로 동작합니다.
+
+```bash
+python tests/test_pipeline_e2e.py
+```
+
+합성 데이터는 뉴스 감성이 **다음** 거래일 등락률을 결정하도록 만들어져 있어, 파이프라인이 정상이면 방향 적중률이 0.8을 넘습니다 (미검증 시 실패 처리).
+
+목 서버를 직접 띄워 개별 스크립트를 시험할 수도 있습니다.
+
+```bash
+python tests/mock_openai_server.py --port 8000 &
+export OPENAI_BASE_URL=http://127.0.0.1:8000/v1
+export OPENAI_API_KEY=dummy-key
+export NO_PROXY=127.0.0.1,localhost
+python preprocess.py --input news_raw.jsonl --output data/news_cache.jsonl
 ```
 
 ### 2. LLM 전처리 캐시 생성
