@@ -56,12 +56,21 @@ class NewsStockDataset(Dataset):
         # 30일 구간을 온전히 확보할 수 있는 레코드만 남긴다.
         self.records = [r for r in records if self._window_available(r)]
 
+    def _anchor(self, record: dict) -> str:
+        """지표 윈도우가 끝나는 거래일.
+
+        ``anchor`` 가 없으면 뉴스 발생일을 쓴다(next_day 모드와 동일).
+        same_day 모드에서는 뉴스 당일 종가가 입력에 들어가지 않도록
+        prepare_fnspid.py 가 전 거래일을 anchor로 기록한다.
+        """
+        return record.get("anchor") or record["date"]
+
     def _window_available(self, record: dict) -> bool:
         ticker = record["ticker"]
         if ticker not in self.date_index:
             return False
-        row = self.date_index[ticker].get(record["date"])
-        # 뉴스 발생일 당일까지 포함하여 lookback일이 필요하다.
+        row = self.date_index[ticker].get(self._anchor(record))
+        # anchor 당일까지 포함하여 lookback일이 필요하다.
         return row is not None and row + 1 >= self.lookback
 
     def __len__(self) -> int:
@@ -70,7 +79,7 @@ class NewsStockDataset(Dataset):
     def __getitem__(self, idx: int) -> dict[str, torch.Tensor]:
         record = self.records[idx]
         ticker = record["ticker"]
-        row = self.date_index[ticker][record["date"]]
+        row = self.date_index[ticker][self._anchor(record)]
 
         window = self.indicators[ticker][row + 1 - self.lookback : row + 1]  # (30, 9)
         window = self.scaler.transform(window)

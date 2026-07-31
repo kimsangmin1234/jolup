@@ -64,16 +64,30 @@ curl -sSL https://huggingface.co/datasets/Zihan1004/FNSPID/resolve/main/Stock_ne
 ### [2] 주가 → 지표 + 라벨
 
 - 9종 기술적 지표: 종가, 거래량, MA5, MA20, RSI(14), MACD(12,26), 볼린저 상·하한(20, 2σ), ATR(14)
-- 라벨: **당일 종가 → 다음 거래일 종가 등락률**
 - 뉴스 발생일 기준 과거 30일 지표 시계열이 입력
 
-라벨이 존재하는 날짜(다음 거래일이 있는 날)의 뉴스만 남긴다.
+라벨이 존재하는 날짜의 뉴스만 남긴다.
+
+#### 라벨 정의 — 두 가지 모드
+
+`--label-mode`로 선택한다. 뉴스 발생일을 `t`라 할 때:
+
+| 모드 | 라벨 | 지표 윈도우 | 레코드 |
+|---|---|---|---|
+| `next_day` (기본) | `close[t+1]/close[t] − 1` | `[t−29, t]` | 82,903건 |
+| `same_day` | `close[t]/close[t−1] − 1` | `[t−30, t−1]` | 82,913건 |
+
+`same_day`는 **지표 윈도우를 하루 앞당겨 끊는다.** `close[t]`가 입력에 들어가면 라벨을 그대로 계산할 수 있어 누수가 되기 때문이다. 레코드의 `anchor` 필드가 윈도우 종료일을 담고, `NewsStockDataset`이 이 값으로 윈도우를 잡는다.
+
+**FNSPID로 `same_day`를 쓸 때의 한계**: 뉴스 시각 정보가 **99.82%가 `00:00:00`**이다(실제 시각이 있는 건 258건, 0.18%). 뉴스가 당일 종가 이전인지 이후인지 알 수 없으므로, 장 마감 후 뉴스라면 이미 실현된 등락률을 맞히는 셈이 된다.
+
+실제로 `same_day` 라벨의 표준편차가 9.08%로 `next_day`의 6.41%보다 크다. 뉴스가 실린 날의 변동이 그만큼 크다는 뜻이고, 그 변동의 일부는 뉴스가 이미 반영된 결과다.
 
 ### [3]~[4] 감성·임베딩 후 학습
 
 ```bash
 export OPENAI_API_KEY=sk-...
-python enrich_records.py --input data/fnspid/records_raw.jsonl \
+python enrich_records.py --input data/fnspid/records_next_day.jsonl \
                          --output data/news_cache.jsonl
 python train.py --records data/news_cache.jsonl \
                 --indicators data/fnspid/indicators.npz \
@@ -181,7 +195,8 @@ GitHub 저장소 예시(`Date,Open,High,...`)와 달라 그대로 읽으면 전�
 
 | 파일 | 크기 | 내용 |
 |---|---|---|
-| `data/fnspid/records_raw.jsonl.gz` | 16MB | 레코드 82,903건 (감성·임베딩 미포함) |
+| `data/fnspid/records_next_day.jsonl.gz` | 16MB | next_day 라벨 82,903건 (감성·임베딩 미포함) |
+| `data/fnspid/records_same_day.jsonl.gz` | 16MB | same_day 라벨 82,913건 (감성·임베딩 미포함) |
 | `data/fnspid/indicators.npz` | 1.2MB | 종목별 (878, 9) 지표 행렬 + 날짜 인덱스 |
 | `data/fnspid/ticker_stats.csv` | 1.2KB | 위 통계표 |
 
@@ -189,7 +204,7 @@ GitHub 저장소 예시(`Date,Open,High,...`)와 달라 그대로 읽으면 전�
 
 ```json
 {"news_id": "NVDA-2023-05-25-0", "ticker": "NVDA", "date": "2023-05-25",
- "summary": "...", "label": 0.0243}
+ "anchor": "2023-05-25", "summary": "...", "label": 0.0243}
 ```
 
 `enrich_records.py` 실행 후 `sentiment`(−1~+1)와 `embedding`(1536차원)이 추가된다.
@@ -256,7 +271,8 @@ python prepare_fnspid.py \
     --price-alias GOOGL=GOOG \
     --price-start 2020-07-06 --start 2020-09-01 --end 2023-12-31 \
     --max-per-ticker 50000 \
-    --out-records data/fnspid/records_raw.jsonl \
+    --label-mode next_day \
+    --out-records data/fnspid/records_next_day.jsonl \
     --out-indicators data/fnspid/indicators.npz \
     --embedding none
 ```

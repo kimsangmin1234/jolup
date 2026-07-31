@@ -118,7 +118,7 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
 
 def build_indicator_table(
     price_dir: Path, tickers: list[str], price_start: str = "",
-    price_alias: dict[str, str] | None = None,
+    price_alias: dict[str, str] | None = None, label_mode: str = "next_day",
 ) -> tuple[dict[str, np.ndarray], dict[str, dict[str, int]], dict[str, dict[str, float]]]:
     """종목별 9종 지표 행렬, 날짜 인덱스, 다음 거래일 등락률을 만든다.
 
@@ -130,6 +130,7 @@ def build_indicator_table(
     arrays: dict[str, np.ndarray] = {}
     index: dict[str, dict[str, int]] = {}
     labels: dict[str, dict[str, float]] = {}
+    anchors: dict[str, dict[str, str]] = {}
 
     price_alias = price_alias or {}
     for ticker in tickers:
@@ -152,17 +153,32 @@ def build_indicator_table(
         )
         index[ticker] = {d: i for i, d in enumerate(series["dates"])}
 
-        # 라벨: 당일 종가 → 다음 거래일 종가 등락률
+        # 라벨과 지표 윈도우 종료일(anchor)
+        #
+        # next_day : label(t) = close[t+1]/close[t] - 1,  윈도우는 t 까지 사용
+        #            뉴스 시점에 아직 실현되지 않은 값이라 시각 정보가 없어도 안전하다.
+        # same_day : label(t) = close[t]/close[t-1] - 1,  윈도우는 t-1 까지만 사용
+        #            close[t] 가 입력에 들어가면 라벨을 그대로 계산할 수 있으므로
+        #            윈도우를 하루 앞당겨 끊는다. 다만 장 마감 후 뉴스라면
+        #            이미 실현된 값을 맞히는 셈이 되므로 해석에 주의가 필요하다.
         close = series["close"]
+        dates_arr = series["dates"]
         ret = np.full_like(close, np.nan)
-        ret[:-1] = (close[1:] - close[:-1]) / close[:-1]
+        if label_mode == "same_day":
+            ret[1:] = (close[1:] - close[:-1]) / close[:-1]
+            anchors[ticker] = {
+                dates_arr[i]: dates_arr[i - 1] for i in range(1, len(dates_arr))
+            }
+        else:
+            ret[:-1] = (close[1:] - close[:-1]) / close[:-1]
+            anchors[ticker] = {d: d for d in dates_arr}
         labels[ticker] = {
-            d: float(r) for d, r in zip(series["dates"], ret) if np.isfinite(r)
+            d: float(r) for d, r in zip(dates_arr, ret) if np.isfinite(r)
         }
 
         logger.info("%s: %d 거래일 처리 완료", ticker, len(close))
 
-    return arrays, index, labels
+    return arrays, index, labels, anchors
 
 
 def _find_price_file(price_dir: Path, ticker: str) -> Path | None:
@@ -185,6 +201,7 @@ def stream_news(
     end: str,
     labels: dict[str, dict[str, float]],
     max_per_ticker: int,
+    anchors: dict[str, dict[str, str]] | None = None,
 ) -> list[dict]:
     """대용량 뉴스 CSV를 한 줄씩 읽어 대상 종목·기간만 추출한다."""
     csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
@@ -221,10 +238,16 @@ def stream_news(
             if not summary:
                 continue
 
+            # anchor = 30일 지표 윈도우가 끝나는 거래일.
+            # same_day 모드에서는 뉴스 당일 종가가 입력에 들어가지 않도록
+            # 전 거래일로 앞당겨진다.
+            anchor = (anchors or {}).get(ticker, {}).get(date, date)
+
             record = {
                 "news_id": f"{ticker}-{date}-{per_ticker[ticker]}",
                 "ticker": ticker,
                 "date": date,
+                "anchor": anchor,
                 "summary": summary,
                 "label": label,
             }
@@ -326,6 +349,11 @@ def main() -> None:
     parser.add_argument("--price-dir", required=True, help="full_history 디렉터리")
     parser.add_argument("--tickers", required=True, help="쉼표 구분 종목 코드")
     parser.add_argument("--start", default="2015-01-01", help="뉴스 시작일")
+    parser.add_argument("--label-mode", choices=("next_day", "same_day"),
+                        default="next_day",
+                        help="next_day: label(t)=close[t+1]/close[t]-1, 윈도우는 t까지. "
+                             "same_day: label(t)=close[t]/close[t-1]-1, 윈도우는 t-1까지. "
+                             "same_day는 장 마감 후 뉴스면 이미 실현된 값을 맞히게 된다.")
     parser.add_argument("--price-alias", default="",
                         help="뉴스 심볼과 다른 주가 파일을 쓸 때. "
                              "예: GOOGL=GOOG,FB=META (쉼표 구분)")
@@ -356,15 +384,17 @@ def main() -> None:
     if alias:
         logger.info("주가 파일 별칭: %s", alias)
 
-    arrays, index, labels = build_indicator_table(
-        Path(args.price_dir), tickers, args.price_start, alias
+    arrays, index, labels, anchors = build_indicator_table(
+        Path(args.price_dir), tickers, args.price_start, alias, args.label_mode
     )
+    logger.info("라벨 모드: %s", args.label_mode)
     if not arrays:
         raise SystemExit("처리된 종목이 없습니다. --price-dir 경로를 확인하십시오.")
 
     # 2) 뉴스 추출
     records = stream_news(
-        Path(args.news), set(arrays), args.start, args.end, labels, args.max_per_ticker
+        Path(args.news), set(arrays), args.start, args.end, labels,
+        args.max_per_ticker, anchors
     )
     if not records:
         raise SystemExit("조건에 맞는 뉴스가 없습니다. 기간·종목을 확인하십시오.")
