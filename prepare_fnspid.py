@@ -117,7 +117,8 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
 
 
 def build_indicator_table(
-    price_dir: Path, tickers: list[str], price_start: str = ""
+    price_dir: Path, tickers: list[str], price_start: str = "",
+    price_alias: dict[str, str] | None = None,
 ) -> tuple[dict[str, np.ndarray], dict[str, dict[str, int]], dict[str, dict[str, float]]]:
     """종목별 9종 지표 행렬, 날짜 인덱스, 다음 거래일 등락률을 만든다.
 
@@ -130,8 +131,10 @@ def build_indicator_table(
     index: dict[str, dict[str, int]] = {}
     labels: dict[str, dict[str, float]] = {}
 
+    price_alias = price_alias or {}
     for ticker in tickers:
-        path = _find_price_file(price_dir, ticker)
+        # 뉴스 심볼과 주가 파일명이 다른 경우(예: GOOGL 뉴스 ↔ GOOG 주가)를 흡수한다.
+        path = _find_price_file(price_dir, price_alias.get(ticker, ticker))
         if path is None:
             logger.warning("%s: 주가 파일을 찾지 못해 건너뜁니다.", ticker)
             continue
@@ -323,6 +326,9 @@ def main() -> None:
     parser.add_argument("--price-dir", required=True, help="full_history 디렉터리")
     parser.add_argument("--tickers", required=True, help="쉼표 구분 종목 코드")
     parser.add_argument("--start", default="2015-01-01", help="뉴스 시작일")
+    parser.add_argument("--price-alias", default="",
+                        help="뉴스 심볼과 다른 주가 파일을 쓸 때. "
+                             "예: GOOGL=GOOG,FB=META (쉼표 구분)")
     parser.add_argument("--price-start", default="",
                         help="이 날짜 이후 주가만 사용해 지표를 계산한다. "
                              "FNSPID의 2020-07-06 소스 이어붙임 경계를 피할 때 쓴다.")
@@ -342,8 +348,16 @@ def main() -> None:
     logger.info("대상 종목: %s", ", ".join(tickers))
 
     # 1) 주가 → 지표 + 라벨
+    alias = {}
+    for pair in args.price_alias.split(","):
+        if "=" in pair:
+            news_symbol, price_symbol = pair.split("=", 1)
+            alias[news_symbol.strip().upper()] = price_symbol.strip().upper()
+    if alias:
+        logger.info("주가 파일 별칭: %s", alias)
+
     arrays, index, labels = build_indicator_table(
-        Path(args.price_dir), tickers, args.price_start
+        Path(args.price_dir), tickers, args.price_start, alias
     )
     if not arrays:
         raise SystemExit("처리된 종목이 없습니다. --price-dir 경로를 확인하십시오.")
