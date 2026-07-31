@@ -1,0 +1,4 @@
+torch>=2.0
+numpy>=1.24
+# LLM 전처리(preprocess.py)에만 필요. 학습/추론만 할 경우 생략 가능.
+openai>=1.30
