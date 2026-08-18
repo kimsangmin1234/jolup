@@ -59,6 +59,9 @@ logger = logging.getLogger(__name__)
 SUMMARY_COLUMNS = ("Textrank_summary", "Luhn_summary", "Lsa_summary",
                    "Lexrank_summary", "Article_title")
 
+# 미국 정규장 마감 (동부시간). 이 시각 이후 뉴스는 당일 종가에 반영될 수 없다.
+MARKET_CLOSE_HOUR = 16
+
 
 # --------------------------------------------------------------------------
 # 주가 → 9종 지표 + 등락률 라벨
@@ -202,6 +205,7 @@ def stream_news(
     labels: dict[str, dict[str, float]],
     max_per_ticker: int,
     anchors: dict[str, dict[str, str]] | None = None,
+    text_column: str = "",
 ) -> list[dict]:
     """대용량 뉴스 CSV를 한 줄씩 읽어 대상 종목·기간만 추출한다."""
     csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
@@ -212,7 +216,10 @@ def stream_news(
 
     with news_path.open(encoding="utf-8", errors="replace", newline="") as f:
         reader = csv.DictReader(f)
-        summary_col = _pick_summary_column(reader.fieldnames or [])
+        summary_col = text_column or _pick_summary_column(reader.fieldnames or [])
+        if summary_col not in (reader.fieldnames or []):
+            raise ValueError(f"열 {summary_col!r} 이 없습니다: {reader.fieldnames}")
+        keep_url = "Url" in (reader.fieldnames or [])
         has_sentiment = "Sentiment_gpt" in (reader.fieldnames or [])
         logger.info("요약 열: %s / Sentiment_gpt 존재: %s", summary_col, has_sentiment)
 
@@ -248,9 +255,12 @@ def stream_news(
                 "ticker": ticker,
                 "date": date,
                 "anchor": anchor,
-                "summary": summary,
+                "text": summary,
                 "label": label,
             }
+            if keep_url:
+                # 크롤링으로 복구한 발행 시각을 나중에 이 URL로 결합한다.
+                record["url"] = (row.get("Url") or "").strip()
             if has_sentiment:
                 sentiment = _scale_sentiment(row.get("Sentiment_gpt"))
                 if sentiment is not None:
@@ -349,6 +359,9 @@ def main() -> None:
     parser.add_argument("--price-dir", required=True, help="full_history 디렉터리")
     parser.add_argument("--tickers", required=True, help="쉼표 구분 종목 코드")
     parser.add_argument("--start", default="2015-01-01", help="뉴스 시작일")
+    parser.add_argument("--text-column", default="",
+                        help="레코드에 담을 텍스트 열. 논문대로 뉴스 본문을 쓰려면 "
+                             "Article 을 지정한다. 기본은 Textrank_summary.")
     parser.add_argument("--label-mode", choices=("next_day", "same_day"),
                         default="next_day",
                         help="next_day: label(t)=close[t+1]/close[t]-1, 윈도우는 t까지. "
@@ -394,7 +407,7 @@ def main() -> None:
     # 2) 뉴스 추출
     records = stream_news(
         Path(args.news), set(arrays), args.start, args.end, labels,
-        args.max_per_ticker, anchors
+        args.max_per_ticker, anchors, args.text_column
     )
     if not records:
         raise SystemExit("조건에 맞는 뉴스가 없습니다. 기간·종목을 확인하십시오.")

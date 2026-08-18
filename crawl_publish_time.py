@@ -22,9 +22,11 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import queue
 import random
 import re
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -102,6 +104,9 @@ def main() -> None:
     parser.add_argument("--timeout", type=int, default=25)
     parser.add_argument("--shuffle", action="store_true",
                         help="URL 순서를 섞는다(표본 조사용)")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="동시 요청 수. 총 요청률은 workers/delay 가 된다. "
+                             "robots.txt 의 Crawl-delay 를 고려해 정할 것.")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
@@ -123,27 +128,51 @@ def main() -> None:
 
     stats: dict[str, int] = {}
     started = time.time()
+    todo: queue.Queue = queue.Queue()
+    for url in pending:
+        todo.put(url)
 
-    with out_path.open("a", encoding="utf-8") as out:
-        for i, url in enumerate(pending, 1):
+    lock = threading.Lock()
+    processed = [0]
+
+    def worker(out) -> None:
+        while True:
+            try:
+                url = todo.get_nowait()
+            except queue.Empty:
+                return
+
             raw, status = fetch(url, args.timeout)
-            stats[status] = stats.get(status, 0) + 1
-
-            out.write(json.dumps({
+            line = json.dumps({
                 "url": url,
                 "raw": raw,
                 "published_et": parse_published(raw) if raw else None,
                 "status": status,
-            }, ensure_ascii=False) + "\n")
-            out.flush()
+            }, ensure_ascii=False)
 
-            if i % 25 == 0 or i == len(pending):
-                rate = i / max(time.time() - started, 1e-9)
-                logger.info("  %d/%d  성공 %d  (%.2f건/초)  %s",
-                            i, len(pending), stats.get("ok", 0), rate, stats)
+            with lock:
+                stats[status] = stats.get(status, 0) + 1
+                out.write(line + "\n")
+                out.flush()
+                processed[0] += 1
+                done_now = processed[0]
 
-            if i < len(pending):
-                time.sleep(max(0.0, args.delay * (1 + random.uniform(-args.jitter, args.jitter))))
+            if done_now % 100 == 0:
+                rate = done_now / max(time.time() - started, 1e-9)
+                remain = (len(pending) - done_now) / max(rate, 1e-9) / 3600
+                logger.info("  %d/%d  성공 %d  (%.2f건/초, 잔여 %.1f시간)  %s",
+                            done_now, len(pending), stats.get("ok", 0), rate, remain, stats)
+
+            # 워커별 대기. 전체 요청률은 workers/delay 이다.
+            time.sleep(max(0.0, args.delay * (1 + random.uniform(-args.jitter, args.jitter))))
+
+    with out_path.open("a", encoding="utf-8") as out:
+        threads = [threading.Thread(target=worker, args=(out,), daemon=True)
+                   for _ in range(max(1, args.workers))]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
 
     logger.info("완료 — %s", stats)
 
