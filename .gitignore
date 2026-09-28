@@ -13,3 +13,8 @@ checkpoints/
 !data/fnspid/
 !data/fnspid/*.npz
 !data/fnspid/*.gz
+
+# 크롤링·URL 등 진행 산출물도 깃으로 관리한다 (컨테이너 회수 시 유실 방지)
+!data/fnspid/*.txt
+!data/fnspid/*.csv
+!data/fnspid/*.jsonl.gz
