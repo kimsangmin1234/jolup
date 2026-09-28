@@ -1,0 +1,812 @@
+=== [fnspid-nextday] 시작 2026-09-28 11:21:08 ===
+  레코드 82903건
+[1/3] 감성·임베딩 생성 11:21:31
+2026-09-28 11:21:37,775 INFO 전체 82903건 / 이미 처리 500건 / 이번 처리 82403건
+2026-09-28 11:21:41,991 INFO 요약 언어: same
+2026-09-28 11:22:02,315 INFO 진행 100 / 82403
+2026-09-28 11:22:20,635 INFO 진행 200 / 82403
+2026-09-28 11:22:39,065 INFO 진행 300 / 82403
+2026-09-28 11:22:41,703 INFO Retrying request in 0.126000 seconds (retry 1 of 2)
+2026-09-28 11:22:41,738 INFO Retrying request in 0.220000 seconds (retry 1 of 2)
+2026-09-28 11:22:41,791 INFO Retrying request in 0.513000 seconds (retry 1 of 2)
+2026-09-28 11:22:42,091 INFO Retrying request in 0.059000 seconds (retry 2 of 2)
+2026-09-28 11:22:42,337 INFO Retrying request in 0.490000 seconds (retry 1 of 2)
+2026-09-28 11:22:42,509 INFO Retrying request in 0.575000 seconds (retry 1 of 2)
+2026-09-28 11:22:42,915 INFO Retrying request in 0.353000 seconds (retry 1 of 2)
+2026-09-28 11:22:42,950 INFO Retrying request in 0.581000 seconds (retry 2 of 2)
+2026-09-28 11:22:43,033 INFO Retrying request in 0.547000 seconds (retry 1 of 2)
+2026-09-28 11:22:43,178 INFO Retrying request in 0.356000 seconds (retry 1 of 2)
+2026-09-28 11:22:43,388 INFO Retrying request in 0.012000 seconds (retry 2 of 2)
+2026-09-28 11:22:43,518 ERROR 요약·감성 실패(AAPL-2023-10-23-828)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1177. Please try again in 353ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:43,650 ERROR 요약·감성 실패(AAPL-2023-10-23-826)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1939. Please try again in 581ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:43,663 INFO Retrying request in 0.356000 seconds (retry 2 of 2)
+2026-09-28 11:22:43,694 INFO Retrying request in 0.547000 seconds (retry 2 of 2)
+2026-09-28 11:22:43,774 INFO Retrying request in 0.087000 seconds (retry 1 of 2)
+2026-09-28 11:22:43,794 INFO Retrying request in 0.304000 seconds (retry 1 of 2)
+2026-09-28 11:22:43,856 INFO Retrying request in 0.162000 seconds (retry 1 of 2)
+2026-09-28 11:22:43,930 INFO Retrying request in 0.364000 seconds (retry 1 of 2)
+2026-09-28 11:22:43,970 INFO Retrying request in 0.087000 seconds (retry 2 of 2)
+2026-09-28 11:22:43,980 INFO Retrying request in 0.445000 seconds (retry 1 of 2)
+2026-09-28 11:22:44,132 ERROR 요약·감성 실패(AAPL-2023-10-23-830)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1187. Please try again in 356ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:44,147 INFO Retrying request in 0.162000 seconds (retry 2 of 2)
+2026-09-28 11:22:44,218 INFO Retrying request in 0.304000 seconds (retry 2 of 2)
+2026-09-28 11:22:44,363 ERROR 요약·감성 실패(AAPL-2023-10-23-829)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1826. Please try again in 547ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:44,412 INFO Retrying request in 0.364000 seconds (retry 2 of 2)
+2026-09-28 11:22:44,428 ERROR 요약·감성 실패(AAPL-2023-10-23-834)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 540. Please try again in 162ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:44,475 INFO Retrying request in 0.146000 seconds (retry 1 of 2)
+2026-09-28 11:22:44,486 INFO Retrying request in 0.304000 seconds (retry 1 of 2)
+2026-09-28 11:22:44,547 INFO Retrying request in 0.319000 seconds (retry 1 of 2)
+2026-09-28 11:22:44,556 INFO Retrying request in 0.332000 seconds (retry 2 of 2)
+2026-09-28 11:22:44,764 INFO Retrying request in 0.180000 seconds (retry 2 of 2)
+2026-09-28 11:22:44,895 ERROR 요약·감성 실패(AAPL-2023-10-23-835)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1215. Please try again in 364ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:44,908 INFO Retrying request in 0.321000 seconds (retry 2 of 2)
+2026-09-28 11:22:44,982 INFO Retrying request in 0.329000 seconds (retry 2 of 2)
+2026-09-28 11:22:45,011 INFO Retrying request in 0.110000 seconds (retry 1 of 2)
+2026-09-28 11:22:45,254 INFO Retrying request in 0.054000 seconds (retry 2 of 2)
+2026-09-28 11:22:45,360 ERROR 요약·감성 실패(AAPL-2023-10-23-838)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1111. Please try again in 333ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:45,424 ERROR 요약·감성 실패(AAPL-2023-10-23-842)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1940. Please try again in 582ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:45,552 INFO Retrying request in 0.222000 seconds (retry 1 of 2)
+2026-09-28 11:22:46,073 INFO Retrying request in 0.630000 seconds (retry 1 of 2)
+2026-09-28 11:22:46,603 INFO Retrying request in 0.428000 seconds (retry 1 of 2)
+2026-09-28 11:22:46,810 INFO Retrying request in 0.630000 seconds (retry 2 of 2)
+2026-09-28 11:22:46,852 INFO Retrying request in 0.720000 seconds (retry 1 of 2)
+2026-09-28 11:22:46,885 INFO Retrying request in 0.246000 seconds (retry 1 of 2)
+2026-09-28 11:22:47,092 INFO Retrying request in 0.363000 seconds (retry 1 of 2)
+2026-09-28 11:22:47,147 INFO Retrying request in 0.428000 seconds (retry 2 of 2)
+2026-09-28 11:22:47,250 INFO Retrying request in 0.246000 seconds (retry 2 of 2)
+2026-09-28 11:22:47,294 INFO Retrying request in 0.390000 seconds (retry 1 of 2)
+2026-09-28 11:22:47,553 ERROR 요약·감성 실패(AAPL-2023-10-20-846)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 198333, Requested 2101. Please try again in 130ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:47,584 INFO Retrying request in 0.083000 seconds (retry 2 of 2)
+2026-09-28 11:22:47,685 INFO Retrying request in 0.579000 seconds (retry 2 of 2)
+2026-09-28 11:22:47,806 INFO Retrying request in 0.126000 seconds (retry 2 of 2)
+2026-09-28 11:22:47,863 INFO Retrying request in 0.439000 seconds (retry 1 of 2)
+2026-09-28 11:22:48,387 ERROR 요약·감성 실패(AAPL-2023-10-20-851)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 2403. Please try again in 720ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:48,415 INFO Retrying request in 0.439000 seconds (retry 2 of 2)
+2026-09-28 11:22:48,502 INFO Retrying request in 0.140000 seconds (retry 1 of 2)
+2026-09-28 11:22:48,774 INFO Retrying request in 0.140000 seconds (retry 2 of 2)
+2026-09-28 11:22:48,973 ERROR 요약·감성 실패(AAPL-2023-10-20-857)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1464. Please try again in 439ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:49,032 INFO Retrying request in 0.164000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,075 ERROR 요약·감성 실패(AAPL-2023-10-19-859)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 469. Please try again in 140ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:49,095 INFO Retrying request in 0.407000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,164 INFO Retrying request in 0.359000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,182 INFO Retrying request in 0.416000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,311 INFO Retrying request in 0.164000 seconds (retry 2 of 2)
+2026-09-28 11:22:49,367 INFO Retrying request in 0.099000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,575 INFO Retrying request in 0.099000 seconds (retry 2 of 2)
+2026-09-28 11:22:49,590 ERROR 요약·감성 실패(AAPL-2023-10-19-860)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 548. Please try again in 164ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:49,617 INFO Retrying request in 0.407000 seconds (retry 2 of 2)
+2026-09-28 11:22:49,667 INFO Retrying request in 0.359000 seconds (retry 2 of 2)
+2026-09-28 11:22:49,721 INFO Retrying request in 0.250000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,788 ERROR 요약·감성 실패(AAPL-2023-10-19-865)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 333. Please try again in 99ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:49,854 INFO Retrying request in 0.228000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,892 INFO Retrying request in 0.357000 seconds (retry 1 of 2)
+2026-09-28 11:22:49,898 INFO Retrying request in 0.138000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,078 INFO Retrying request in 0.250000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,102 INFO Retrying request in 0.411000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,135 ERROR 요약·감성 실패(AAPL-2023-10-19-862)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1199. Please try again in 359ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:50,139 ERROR 요약·감성 실패(AAPL-2023-10-19-861)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1358. Please try again in 407ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:50,161 INFO Retrying request in 0.437000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,204 INFO Retrying request in 0.228000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,325 INFO Retrying request in 0.384000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,326 INFO Retrying request in 0.411000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,442 ERROR 요약·감성 실패(AAPL-2023-10-19-866)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 834. Please try again in 250ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:50,446 INFO Retrying request in 0.357000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,551 ERROR 요약·감성 실패(AAPL-2023-10-19-868)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 762. Please try again in 228ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:50,561 INFO Retrying request in 0.529000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,629 INFO Retrying request in 0.411000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,670 INFO Retrying request in 0.530000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,722 ERROR 요약·감성 실패(AAPL-2023-10-19-870)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1457. Please try again in 437ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:50,830 INFO Retrying request in 0.384000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,845 INFO Retrying request in 0.296000 seconds (retry 2 of 2)
+2026-09-28 11:22:50,876 INFO Retrying request in 0.443000 seconds (retry 1 of 2)
+2026-09-28 11:22:50,924 ERROR 요약·감성 실패(AAPL-2023-10-19-869)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1192. Please try again in 357ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,040 INFO Retrying request in 0.442000 seconds (retry 1 of 2)
+2026-09-28 11:22:51,161 ERROR 요약·감성 실패(AAPL-2023-10-19-871)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1371. Please try again in 411ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,177 INFO Retrying request in 0.387000 seconds (retry 1 of 2)
+2026-09-28 11:22:51,235 INFO Retrying request in 0.529000 seconds (retry 2 of 2)
+2026-09-28 11:22:51,264 ERROR 요약·감성 실패(AAPL-2023-10-19-873)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1370. Please try again in 411ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,279 INFO Retrying request in 0.451000 seconds (retry 1 of 2)
+2026-09-28 11:22:51,316 INFO Retrying request in 0.530000 seconds (retry 2 of 2)
+2026-09-28 11:22:51,339 ERROR 요약·감성 실패(AAPL-2023-10-19-872)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1283. Please try again in 384ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,376 INFO Retrying request in 0.517000 seconds (retry 1 of 2)
+2026-09-28 11:22:51,425 INFO Retrying request in 0.031000 seconds (retry 2 of 2)
+2026-09-28 11:22:51,566 ERROR 요약·감성 실패(AAPL-2023-10-19-877)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 199014, Requested 1947. Please try again in 288ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,601 INFO Retrying request in 0.120000 seconds (retry 2 of 2)
+2026-09-28 11:22:51,682 INFO Retrying request in 0.387000 seconds (retry 2 of 2)
+2026-09-28 11:22:51,689 INFO Retrying request in 0.165000 seconds (retry 1 of 2)
+2026-09-28 11:22:51,834 INFO Retrying request in 0.330000 seconds (retry 2 of 2)
+2026-09-28 11:22:51,885 ERROR 요약·감성 실패(AAPL-2023-10-19-874)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1764. Please try again in 529ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,962 ERROR 요약·감성 실패(AAPL-2023-10-19-875)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1768. Please try again in 530ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:51,968 INFO Retrying request in 0.165000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,007 INFO Retrying request in 0.517000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,008 INFO Retrying request in 0.437000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,076 INFO Retrying request in 0.496000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,193 ERROR 요약·감성 실패(AAPL-2023-10-19-879)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1291. Please try again in 387ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,241 ERROR 요약·감성 실패(AAPL-2023-10-19-884)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 552. Please try again in 165ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,278 ERROR 요약·감성 실패(AAPL-2023-10-19-881)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1505. Please try again in 451ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,313 INFO Retrying request in 0.062000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,371 INFO Retrying request in 0.021000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,395 INFO Retrying request in 0.443000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,437 INFO Retrying request in 0.048000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,492 INFO Retrying request in 0.324000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,504 INFO Retrying request in 0.320000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,567 INFO Retrying request in 0.158000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,644 ERROR 요약·감성 실패(AAPL-2023-10-19-882)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1724. Please try again in 517ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,695 INFO Retrying request in 0.089000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,757 INFO Retrying request in 0.204000 seconds (retry 1 of 2)
+2026-09-28 11:22:52,845 ERROR 요약·감성 실패(AAPL-2023-10-19-885)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1459. Please try again in 437ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,902 ERROR 요약·감성 실패(AAPL-2023-10-18-886)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1656. Please try again in 496ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,935 ERROR 요약·감성 실패(AAPL-2023-10-18-888)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 200000, Requested 1347. Please try again in 404ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:52,955 INFO Retrying request in 0.443000 seconds (retry 2 of 2)
+2026-09-28 11:22:52,959 INFO Retrying request in 0.564000 seconds (retry 1 of 2)
+2026-09-28 11:22:53,025 INFO Retrying request in 0.498000 seconds (retry 1 of 2)
+2026-09-28 11:22:53,049 INFO Retrying request in 0.506000 seconds (retry 1 of 2)
+2026-09-28 11:22:53,077 INFO Retrying request in 0.204000 seconds (retry 2 of 2)
+2026-09-28 11:22:53,396 ERROR 요약·감성 실패(AAPL-2023-10-18-891)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF on tokens per min (TPM): Limit 200000, Used 199865, Requested 682. Please try again in 164ms. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2026-09-28 11:22:53,517 INFO Retrying request in 0.222000 seconds (retry 1 of 2)
+2026-09-28 11:22:53,518 ERROR 요약·감성 실패(AAPL-2023-10-18-889)
+Traceback (most recent call last):
+  File "/home/user/jolup/enrich_records.py", line 134, in worker
+    summary, sentiment = extractor.summarize_and_score(source)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/jolup/modules/news_encoder.py", line 98, in summarize_and_score
+    response = self.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1439, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/openai/_base_client.py", line 1212, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitErro
