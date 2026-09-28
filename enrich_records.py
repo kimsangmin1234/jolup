@@ -74,6 +74,9 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=64, help="임베딩 배치 크기")
     parser.add_argument("--limit", type=int, default=0,
                         help="처리할 최대 건수 (0이면 전체). 비용 시험용")
+    parser.add_argument("--language", default="same",
+                        choices=("same", "korean", "english"),
+                        help="요약 언어. same 이면 기사 원문 언어를 따른다(기본).")
     parser.add_argument("--workers", type=int, default=8,
                         help="동시 처리 스레드 수. 8만 건 규모에서는 필수다.")
     parser.add_argument("--text-field", default="",
@@ -98,10 +101,14 @@ def main() -> None:
         logger.info("처리할 레코드가 없습니다.")
         return
 
-    from modules.news_encoder import NewsLLMExtractor
+    from modules.news_encoder import (LANGUAGE_ENGLISH, LANGUAGE_KOREAN,
+                                      LANGUAGE_SAME, NewsLLMExtractor)
 
+    language = {"same": LANGUAGE_SAME, "korean": LANGUAGE_KOREAN,
+                "english": LANGUAGE_ENGLISH}[args.language]
     config = NewsEncoderConfig()
-    extractor = NewsLLMExtractor(config)
+    extractor = NewsLLMExtractor(config, language=language)
+    logger.info("요약 언어: %s", args.language)
 
     todo: queue.Queue = queue.Queue()
     for record in pending:

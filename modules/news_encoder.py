@@ -37,18 +37,28 @@ logger = logging.getLogger(__name__)
 # 1-1. LLM 전처리 (비학습): 요약 + 감성 점수 + 의미 임베딩
 # --------------------------------------------------------------------------
 
-SUMMARY_SENTIMENT_PROMPT = """당신은 금융 뉴스 분석가입니다.
-주어진 뉴스 본문을 분석하여 아래 JSON 형식으로만 답하십시오.
+# 요약 언어는 기사 원문 언어를 따르는 것이 기본이다. 영문 기사를 한국어로
+# 옮기면 번역 손실이 생기고 출력 토큰도 늘어난다. 의미 임베딩은 원문 언어
+# 그대로일 때 가장 충실하다.
+SUMMARY_SENTIMENT_PROMPT = """You are a financial news analyst.
+Analyze the article below and reply with JSON only.
 
-- summary: 주가에 영향을 줄 수 있는 핵심 사건 중심으로 3문장 이내 한국어 요약.
-- sentiment: 이 뉴스가 해당 종목 주가에 미칠 영향의 방향과 강도.
-             -1.0(매우 부정) ~ +1.0(매우 긍정) 사이의 실수 하나.
+- summary: at most 3 sentences, {language}, focused on the events that could
+           move the stock price.
+- sentiment: the direction and strength of this news's likely effect on the
+             stock, as a single real number from -1.0 (very negative) to
+             +1.0 (very positive).
 
 {{"summary": "...", "sentiment": 0.0}}
 
-[뉴스 본문]
+[ARTICLE]
 {article}
 """
+
+# {language} 에 들어갈 값
+LANGUAGE_SAME = "in the same language as the article"
+LANGUAGE_KOREAN = "in Korean"
+LANGUAGE_ENGLISH = "in English"
 
 
 @dataclass
@@ -71,8 +81,10 @@ class NewsLLMExtractor:
     ``openai`` 패키지와 ``OPENAI_API_KEY`` 환경변수가 필요하다.
     """
 
-    def __init__(self, config: NewsEncoderConfig | None = None, client=None) -> None:
+    def __init__(self, config: NewsEncoderConfig | None = None, client=None,
+                 language: str = LANGUAGE_SAME) -> None:
         self.config = config or NewsEncoderConfig()
+        self.language = language
         if client is not None:
             self.client = client
         else:
@@ -86,7 +98,8 @@ class NewsLLMExtractor:
         response = self.client.chat.completions.create(
             model=self.config.llm_model,
             messages=[{"role": "user",
-                       "content": SUMMARY_SENTIMENT_PROMPT.format(article=article)}],
+                       "content": SUMMARY_SENTIMENT_PROMPT.format(
+                           article=article, language=self.language)}],
             response_format={"type": "json_object"},
             temperature=0.0,
         )
