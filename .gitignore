@@ -18,3 +18,7 @@ checkpoints/
 !data/fnspid/*.txt
 !data/fnspid/*.csv
 !data/fnspid/*.jsonl.gz
+
+# 체크포인트는 용량이 커서 제외, 실험 로그는 추적
+!experiments/
+checkpoints/*.pt
