@@ -147,6 +147,8 @@ def main() -> None:
         updated["horizon"] = "same_day" if before_close else "next_day"
         updated["anchor"] = str(anchor)
         updated["label"] = float(label)
+        # 본문은 캐시 용량을 키우므로 남기지 않는다(원본은 articles/ 에 있다).
+        updated.pop("text", None)
         out_records.append(updated)
 
     out_path = Path(args.out)
@@ -162,6 +164,16 @@ def main() -> None:
     covered = stats["마감전"] + stats["마감후"]
     if covered:
         logger.info("시각 복구분 중 마감 전 비율: %.1f%%", stats["마감전"] / covered * 100)
+
+    # 라벨 분포를 horizon 별로 보여준다. 두 집단의 성격이 다르므로
+    # 학습 결과를 해석할 때 이 차이를 알고 있어야 한다.
+    by_horizon: dict[str, list[float]] = collections.defaultdict(list)
+    for record in out_records:
+        by_horizon[record["horizon"]].append(record["label"])
+    for horizon, values in sorted(by_horizon.items()):
+        arr = np.asarray(values)
+        logger.info("  %-9s %6d건  라벨 평균 %+.3f%%  표준편차 %.2f%%",
+                    horizon, len(arr), arr.mean() * 100, arr.std() * 100)
 
 
 if __name__ == "__main__":
