@@ -27,7 +27,9 @@ import argparse
 import json
 import logging
 import queue
+import random
 import threading
+import time
 from pathlib import Path
 
 from config import NewsEncoderConfig
@@ -56,6 +58,27 @@ def load_done_ids(path: Path) -> set[str]:
     return done
 
 
+def call_with_backoff(fn, retries: int, label: str):
+    """요청 한도에 걸리면 지수 백오프로 기다렸다 다시 시도한다.
+
+    한도 초과를 그냥 건너뛰면 처리분이 비고, 즉시 재시도하면 한도를 더
+    악화시킨다. 기다렸다 다시 부르는 쪽이 전체 처리량이 높다.
+    """
+    delay = 2.0
+    for attempt in range(retries):
+        try:
+            return fn()
+        except Exception as exc:
+            name = type(exc).__name__
+            if "RateLimit" not in name and "Connection" not in name and "Timeout" not in name:
+                raise
+            if attempt == retries - 1:
+                raise
+            time.sleep(delay * (1 + random.uniform(-0.3, 0.3)))
+            delay = min(delay * 2, 60.0)
+    raise RuntimeError(f"{label}: 재시도 소진")
+
+
 def pick_text(record: dict, override: str = "") -> str:
     """LLM에 넣을 원문을 고른다.
 
@@ -74,6 +97,11 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=64, help="임베딩 배치 크기")
     parser.add_argument("--limit", type=int, default=0,
                         help="처리할 최대 건수 (0이면 전체). 비용 시험용")
+    parser.add_argument("--max-chars", type=int, default=6000,
+                        help="LLM에 넣을 본문 최대 길이. 기사 앞부분에 핵심이 담기므로 "
+                             "잘라도 요약 품질 손실이 작고, 분당 토큰 한도를 덜 먹는다.")
+    parser.add_argument("--retries", type=int, default=6,
+                        help="요청 한도(429)에 걸렸을 때 재시도 횟수")
     parser.add_argument("--language", default="same",
                         choices=("same", "korean", "english"),
                         help="요약 언어. same 이면 기사 원문 언어를 따른다(기본).")
@@ -128,20 +156,25 @@ def main() -> None:
             source = pick_text(record, args.text_field)
             if not source:
                 continue
+            # 기사 앞부분에 핵심이 담긴다. 길이를 제한해 분당 토큰 한도를 아낀다.
+            source = source[: args.max_chars]
 
             # 1) 본문 → 요약 + 감성 (논문 모듈 1의 LLM 단계)
             try:
-                summary, sentiment = extractor.summarize_and_score(source)
-            except Exception:
-                logger.exception("요약·감성 실패(%s)", record["news_id"])
+                summary, sentiment = call_with_backoff(
+                    lambda: extractor.summarize_and_score(source),
+                    args.retries, "요약·감성")
+            except Exception as exc:
+                logger.warning("요약·감성 실패(%s): %s", record["news_id"], type(exc).__name__)
                 continue
             summary = summary or source[:1000]
 
             # 2) 요약 → 의미 임베딩
             try:
-                vector = extractor.embed([summary])[0]
-            except Exception:
-                logger.exception("임베딩 실패(%s)", record["news_id"])
+                vector = call_with_backoff(
+                    lambda: extractor.embed([summary])[0], args.retries, "임베딩")
+            except Exception as exc:
+                logger.warning("임베딩 실패(%s): %s", record["news_id"], type(exc).__name__)
                 continue
 
             updated = dict(record)

@@ -17,7 +17,7 @@ LOGDIR="experiments/$TAG"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
 mkdir -p "$LOGDIR" checkpoints
-exec > >(tee -a "$LOGDIR/pipeline.log") 2>&1
+exec > >(grep -vE "HTTP Request|Traceback|^  File |^    " | tail -c 5000000 > "$LOGDIR/pipeline.log") 2>&1
 
 commit_push() {
     git add -Af "$LOGDIR" checkpoints 2>/dev/null
@@ -43,9 +43,9 @@ echo "  레코드 $(wc -l < "$RECORDS")건"
 
 # 1) 감성 + 의미 임베딩 (재실행 시 처리분은 건너뛴다)
 echo "[1/3] 감성·임베딩 생성 $(date '+%T')"
-for attempt in 1 2 3; do
+for attempt in 1 2 3 4 5; do
     python3 enrich_records.py --input "$RECORDS" --output "$CACHE" \
-        --workers 10 --language same 2>&1 | grep -vE "HTTP Request"
+        --workers 4 --language same --max-chars 6000 2>&1 | grep -vE "HTTP Request"
     DONE=$(wc -l < "$CACHE" 2>/dev/null || echo 0)
     TOTAL=$(wc -l < "$RECORDS")
     echo "  시도 $attempt: $DONE / $TOTAL"
