@@ -42,6 +42,23 @@ MAX_CHARS = 11_114
 MAX_REQUESTS_PER_FILE = 40_000
 MAX_BYTES_PER_FILE = 150 * 1024 * 1024
 
+# 조직당 대기 토큰 상한. gpt-4o-mini 는 2,000,000 이며 이를 넘기면 배치가
+# token_limit_exceeded 로 즉시 실패한다. 여유를 두고 자른 뒤 순차 제출한다.
+MAX_ENQUEUED_TOKENS = 1_700_000
+
+
+def estimate_tokens(request: dict) -> int:
+    """요청 하나의 대기 토큰을 어림한다.
+
+    영문 기준 문자 3.5개당 1토큰으로 보고, 출력분 여유를 더한다.
+    정확할 필요는 없고 상한을 넘지 않을 만큼만 보수적이면 된다.
+    """
+    body = request["body"]
+    if "messages" in body:
+        chars = sum(len(m["content"]) for m in body["messages"])
+        return int(chars / 3.5) + 400
+    return int(len(str(body.get("input", ""))) / 3.5) + 20
+
 
 def load_jsonl(path: Path) -> list[dict]:
     out = []
@@ -87,29 +104,34 @@ def embed_request(record: dict, config: NewsEncoderConfig) -> dict:
     }
 
 
-def write_batch_files(requests: list[dict], work: Path, stage: str) -> list[Path]:
-    """요청을 파일 한도에 맞춰 여러 조각으로 나눠 쓴다."""
+def write_batch_files(requests: list[dict], work: Path, stage: str,
+                      start_index: int = 0) -> list[Path]:
+    """요청을 파일·토큰 한도에 맞춰 여러 조각으로 나눠 쓴다."""
     paths: list[Path] = []
     chunk: list[str] = []
     size = 0
+    tokens = 0
 
     def flush() -> None:
-        nonlocal chunk, size
+        nonlocal chunk, size, tokens
         if not chunk:
             return
-        path = work / f"{stage}_requests_{len(paths):02d}.jsonl"
+        path = work / f"{stage}_requests_{start_index + len(paths):03d}.jsonl"
         path.write_text("\n".join(chunk) + "\n", encoding="utf-8")
         paths.append(path)
-        chunk, size = [], 0
+        chunk, size, tokens = [], 0, 0
 
     for request in requests:
         line = json.dumps(request, ensure_ascii=False)
         encoded = len(line.encode()) + 1
+        estimate = estimate_tokens(request)
         if chunk and (len(chunk) >= MAX_REQUESTS_PER_FILE
-                      or size + encoded > MAX_BYTES_PER_FILE):
+                      or size + encoded > MAX_BYTES_PER_FILE
+                      or tokens + estimate > MAX_ENQUEUED_TOKENS):
             flush()
         chunk.append(line)
         size += encoded
+        tokens += estimate
     flush()
     return paths
 
@@ -253,18 +275,142 @@ def _collected_ids(work: Path, stage: str) -> set[str]:
     return {r["news_id"] for r in load_jsonl(path)}
 
 
+def cmd_run(args) -> None:
+    """한 번에 한 배치씩 제출·대기·수거를 반복해 전량을 끝낸다.
+
+    조직당 대기 토큰 상한(2,000,000) 때문에 여러 배치를 동시에 올릴 수 없다.
+    하나가 끝나야 다음을 올릴 수 있으므로 순차로 돈다. 중간에 끊겨도
+    수거분은 남으므로 같은 명령으로 이어서 실행하면 된다.
+    """
+    import time
+
+    work = Path(args.work)
+    work.mkdir(parents=True, exist_ok=True)
+    config = NewsEncoderConfig()
+    api = client()
+
+    for cycle in range(1, args.max_cycles + 1):
+        if args.stage == "chat":
+            records = load_jsonl(Path(args.input))
+            done = _collected_ids(work, "chat")
+            builder = chat_request
+            endpoint = "/v1/chat/completions"
+        else:
+            records = load_jsonl(work / "chat_results.jsonl")
+            done = {r["news_id"] for r in load_jsonl(Path(args.out))} if Path(args.out).exists() else set()
+            builder = embed_request
+            endpoint = "/v1/embeddings"
+
+        pending = [r for r in records if r["news_id"] not in done]
+        logger.info("[%d회차] %s 전체 %d / 남은 %d", cycle, args.stage, len(records), len(pending))
+        if not pending:
+            logger.info("전량 완료")
+            return
+
+        # 대기 토큰 한도에 맞춰 이번에 올릴 한 조각만 만든다.
+        paths = write_batch_files([builder(r, config) for r in pending], work,
+                                  args.stage, start_index=cycle)
+        path = paths[0]
+        for extra in paths[1:]:
+            extra.unlink(missing_ok=True)
+
+        uploaded = api.files.create(file=path.open("rb"), purpose="batch")
+        batch = api.batches.create(input_file_id=uploaded.id, endpoint=endpoint,
+                                   completion_window="24h",
+                                   metadata={"stage": args.stage})
+        logger.info("  제출 %s (%s)", batch.id, path.name)
+
+        # 완료까지 대기
+        while True:
+            time.sleep(args.poll)
+            batch = api.batches.retrieve(batch.id)
+            counts = batch.request_counts
+            if batch.status in ("completed", "failed", "expired", "cancelled"):
+                logger.info("  %s — 완료 %d 실패 %d", batch.status,
+                            counts.completed, counts.failed)
+                break
+            logger.info("  %s 진행 %d/%d", batch.status, counts.completed, counts.total)
+
+        if batch.status != "completed":
+            if batch.errors:
+                for err in (batch.errors.data or [])[:2]:
+                    logger.error("  %s: %s", err.code, str(err.message)[:200])
+            logger.error("배치가 %s 로 끝났습니다. 중단합니다.", batch.status)
+            return
+
+        # 수거
+        content = api.files.content(batch.output_file_id).text
+        rows = {}
+        for line in content.splitlines():
+            if not line.strip():
+                continue
+            item = json.loads(line)
+            body = (item.get("response") or {}).get("body")
+            if body:
+                rows[item["custom_id"]] = body
+        _write_results(args, work, records, rows)
+        path.unlink(missing_ok=True)
+
+
+def _write_results(args, work: Path, records: list[dict], rows: dict) -> None:
+    """수거한 응답을 결과 파일에 덧붙인다."""
+    if args.stage == "chat":
+        out_path = work / "chat_results.jsonl"
+        existing = _collected_ids(work, "chat")
+        written = 0
+        with out_path.open("a", encoding="utf-8") as f:
+            for record in records:
+                if record["news_id"] in existing or record["news_id"] not in rows:
+                    continue
+                try:
+                    payload = json.loads(
+                        rows[record["news_id"]]["choices"][0]["message"]["content"])
+                except (KeyError, IndexError, json.JSONDecodeError):
+                    continue
+                summary = str(payload.get("summary", "")).strip()
+                if not summary:
+                    continue
+                updated = {k: v for k, v in record.items() if k != "text"}
+                updated["summary"] = summary
+                updated["sentiment"] = _clip_sentiment(payload.get("sentiment", 0.0))
+                f.write(json.dumps(updated, ensure_ascii=False) + "\n")
+                written += 1
+        logger.info("  chat_results.jsonl +%d건", written)
+    else:
+        out_path = Path(args.out)
+        existing = {r["news_id"] for r in load_jsonl(out_path)} if out_path.exists() else set()
+        written = 0
+        with out_path.open("a", encoding="utf-8") as f:
+            for record in records:
+                if record["news_id"] in existing or record["news_id"] not in rows:
+                    continue
+                try:
+                    vector = rows[record["news_id"]]["data"][0]["embedding"]
+                except (KeyError, IndexError):
+                    continue
+                updated = dict(record)
+                updated["embedding"] = vector
+                f.write(json.dumps(updated, ensure_ascii=False) + "\n")
+                written += 1
+        logger.info("  %s +%d건", out_path.name, written)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Batch API 기반 감성·임베딩 생성")
-    parser.add_argument("command", choices=("submit", "status", "collect"))
+    parser.add_argument("command", choices=("submit", "status", "collect", "run"))
     parser.add_argument("--stage", choices=("chat", "embed"), default="chat")
     parser.add_argument("--input", default="", help="본문 레코드 JSONL (chat 단계)")
     parser.add_argument("--out", default="", help="최종 캐시 경로 (embed 단계)")
     parser.add_argument("--work", required=True, help="배치 작업 디렉터리")
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--poll", type=int, default=60, help="run: 상태 확인 주기(초)")
+    parser.add_argument("--max-cycles", type=int, default=200,
+                        help="run: 최대 반복 횟수")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    {"submit": cmd_submit, "status": cmd_status, "collect": cmd_collect}[args.command](args)
+    {"submit": cmd_submit, "status": cmd_status,
+     "collect": cmd_collect, "run": cmd_run}[args.command](args)
 
 
 if __name__ == "__main__":
