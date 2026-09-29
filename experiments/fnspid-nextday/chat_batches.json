@@ -1,0 +1,28 @@
+{
+  "batches": [
+    {
+      "id": "batch_6abb89fc3ecc8190b564f1db44147c97",
+      "file": "chat_requests_00.jsonl",
+      "status": "completed",
+      "output_file_id": "file-RX7JPYza8gsGjGpQV1zRC8"
+    },
+    {
+      "id": "batch_6abb8b09c8288190b72c3d25a8a76a4e",
+      "file": "chat_requests_00.jsonl",
+      "status": "failed",
+      "output_file_id": null
+    },
+    {
+      "id": "batch_6abb8b166ff88190baf9abb5cd4ac461",
+      "file": "chat_requests_01.jsonl",
+      "status": "failed",
+      "output_file_id": null
+    },
+    {
+      "id": "batch_6abb8b1f2b708190ac73132c6522cee6",
+      "file": "chat_requests_02.jsonl",
+      "status": "failed",
+      "output_file_id": null
+    }
+  ]
+}
