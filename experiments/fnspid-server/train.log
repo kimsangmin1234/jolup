@@ -1,0 +1,40 @@
+2026-10-01 06:40:06,778 INFO 레코드 수 — 학습 19470 / 검증 7696 / 평가 10551
+2026-10-01 06:40:07,049 INFO 실행 조건: {"epochs": 30, "batch_size": 32, "lr": 0.0001, "weight_decay": 1e-05, "grad_clip": 1.0, "seed": 42, "d_model": 512, "lookback": 30}
+2026-10-01 06:40:07,049 INFO 학습 가능 파라미터: 3,554,305
+2026-10-01 06:41:18,143 INFO epoch 01 | train mse 0.007492 dir 0.499 | valid mse 0.000933 mae 0.020097 dir 0.457
+2026-10-01 06:41:18,164 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:42:26,267 INFO epoch 02 | train mse 0.007208 dir 0.503 | valid mse 0.000948 mae 0.021006 dir 0.464
+2026-10-01 06:43:34,332 INFO epoch 03 | train mse 0.007169 dir 0.506 | valid mse 0.000806 mae 0.017760 dir 0.488
+2026-10-01 06:43:34,359 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:44:43,177 INFO epoch 04 | train mse 0.007131 dir 0.505 | valid mse 0.000799 mae 0.017736 dir 0.511
+2026-10-01 06:44:43,244 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:45:51,511 INFO epoch 05 | train mse 0.006982 dir 0.511 | valid mse 0.000799 mae 0.017746 dir 0.524
+2026-10-01 06:45:51,529 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:46:59,653 INFO epoch 06 | train mse 0.006910 dir 0.517 | valid mse 0.000864 mae 0.018624 dir 0.467
+2026-10-01 06:48:08,153 INFO epoch 07 | train mse 0.006825 dir 0.521 | valid mse 0.000831 mae 0.018036 dir 0.494
+2026-10-01 06:49:16,439 INFO epoch 08 | train mse 0.006567 dir 0.515 | valid mse 0.000910 mae 0.018317 dir 0.492
+2026-10-01 06:50:25,428 INFO epoch 09 | train mse 0.006479 dir 0.519 | valid mse 0.001495 mae 0.020713 dir 0.522
+2026-10-01 06:51:34,143 INFO epoch 10 | train mse 0.006368 dir 0.517 | valid mse 0.000932 mae 0.019215 dir 0.466
+2026-10-01 06:52:42,568 INFO epoch 11 | train mse 0.006014 dir 0.525 | valid mse 0.000933 mae 0.019313 dir 0.463
+2026-10-01 06:53:51,469 INFO epoch 12 | train mse 0.005500 dir 0.523 | valid mse 0.000899 mae 0.019005 dir 0.460
+2026-10-01 06:55:00,185 INFO epoch 13 | train mse 0.005052 dir 0.522 | valid mse 0.000845 mae 0.018214 dir 0.464
+2026-10-01 06:56:08,941 INFO epoch 14 | train mse 0.005643 dir 0.518 | valid mse 0.000902 mae 0.019297 dir 0.456
+2026-10-01 06:57:18,515 INFO epoch 15 | train mse 0.005277 dir 0.522 | valid mse 0.000866 mae 0.018621 dir 0.481
+2026-10-01 06:58:27,503 INFO epoch 16 | train mse 0.004548 dir 0.526 | valid mse 0.000955 mae 0.018679 dir 0.490
+2026-10-01 06:59:36,068 INFO epoch 17 | train mse 0.003717 dir 0.529 | valid mse 0.000849 mae 0.018181 dir 0.471
+2026-10-01 07:00:46,013 INFO epoch 18 | train mse 0.003339 dir 0.531 | valid mse 0.001009 mae 0.018715 dir 0.529
+2026-10-01 07:01:54,914 INFO epoch 19 | train mse 0.003224 dir 0.530 | valid mse 0.000856 mae 0.018240 dir 0.514
+2026-10-01 07:03:04,315 INFO epoch 20 | train mse 0.003557 dir 0.534 | valid mse 0.000795 mae 0.017498 dir 0.516
+2026-10-01 07:03:04,382 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 07:04:13,796 INFO epoch 21 | train mse 0.003658 dir 0.528 | valid mse 0.000895 mae 0.018469 dir 0.485
+2026-10-01 07:05:22,152 INFO epoch 22 | train mse 0.002697 dir 0.537 | valid mse 0.001094 mae 0.019358 dir 0.512
+2026-10-01 07:06:31,659 INFO epoch 23 | train mse 0.002282 dir 0.538 | valid mse 0.000850 mae 0.018032 dir 0.511
+2026-10-01 07:07:40,926 INFO epoch 24 | train mse 0.003201 dir 0.542 | valid mse 0.000876 mae 0.018639 dir 0.476
+2026-10-01 07:08:49,491 INFO epoch 25 | train mse 0.002234 dir 0.538 | valid mse 0.000868 mae 0.018628 dir 0.457
+2026-10-01 07:09:58,192 INFO epoch 26 | train mse 0.002494 dir 0.546 | valid mse 0.000911 mae 0.019143 dir 0.462
+2026-10-01 07:11:06,595 INFO epoch 27 | train mse 0.002394 dir 0.547 | valid mse 0.000858 mae 0.018320 dir 0.482
+2026-10-01 07:12:16,182 INFO epoch 28 | train mse 0.002961 dir 0.546 | valid mse 0.000850 mae 0.018551 dir 0.487
+2026-10-01 07:13:24,424 INFO epoch 29 | train mse 0.003141 dir 0.552 | valid mse 0.001015 mae 0.019207 dir 0.484
+2026-10-01 07:14:32,946 INFO epoch 30 | train mse 0.001971 dir 0.556 | valid mse 0.000883 mae 0.018683 dir 0.474
+2026-10-01 07:14:42,279 INFO 테스트 — mse 0.000724 mae 0.015911 dir_acc 0.512 corr 0.003 (기준선 대비 1.026)
+2026-10-01 07:14:42,280 INFO 로그 저장: experiments/fnspid-server

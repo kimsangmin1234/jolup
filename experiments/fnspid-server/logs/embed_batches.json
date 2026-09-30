@@ -1,0 +1,19 @@
+{
+  "batches": [
+    {
+      "id": "batch_6abd48ea22208190a9fa8aef5f19cce3",
+      "file": "embed_requests_001.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd5babb9c4819089b203f61caa8eba",
+      "file": "embed_requests_002.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd6207ef64819088556d42f3078f32",
+      "file": "embed_requests_003.jsonl",
+      "status": "validating"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "batches": [
+    {
+      "id": "batch_6abd0595f1188190b64df9e38403cfbb",
+      "file": "chat_requests_001.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd34e8209c8190a6d739b90c0c6d73",
+      "file": "chat_requests_002.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd35aa4830819086d58d5d7b039a5f",
+      "file": "chat_requests_003.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3669c3dc8190b3661b16fdcdd0fc",
+      "file": "chat_requests_004.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd372939cc8190b1fa61025022173c",
+      "file": "chat_requests_005.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd38443ee08190864c26d10956ac4f",
+      "file": "chat_requests_006.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd39038e788190ac3a5fe4845d4d26",
+      "file": "chat_requests_007.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd39c3f96c81908885e9506e79bfbc",
+      "file": "chat_requests_008.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3a83bf688190af82f951fb4b3658",
+      "file": "chat_requests_009.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3b40c0308190a369c412a3eb1fdd",
+      "file": "chat_requests_010.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3bfdd4408190a76299f7ee0ea0fe",
+      "file": "chat_requests_011.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3cbcbae08190a9da289221a2d949",
+      "file": "chat_requests_012.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3d79a1c881908b7d6fd0cd48fb81",
+      "file": "chat_requests_013.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3e3982f48190b042f3c3db34553f",
+      "file": "chat_requests_014.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd3f52b5cc81909107c52119df8c9b",
+      "file": "chat_requests_015.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd4011b87481908f10893fdcd8e49f",
+      "file": "chat_requests_016.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd412b4ff881908e135935665f6290",
+      "file": "chat_requests_017.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd41e9f5bc8190a1da2b1339851863",
+      "file": "chat_requests_018.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd42a83de48190938e3a31276698b5",
+      "file": "chat_requests_019.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd4366708481908881bba2792b5d4f",
+      "file": "chat_requests_020.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd448059388190846e96cb27a7beeb",
+      "file": "chat_requests_021.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd459754ec81909713b81fdac6a8de",
+      "file": "chat_requests_022.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd465372d08190bd7f6f6773515425",
+      "file": "chat_requests_023.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd470f57208190883fe504392258d4",
+      "file": "chat_requests_024.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd47cc25f48190a1413b138649b41b",
+      "file": "chat_requests_025.jsonl",
+      "status": "validating"
+    },
+    {
+      "id": "batch_6abd4888afd48190b9f2edd521cf5908",
+      "file": "chat_requests_026.jsonl",
+      "status": "validating"
+    }
+  ]
+}

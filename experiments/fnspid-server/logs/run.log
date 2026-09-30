@@ -1,0 +1,848 @@
+[2026-09-30 21:50:18] 의존성 확인
+[2026-09-30 21:50:19]   레코드 82903건
+[2026-09-30 21:50:19] 발행 시각 크롤링 시작 (백그라운드)
+[2026-09-30 21:50:19] 1단계 요약·감성 (Batch API)
+2026-09-30 21:50:22,815 INFO [1회차] chat 전체 82903 / 남은 69716
+2026-09-30 21:50:29,180 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-09-30 21:50:30,751 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-09-30 21:50:30,755 INFO   제출 batch_6abd0595f1188190b64df9e38403cfbb (chat_requests_001.jsonl)
+2026-09-30 21:52:01,150 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 21:52:01,150 INFO   in_progress 진행 0/942
+2026-09-30 21:53:31,387 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 21:53:31,387 INFO   in_progress 진행 0/942
+2026-09-30 21:55:01,641 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 21:55:01,641 INFO   in_progress 진행 0/942
+2026-09-30 21:56:32,007 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 21:56:32,008 INFO   in_progress 진행 0/942
+2026-09-30 21:58:02,388 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 21:58:02,389 INFO   in_progress 진행 0/942
+2026-09-30 21:59:32,754 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 21:59:32,755 INFO   in_progress 진행 0/942
+2026-09-30 22:01:03,131 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:01:03,132 INFO   in_progress 진행 0/942
+2026-09-30 22:02:33,378 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:02:33,378 INFO   in_progress 진행 0/942
+2026-09-30 22:04:04,100 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:04:04,101 INFO   in_progress 진행 0/942
+2026-09-30 22:05:34,490 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:05:34,491 INFO   in_progress 진행 0/942
+2026-09-30 22:07:04,875 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:07:04,876 INFO   in_progress 진행 0/942
+2026-09-30 22:08:35,106 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:08:35,107 INFO   in_progress 진행 0/942
+2026-09-30 22:10:05,486 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:10:05,486 INFO   in_progress 진행 0/942
+2026-09-30 22:11:35,863 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:11:35,863 INFO   in_progress 진행 0/942
+2026-09-30 22:13:06,106 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:13:06,107 INFO   in_progress 진행 0/942
+2026-09-30 22:14:36,477 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:14:36,478 INFO   in_progress 진행 0/942
+2026-09-30 22:16:06,715 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:16:06,716 INFO   in_progress 진행 0/942
+2026-09-30 22:17:37,090 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:17:37,091 INFO   in_progress 진행 0/942
+2026-09-30 22:19:07,478 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:19:07,478 INFO   in_progress 진행 0/942
+2026-09-30 22:20:37,716 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:20:37,717 INFO   in_progress 진행 0/942
+2026-09-30 22:22:07,972 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:22:07,973 INFO   in_progress 진행 0/942
+2026-09-30 22:23:38,369 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:23:38,370 INFO   in_progress 진행 0/942
+2026-09-30 22:25:08,599 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:25:08,600 INFO   in_progress 진행 0/942
+2026-09-30 22:26:38,972 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:26:38,972 INFO   in_progress 진행 0/942
+2026-09-30 22:28:09,209 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:28:09,210 INFO   in_progress 진행 0/942
+2026-09-30 22:29:39,452 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:29:39,453 INFO   in_progress 진행 0/942
+2026-09-30 22:31:09,686 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:31:09,687 INFO   in_progress 진행 0/942
+2026-09-30 22:32:40,091 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:32:40,092 INFO   in_progress 진행 0/942
+2026-09-30 22:34:10,350 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:34:10,351 INFO   in_progress 진행 0/942
+2026-09-30 22:35:40,734 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:35:40,734 INFO   in_progress 진행 0/942
+2026-09-30 22:37:10,983 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:37:10,984 INFO   in_progress 진행 0/942
+2026-09-30 22:38:41,833 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:38:41,834 INFO   in_progress 진행 0/942
+2026-09-30 22:40:12,070 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:40:12,070 INFO   in_progress 진행 0/942
+2026-09-30 22:41:42,309 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:41:42,309 INFO   in_progress 진행 0/942
+2026-09-30 22:43:12,689 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:43:12,689 INFO   in_progress 진행 0/942
+2026-09-30 22:44:43,080 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:44:43,080 INFO   in_progress 진행 0/942
+2026-09-30 22:46:13,346 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:46:13,346 INFO   in_progress 진행 0/942
+2026-09-30 22:47:43,723 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:47:43,723 INFO   in_progress 진행 0/942
+2026-09-30 22:49:13,965 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:49:13,966 INFO   in_progress 진행 0/942
+2026-09-30 22:50:44,343 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:50:44,346 INFO   in_progress 진행 0/942
+2026-09-30 22:52:14,743 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:52:14,744 INFO   in_progress 진행 0/942
+2026-09-30 22:53:45,125 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:53:45,125 INFO   in_progress 진행 0/942
+2026-09-30 22:55:15,407 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:55:15,408 INFO   in_progress 진행 0/942
+2026-09-30 22:56:45,646 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:56:45,646 INFO   in_progress 진행 0/942
+2026-09-30 22:58:16,046 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:58:16,046 INFO   in_progress 진행 0/942
+2026-09-30 22:59:46,421 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 22:59:46,421 INFO   in_progress 진행 0/942
+2026-09-30 23:01:16,662 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:01:16,663 INFO   in_progress 진행 0/942
+2026-09-30 23:02:46,893 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:02:46,894 INFO   in_progress 진행 0/942
+2026-09-30 23:04:17,128 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:04:17,129 INFO   in_progress 진행 0/942
+2026-09-30 23:05:47,380 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:05:47,380 INFO   in_progress 진행 0/942
+2026-09-30 23:07:17,616 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:07:17,617 INFO   in_progress 진행 0/942
+2026-09-30 23:08:47,866 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:08:47,867 INFO   in_progress 진행 0/942
+2026-09-30 23:10:18,097 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:10:18,097 INFO   in_progress 진행 0/942
+2026-09-30 23:11:48,492 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:11:48,493 INFO   in_progress 진행 0/942
+2026-09-30 23:13:18,879 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:13:18,880 INFO   in_progress 진행 0/942
+2026-09-30 23:14:49,260 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:14:49,261 INFO   in_progress 진행 0/942
+2026-09-30 23:16:19,651 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:16:19,652 INFO   in_progress 진행 0/942
+2026-09-30 23:17:50,030 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:17:50,031 INFO   in_progress 진행 0/942
+2026-09-30 23:19:20,405 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:19:20,405 INFO   in_progress 진행 0/942
+2026-09-30 23:20:50,782 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:20:50,783 INFO   in_progress 진행 0/942
+2026-09-30 23:22:21,025 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:22:21,026 INFO   in_progress 진행 0/942
+2026-09-30 23:23:51,402 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:23:51,403 INFO   in_progress 진행 0/942
+2026-09-30 23:25:21,642 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:25:21,642 INFO   in_progress 진행 0/942
+2026-09-30 23:26:52,011 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:26:52,011 INFO   in_progress 진행 0/942
+2026-09-30 23:28:22,254 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:28:22,254 INFO   in_progress 진행 0/942
+2026-09-30 23:29:52,558 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:29:52,559 INFO   in_progress 진행 0/942
+2026-09-30 23:31:22,801 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:31:22,802 INFO   in_progress 진행 0/942
+2026-09-30 23:32:53,059 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:32:53,060 INFO   in_progress 진행 0/942
+2026-09-30 23:34:23,308 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:34:23,309 INFO   in_progress 진행 0/942
+2026-09-30 23:35:53,686 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:35:53,687 INFO   in_progress 진행 0/942
+2026-09-30 23:37:23,982 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:37:23,983 INFO   in_progress 진행 0/942
+2026-09-30 23:38:54,231 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:38:54,232 INFO   in_progress 진행 0/942
+2026-09-30 23:40:24,621 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:40:24,621 INFO   in_progress 진행 0/942
+2026-09-30 23:41:55,000 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:41:55,000 INFO   in_progress 진행 0/942
+2026-09-30 23:43:25,238 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:43:25,239 INFO   in_progress 진행 0/942
+2026-09-30 23:44:55,638 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:44:55,638 INFO   in_progress 진행 0/942
+2026-09-30 23:46:26,033 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:46:26,034 INFO   in_progress 진행 0/942
+2026-09-30 23:47:56,271 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:47:56,272 INFO   in_progress 진행 0/942
+2026-09-30 23:49:26,657 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:49:26,658 INFO   in_progress 진행 0/942
+2026-09-30 23:50:56,909 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:50:56,910 INFO   in_progress 진행 0/942
+2026-09-30 23:52:27,143 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:52:27,144 INFO   in_progress 진행 0/942
+2026-09-30 23:53:57,385 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:53:57,385 INFO   in_progress 진행 0/942
+2026-09-30 23:55:27,630 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:55:27,631 INFO   in_progress 진행 0/942
+2026-09-30 23:56:57,864 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:56:57,865 INFO   in_progress 진행 0/942
+2026-09-30 23:58:28,249 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:58:28,250 INFO   in_progress 진행 0/942
+2026-09-30 23:59:58,488 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-09-30 23:59:58,489 INFO   in_progress 진행 0/942
+2026-10-01 00:01:28,883 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:01:28,883 INFO   in_progress 진행 0/942
+2026-10-01 00:02:59,124 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:02:59,124 INFO   in_progress 진행 0/942
+2026-10-01 00:04:29,518 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:04:29,519 INFO   in_progress 진행 0/942
+2026-10-01 00:05:59,915 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:05:59,916 INFO   in_progress 진행 0/942
+2026-10-01 00:07:30,309 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:07:30,309 INFO   in_progress 진행 0/942
+2026-10-01 00:09:00,692 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:09:00,693 INFO   in_progress 진행 0/942
+2026-10-01 00:10:30,949 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:10:30,949 INFO   in_progress 진행 0/942
+2026-10-01 00:12:01,195 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:12:01,196 INFO   in_progress 진행 0/942
+2026-10-01 00:13:31,580 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:13:31,581 INFO   in_progress 진행 0/942
+2026-10-01 00:15:01,961 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:15:01,962 INFO   in_progress 진행 0/942
+2026-10-01 00:16:32,221 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:16:32,221 INFO   in_progress 진행 0/942
+2026-10-01 00:18:02,619 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:18:02,620 INFO   in_progress 진행 0/942
+2026-10-01 00:19:32,999 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:19:33,000 INFO   in_progress 진행 0/942
+2026-10-01 00:21:03,259 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:21:03,259 INFO   in_progress 진행 0/942
+2026-10-01 00:22:33,636 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:22:33,636 INFO   in_progress 진행 0/942
+2026-10-01 00:24:04,015 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:24:04,016 INFO   in_progress 진행 0/942
+2026-10-01 00:25:34,414 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:25:34,415 INFO   in_progress 진행 0/942
+2026-10-01 00:27:04,794 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:27:04,794 INFO   in_progress 진행 0/942
+2026-10-01 00:28:35,028 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:28:35,028 INFO   in_progress 진행 0/942
+2026-10-01 00:30:05,279 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:30:05,280 INFO   in_progress 진행 0/942
+2026-10-01 00:31:35,526 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:31:35,527 INFO   in_progress 진행 0/942
+2026-10-01 00:33:05,777 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:33:05,778 INFO   in_progress 진행 0/942
+2026-10-01 00:34:36,162 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:34:36,199 INFO   in_progress 진행 0/942
+2026-10-01 00:36:06,577 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:36:06,578 INFO   in_progress 진행 0/942
+2026-10-01 00:37:36,986 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:37:36,987 INFO   in_progress 진행 0/942
+2026-10-01 00:39:07,383 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:39:07,383 INFO   in_progress 진행 0/942
+2026-10-01 00:40:37,774 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:40:37,775 INFO   in_progress 진행 0/942
+2026-10-01 00:42:08,018 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:42:08,018 INFO   in_progress 진행 0/942
+2026-10-01 00:43:38,412 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:43:38,413 INFO   in_progress 진행 0/942
+2026-10-01 00:45:08,652 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:45:08,653 INFO   in_progress 진행 885/942
+2026-10-01 00:46:38,903 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:46:38,903 INFO   in_progress 진행 885/942
+2026-10-01 00:48:09,323 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:48:09,324 INFO   in_progress 진행 885/942
+2026-10-01 00:49:39,575 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:49:39,576 INFO   in_progress 진행 885/942
+2026-10-01 00:51:09,965 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:51:09,965 INFO   in_progress 진행 885/942
+2026-10-01 00:52:40,251 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:52:40,251 INFO   in_progress 진행 885/942
+2026-10-01 00:54:10,633 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:54:10,633 INFO   in_progress 진행 885/942
+2026-10-01 00:55:41,010 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:55:41,011 INFO   in_progress 진행 885/942
+2026-10-01 00:57:11,402 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:57:11,403 INFO   in_progress 진행 885/942
+2026-10-01 00:58:41,797 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 00:58:41,798 INFO   in_progress 진행 885/942
+2026-10-01 01:00:12,056 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:00:12,057 INFO   in_progress 진행 885/942
+2026-10-01 01:01:42,448 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:01:42,448 INFO   in_progress 진행 885/942
+2026-10-01 01:03:12,833 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:03:12,834 INFO   in_progress 진행 885/942
+2026-10-01 01:04:43,093 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:04:43,094 INFO   in_progress 진행 885/942
+2026-10-01 01:06:13,483 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:06:13,484 INFO   in_progress 진행 885/942
+2026-10-01 01:07:43,897 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:07:43,898 INFO   in_progress 진행 885/942
+2026-10-01 01:09:14,136 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:09:14,137 INFO   in_progress 진행 885/942
+2026-10-01 01:10:44,516 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:10:44,516 INFO   in_progress 진행 885/942
+2026-10-01 01:12:14,764 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd0595f1188190b64df9e38403cfbb "HTTP/1.1 200 OK"
+2026-10-01 01:12:14,765 INFO   completed — 완료 942 실패 0
+2026-10-01 01:12:15,115 INFO HTTP Request: GET https://api.openai.com/v1/files/file-VkLSqXTAsNxXL5emwRjN2n/content "HTTP/1.1 200 OK"
+2026-10-01 01:12:16,122 INFO   chat_results.jsonl +942건
+2026-10-01 01:12:17,542 INFO [2회차] chat 전체 82903 / 남은 68774
+2026-10-01 01:12:23,866 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:12:26,362 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:12:26,363 INFO   제출 batch_6abd34e8209c8190a6d739b90c0c6d73 (chat_requests_002.jsonl)
+2026-10-01 01:13:56,619 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd34e8209c8190a6d739b90c0c6d73 "HTTP/1.1 200 OK"
+2026-10-01 01:13:56,620 INFO   in_progress 진행 960/996
+2026-10-01 01:15:27,001 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd34e8209c8190a6d739b90c0c6d73 "HTTP/1.1 200 OK"
+2026-10-01 01:15:27,002 INFO   completed — 완료 996 실패 0
+2026-10-01 01:15:27,909 INFO HTTP Request: GET https://api.openai.com/v1/files/file-15TmET2S9BFPxc8qrP9nKf/content "HTTP/1.1 200 OK"
+2026-10-01 01:15:29,724 INFO   chat_results.jsonl +996건
+2026-10-01 01:15:31,195 INFO [3회차] chat 전체 82903 / 남은 67778
+2026-10-01 01:15:38,162 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:15:38,571 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:15:38,571 INFO   제출 batch_6abd35aa4830819086d58d5d7b039a5f (chat_requests_003.jsonl)
+2026-10-01 01:17:08,963 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd35aa4830819086d58d5d7b039a5f "HTTP/1.1 200 OK"
+2026-10-01 01:17:08,963 INFO   in_progress 진행 962/970
+2026-10-01 01:18:39,357 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd35aa4830819086d58d5d7b039a5f "HTTP/1.1 200 OK"
+2026-10-01 01:18:39,357 INFO   completed — 완료 970 실패 0
+2026-10-01 01:18:40,326 INFO HTTP Request: GET https://api.openai.com/v1/files/file-4YCZeVZvd6krmVFrrSkD6q/content "HTTP/1.1 200 OK"
+2026-10-01 01:18:41,851 INFO   chat_results.jsonl +970건
+2026-10-01 01:18:43,238 INFO [4회차] chat 전체 82903 / 남은 66808
+2026-10-01 01:18:49,643 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:18:50,053 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:18:50,054 INFO   제출 batch_6abd3669c3dc8190b3661b16fdcdd0fc (chat_requests_004.jsonl)
+2026-10-01 01:20:20,436 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3669c3dc8190b3661b16fdcdd0fc "HTTP/1.1 200 OK"
+2026-10-01 01:20:20,437 INFO   in_progress 진행 955/968
+2026-10-01 01:21:50,822 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3669c3dc8190b3661b16fdcdd0fc "HTTP/1.1 200 OK"
+2026-10-01 01:21:50,823 INFO   completed — 완료 968 실패 0
+2026-10-01 01:21:51,692 INFO HTTP Request: GET https://api.openai.com/v1/files/file-LyWjBDmZoQzauTXqCeadDR/content "HTTP/1.1 200 OK"
+2026-10-01 01:21:53,239 INFO   chat_results.jsonl +968건
+2026-10-01 01:21:54,672 INFO [5회차] chat 전체 82903 / 남은 65840
+2026-10-01 01:22:01,100 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:22:01,937 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:22:01,938 INFO   제출 batch_6abd372939cc8190b1fa61025022173c (chat_requests_005.jsonl)
+2026-10-01 01:23:32,186 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd372939cc8190b1fa61025022173c "HTTP/1.1 200 OK"
+2026-10-01 01:23:32,186 INFO   in_progress 진행 51/889
+2026-10-01 01:25:02,570 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd372939cc8190b1fa61025022173c "HTTP/1.1 200 OK"
+2026-10-01 01:25:02,571 INFO   finalizing 진행 889/889
+2026-10-01 01:26:32,954 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd372939cc8190b1fa61025022173c "HTTP/1.1 200 OK"
+2026-10-01 01:26:32,955 INFO   completed — 완료 889 실패 0
+2026-10-01 01:26:34,178 INFO HTTP Request: GET https://api.openai.com/v1/files/file-BAExMoWR8kBbjWB8Ng3k1t/content "HTTP/1.1 200 OK"
+2026-10-01 01:26:36,032 INFO   chat_results.jsonl +889건
+2026-10-01 01:26:37,436 INFO [6회차] chat 전체 82903 / 남은 64951
+2026-10-01 01:26:44,113 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:26:44,539 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:26:44,540 INFO   제출 batch_6abd38443ee08190864c26d10956ac4f (chat_requests_006.jsonl)
+2026-10-01 01:28:14,937 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd38443ee08190864c26d10956ac4f "HTTP/1.1 200 OK"
+2026-10-01 01:28:14,938 INFO   finalizing 진행 915/915
+2026-10-01 01:29:45,324 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd38443ee08190864c26d10956ac4f "HTTP/1.1 200 OK"
+2026-10-01 01:29:45,325 INFO   completed — 완료 915 실패 0
+2026-10-01 01:29:46,008 INFO HTTP Request: GET https://api.openai.com/v1/files/file-6gBjbFEU3nR5vcMaq2XPkN/content "HTTP/1.1 200 OK"
+2026-10-01 01:29:47,918 INFO   chat_results.jsonl +915건
+2026-10-01 01:29:49,353 INFO [7회차] chat 전체 82903 / 남은 64036
+2026-10-01 01:29:55,426 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:29:55,888 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:29:55,889 INFO   제출 batch_6abd39038e788190ac3a5fe4845d4d26 (chat_requests_007.jsonl)
+2026-10-01 01:31:26,286 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd39038e788190ac3a5fe4845d4d26 "HTTP/1.1 200 OK"
+2026-10-01 01:31:26,286 INFO   in_progress 진행 896/939
+2026-10-01 01:32:56,674 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd39038e788190ac3a5fe4845d4d26 "HTTP/1.1 200 OK"
+2026-10-01 01:32:56,675 INFO   completed — 완료 939 실패 0
+2026-10-01 01:32:57,202 INFO HTTP Request: GET https://api.openai.com/v1/files/file-WsDp3LGrjoxodVG2cUjiBw/content "HTTP/1.1 200 OK"
+2026-10-01 01:32:59,051 INFO   chat_results.jsonl +939건
+2026-10-01 01:33:00,499 INFO [8회차] chat 전체 82903 / 남은 63097
+2026-10-01 01:33:07,845 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:33:08,259 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:33:08,260 INFO   제출 batch_6abd39c3f96c81908885e9506e79bfbc (chat_requests_008.jsonl)
+2026-10-01 01:34:38,648 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd39c3f96c81908885e9506e79bfbc "HTTP/1.1 200 OK"
+2026-10-01 01:34:38,649 INFO   in_progress 진행 930/944
+2026-10-01 01:36:09,049 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd39c3f96c81908885e9506e79bfbc "HTTP/1.1 200 OK"
+2026-10-01 01:36:09,050 INFO   completed — 완료 944 실패 0
+2026-10-01 01:36:09,942 INFO HTTP Request: GET https://api.openai.com/v1/files/file-32yamS1maranGWbxcsueip/content "HTTP/1.1 200 OK"
+2026-10-01 01:36:11,816 INFO   chat_results.jsonl +944건
+2026-10-01 01:36:13,259 INFO [9회차] chat 전체 82903 / 남은 62153
+2026-10-01 01:36:19,622 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:36:20,069 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:36:20,069 INFO   제출 batch_6abd3a83bf688190af82f951fb4b3658 (chat_requests_009.jsonl)
+2026-10-01 01:37:50,312 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3a83bf688190af82f951fb4b3658 "HTTP/1.1 200 OK"
+2026-10-01 01:37:50,313 INFO   in_progress 진행 744/969
+2026-10-01 01:39:20,555 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3a83bf688190af82f951fb4b3658 "HTTP/1.1 200 OK"
+2026-10-01 01:39:20,556 INFO   completed — 완료 969 실패 0
+2026-10-01 01:39:21,332 INFO HTTP Request: GET https://api.openai.com/v1/files/file-RrkgMdbEKaHJcyfUWGwqVg/content "HTTP/1.1 200 OK"
+2026-10-01 01:39:22,206 INFO   chat_results.jsonl +969건
+2026-10-01 01:39:23,652 INFO [10회차] chat 전체 82903 / 남은 61184
+2026-10-01 01:39:28,477 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:39:28,924 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:39:28,925 INFO   제출 batch_6abd3b40c0308190a369c412a3eb1fdd (chat_requests_010.jsonl)
+2026-10-01 01:40:59,182 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3b40c0308190a369c412a3eb1fdd "HTTP/1.1 200 OK"
+2026-10-01 01:40:59,183 INFO   in_progress 진행 486/1103
+2026-10-01 01:42:29,574 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3b40c0308190a369c412a3eb1fdd "HTTP/1.1 200 OK"
+2026-10-01 01:42:29,575 INFO   completed — 완료 1103 실패 0
+2026-10-01 01:42:30,119 INFO HTTP Request: GET https://api.openai.com/v1/files/file-CcmbUEErzbPFXBhg8EibF1/content "HTTP/1.1 200 OK"
+2026-10-01 01:42:30,596 INFO   chat_results.jsonl +1103건
+2026-10-01 01:42:32,063 INFO [11회차] chat 전체 82903 / 남은 60081
+2026-10-01 01:42:37,697 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:42:38,171 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:42:38,171 INFO   제출 batch_6abd3bfdd4408190a76299f7ee0ea0fe (chat_requests_011.jsonl)
+2026-10-01 01:44:08,564 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3bfdd4408190a76299f7ee0ea0fe "HTTP/1.1 200 OK"
+2026-10-01 01:44:08,565 INFO   in_progress 진행 981/1175
+2026-10-01 01:45:38,946 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3bfdd4408190a76299f7ee0ea0fe "HTTP/1.1 200 OK"
+2026-10-01 01:45:38,947 INFO   completed — 완료 1175 실패 0
+2026-10-01 01:45:39,563 INFO HTTP Request: GET https://api.openai.com/v1/files/file-2sAdj7cZPpA6ay1eTJpJgB/content "HTTP/1.1 200 OK"
+2026-10-01 01:45:41,485 INFO   chat_results.jsonl +1175건
+2026-10-01 01:45:42,917 INFO [12회차] chat 전체 82903 / 남은 58906
+2026-10-01 01:45:48,461 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:45:49,055 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:45:49,056 INFO   제출 batch_6abd3cbcbae08190a9da289221a2d949 (chat_requests_012.jsonl)
+2026-10-01 01:47:19,308 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3cbcbae08190a9da289221a2d949 "HTTP/1.1 200 OK"
+2026-10-01 01:47:19,309 INFO   in_progress 진행 940/942
+2026-10-01 01:48:49,563 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3cbcbae08190a9da289221a2d949 "HTTP/1.1 200 OK"
+2026-10-01 01:48:49,564 INFO   completed — 완료 942 실패 0
+2026-10-01 01:48:50,584 INFO HTTP Request: GET https://api.openai.com/v1/files/file-VohZkcQMSx9xHQgZhebk75/content "HTTP/1.1 200 OK"
+2026-10-01 01:48:51,475 INFO   chat_results.jsonl +942건
+2026-10-01 01:48:52,939 INFO [13회차] chat 전체 82903 / 남은 57964
+2026-10-01 01:48:57,483 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:48:57,785 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:48:57,786 INFO   제출 batch_6abd3d79a1c881908b7d6fd0cd48fb81 (chat_requests_013.jsonl)
+2026-10-01 01:50:28,171 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3d79a1c881908b7d6fd0cd48fb81 "HTTP/1.1 200 OK"
+2026-10-01 01:50:28,172 INFO   in_progress 진행 979/993
+2026-10-01 01:51:58,564 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3d79a1c881908b7d6fd0cd48fb81 "HTTP/1.1 200 OK"
+2026-10-01 01:51:58,565 INFO   completed — 완료 993 실패 0
+2026-10-01 01:51:59,345 INFO HTTP Request: GET https://api.openai.com/v1/files/file-8ztSBaZ7RTbLsnsyYjpCLS/content "HTTP/1.1 200 OK"
+2026-10-01 01:52:01,247 INFO   chat_results.jsonl +993건
+2026-10-01 01:52:02,683 INFO [14회차] chat 전체 82903 / 남은 56971
+2026-10-01 01:52:09,380 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:52:09,857 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:52:09,858 INFO   제출 batch_6abd3e3982f48190b042f3c3db34553f (chat_requests_014.jsonl)
+2026-10-01 01:53:40,117 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3e3982f48190b042f3c3db34553f "HTTP/1.1 200 OK"
+2026-10-01 01:53:40,118 INFO   in_progress 진행 867/927
+2026-10-01 01:55:10,500 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3e3982f48190b042f3c3db34553f "HTTP/1.1 200 OK"
+2026-10-01 01:55:10,502 INFO   finalizing 진행 927/927
+2026-10-01 01:56:40,897 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3e3982f48190b042f3c3db34553f "HTTP/1.1 200 OK"
+2026-10-01 01:56:40,898 INFO   completed — 완료 927 실패 0
+2026-10-01 01:56:41,677 INFO HTTP Request: GET https://api.openai.com/v1/files/file-9VhdL26HHjm3iZ2EH4XJgd/content "HTTP/1.1 200 OK"
+2026-10-01 01:56:43,347 INFO   chat_results.jsonl +927건
+2026-10-01 01:56:44,822 INFO [15회차] chat 전체 82903 / 남은 56044
+2026-10-01 01:56:50,443 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 01:56:51,114 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 01:56:51,114 INFO   제출 batch_6abd3f52b5cc81909107c52119df8c9b (chat_requests_015.jsonl)
+2026-10-01 01:58:21,526 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3f52b5cc81909107c52119df8c9b "HTTP/1.1 200 OK"
+2026-10-01 01:58:21,527 INFO   in_progress 진행 1022/1058
+2026-10-01 01:59:51,912 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd3f52b5cc81909107c52119df8c9b "HTTP/1.1 200 OK"
+2026-10-01 01:59:51,913 INFO   completed — 완료 1058 실패 0
+2026-10-01 01:59:52,457 INFO HTTP Request: GET https://api.openai.com/v1/files/file-SVEYvXoTJzzZRF4xc65mH9/content "HTTP/1.1 200 OK"
+2026-10-01 01:59:54,367 INFO   chat_results.jsonl +1058건
+2026-10-01 01:59:55,834 INFO [16회차] chat 전체 82903 / 남은 54986
+2026-10-01 02:00:01,567 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:00:02,018 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:00:02,020 INFO   제출 batch_6abd4011b87481908f10893fdcd8e49f (chat_requests_016.jsonl)
+2026-10-01 02:01:32,267 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4011b87481908f10893fdcd8e49f "HTTP/1.1 200 OK"
+2026-10-01 02:01:32,268 INFO   in_progress 진행 625/1010
+2026-10-01 02:03:02,518 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4011b87481908f10893fdcd8e49f "HTTP/1.1 200 OK"
+2026-10-01 02:03:02,519 INFO   in_progress 진행 996/1010
+2026-10-01 02:04:32,912 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4011b87481908f10893fdcd8e49f "HTTP/1.1 200 OK"
+2026-10-01 02:04:32,913 INFO   completed — 완료 1010 실패 0
+2026-10-01 02:04:34,101 INFO HTTP Request: GET https://api.openai.com/v1/files/file-Kg4YGTSxqQPfcZJSBWgNNq/content "HTTP/1.1 200 OK"
+2026-10-01 02:04:35,713 INFO   chat_results.jsonl +1010건
+2026-10-01 02:04:37,199 INFO [17회차] chat 전체 82903 / 남은 53976
+2026-10-01 02:04:43,180 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:04:43,604 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:04:43,604 INFO   제출 batch_6abd412b4ff881908e135935665f6290 (chat_requests_017.jsonl)
+2026-10-01 02:06:13,849 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd412b4ff881908e135935665f6290 "HTTP/1.1 200 OK"
+2026-10-01 02:06:13,849 INFO   in_progress 진행 958/982
+2026-10-01 02:07:44,236 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd412b4ff881908e135935665f6290 "HTTP/1.1 200 OK"
+2026-10-01 02:07:44,237 INFO   completed — 완료 982 실패 0
+2026-10-01 02:07:45,266 INFO HTTP Request: GET https://api.openai.com/v1/files/file-Mvz2igrczr9BTDNquMy7j5/content "HTTP/1.1 200 OK"
+2026-10-01 02:07:46,901 INFO   chat_results.jsonl +982건
+2026-10-01 02:07:48,367 INFO [18회차] chat 전체 82903 / 남은 52994
+2026-10-01 02:07:53,826 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:07:54,251 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:07:54,252 INFO   제출 batch_6abd41e9f5bc8190a1da2b1339851863 (chat_requests_018.jsonl)
+2026-10-01 02:09:24,638 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd41e9f5bc8190a1da2b1339851863 "HTTP/1.1 200 OK"
+2026-10-01 02:09:24,639 INFO   in_progress 진행 908/910
+2026-10-01 02:10:55,032 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd41e9f5bc8190a1da2b1339851863 "HTTP/1.1 200 OK"
+2026-10-01 02:10:55,033 INFO   completed — 완료 910 실패 0
+2026-10-01 02:10:55,515 INFO HTTP Request: GET https://api.openai.com/v1/files/file-3YsDak8wemd1QRRJFkCnk8/content "HTTP/1.1 200 OK"
+2026-10-01 02:10:57,454 INFO   chat_results.jsonl +910건
+2026-10-01 02:10:58,967 INFO [19회차] chat 전체 82903 / 남은 52084
+2026-10-01 02:11:04,114 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:11:04,536 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:11:04,537 INFO   제출 batch_6abd42a83de48190938e3a31276698b5 (chat_requests_019.jsonl)
+2026-10-01 02:12:34,792 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd42a83de48190938e3a31276698b5 "HTTP/1.1 200 OK"
+2026-10-01 02:12:34,792 INFO   finalizing 진행 947/947
+2026-10-01 02:14:05,184 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd42a83de48190938e3a31276698b5 "HTTP/1.1 200 OK"
+2026-10-01 02:14:05,185 INFO   completed — 완료 947 실패 0
+2026-10-01 02:14:05,887 INFO HTTP Request: GET https://api.openai.com/v1/files/file-XSvcpcpCjoXPnwbZE1hJhk/content "HTTP/1.1 200 OK"
+2026-10-01 02:14:07,916 INFO   chat_results.jsonl +947건
+2026-10-01 02:14:09,405 INFO [20회차] chat 전체 82903 / 남은 51137
+2026-10-01 02:14:14,311 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:14:15,110 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:14:15,111 INFO   제출 batch_6abd4366708481908881bba2792b5d4f (chat_requests_020.jsonl)
+2026-10-01 02:15:45,505 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4366708481908881bba2792b5d4f "HTTP/1.1 200 OK"
+2026-10-01 02:15:45,506 INFO   in_progress 진행 0/900
+2026-10-01 02:17:15,904 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4366708481908881bba2792b5d4f "HTTP/1.1 200 OK"
+2026-10-01 02:17:15,905 INFO   finalizing 진행 900/900
+2026-10-01 02:18:46,296 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4366708481908881bba2792b5d4f "HTTP/1.1 200 OK"
+2026-10-01 02:18:46,297 INFO   completed — 완료 900 실패 0
+2026-10-01 02:18:47,475 INFO HTTP Request: GET https://api.openai.com/v1/files/file-M2X19mp6cQLgZhLENf1qXh/content "HTTP/1.1 200 OK"
+2026-10-01 02:18:49,093 INFO   chat_results.jsonl +900건
+2026-10-01 02:18:50,602 INFO [21회차] chat 전체 82903 / 남은 50237
+2026-10-01 02:18:56,088 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:18:56,686 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:18:56,687 INFO   제출 batch_6abd448059388190846e96cb27a7beeb (chat_requests_021.jsonl)
+2026-10-01 02:20:26,934 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd448059388190846e96cb27a7beeb "HTTP/1.1 200 OK"
+2026-10-01 02:20:26,934 INFO   in_progress 진행 0/951
+2026-10-01 02:21:57,185 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd448059388190846e96cb27a7beeb "HTTP/1.1 200 OK"
+2026-10-01 02:21:57,185 INFO   finalizing 진행 951/951
+2026-10-01 02:23:27,433 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd448059388190846e96cb27a7beeb "HTTP/1.1 200 OK"
+2026-10-01 02:23:27,434 INFO   completed — 완료 951 실패 0
+2026-10-01 02:23:28,123 INFO HTTP Request: GET https://api.openai.com/v1/files/file-2mYvHQReatBc42Fh4MxobQ/content "HTTP/1.1 200 OK"
+2026-10-01 02:23:29,111 INFO   chat_results.jsonl +951건
+2026-10-01 02:23:30,590 INFO [22회차] chat 전체 82903 / 남은 49286
+2026-10-01 02:23:34,988 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:23:35,516 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:23:35,517 INFO   제출 batch_6abd459754ec81909713b81fdac6a8de (chat_requests_022.jsonl)
+2026-10-01 02:25:05,770 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd459754ec81909713b81fdac6a8de "HTTP/1.1 200 OK"
+2026-10-01 02:25:05,771 INFO   in_progress 진행 761/985
+2026-10-01 02:26:36,020 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd459754ec81909713b81fdac6a8de "HTTP/1.1 200 OK"
+2026-10-01 02:26:36,021 INFO   completed — 완료 985 실패 0
+2026-10-01 02:26:36,692 INFO HTTP Request: GET https://api.openai.com/v1/files/file-SDWx6xzpw5fb1HScbjF8VS/content "HTTP/1.1 200 OK"
+2026-10-01 02:26:37,808 INFO   chat_results.jsonl +985건
+2026-10-01 02:26:39,336 INFO [23회차] chat 전체 82903 / 남은 48301
+2026-10-01 02:26:43,313 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:26:43,620 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:26:43,620 INFO   제출 batch_6abd465372d08190bd7f6f6773515425 (chat_requests_023.jsonl)
+2026-10-01 02:28:13,872 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd465372d08190bd7f6f6773515425 "HTTP/1.1 200 OK"
+2026-10-01 02:28:13,872 INFO   finalizing 진행 1050/1050
+2026-10-01 02:29:44,135 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd465372d08190bd7f6f6773515425 "HTTP/1.1 200 OK"
+2026-10-01 02:29:44,136 INFO   completed — 완료 1050 실패 0
+2026-10-01 02:29:44,493 INFO HTTP Request: GET https://api.openai.com/v1/files/file-F1AvuRFCFbA2i3RBVEfxgg/content "HTTP/1.1 200 OK"
+2026-10-01 02:29:45,619 INFO   chat_results.jsonl +1050건
+2026-10-01 02:29:47,145 INFO [24회차] chat 전체 82903 / 남은 47251
+2026-10-01 02:29:51,216 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:29:51,519 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:29:51,520 INFO   제출 batch_6abd470f57208190883fe504392258d4 (chat_requests_024.jsonl)
+2026-10-01 02:31:21,920 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd470f57208190883fe504392258d4 "HTTP/1.1 200 OK"
+2026-10-01 02:31:21,921 INFO   in_progress 진행 997/1025
+2026-10-01 02:32:52,175 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd470f57208190883fe504392258d4 "HTTP/1.1 200 OK"
+2026-10-01 02:32:52,176 INFO   completed — 완료 1025 실패 0
+2026-10-01 02:32:52,516 INFO HTTP Request: GET https://api.openai.com/v1/files/file-DrsKkUk6c7xYbiEvaWrxbJ/content "HTTP/1.1 200 OK"
+2026-10-01 02:32:53,617 INFO   chat_results.jsonl +1025건
+2026-10-01 02:32:55,225 INFO [25회차] chat 전체 82903 / 남은 46226
+2026-10-01 02:33:00,022 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:33:00,359 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:33:00,359 INFO   제출 batch_6abd47cc25f48190a1413b138649b41b (chat_requests_025.jsonl)
+2026-10-01 02:34:30,618 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd47cc25f48190a1413b138649b41b "HTTP/1.1 200 OK"
+2026-10-01 02:34:30,618 INFO   in_progress 진행 1022/1040
+2026-10-01 02:36:00,884 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd47cc25f48190a1413b138649b41b "HTTP/1.1 200 OK"
+2026-10-01 02:36:00,885 INFO   completed — 완료 1040 실패 0
+2026-10-01 02:36:01,881 INFO HTTP Request: GET https://api.openai.com/v1/files/file-HPhdvTphse3qZs3TtzkBgG/content "HTTP/1.1 200 OK"
+2026-10-01 02:36:03,027 INFO   chat_results.jsonl +1040건
+2026-10-01 02:36:04,541 INFO [26회차] chat 전체 82903 / 남은 45186
+2026-10-01 02:36:08,566 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:36:08,840 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:36:08,841 INFO   제출 batch_6abd4888afd48190b9f2edd521cf5908 (chat_requests_026.jsonl)
+2026-10-01 02:37:39,103 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd4888afd48190b9f2edd521cf5908 "HTTP/1.1 200 OK"
+2026-10-01 02:37:39,105 INFO   failed — 완료 0 실패 0
+2026-10-01 02:37:39,105 ERROR   token_limit_exceeded: Enqueued token limit reached for gpt-4o-mini in organization org-6HKmglihGZobgCqT28GWjTUF. Limit: 2,000,000 enqueued tokens. Please try again once some in_progress batches have been completed.
+2026-10-01 02:37:39,105 ERROR 배치가 failed 로 끝났습니다. 중단합니다.
+[2026-10-01 02:37:40] 2단계 의미 임베딩 (Batch API)
+2026-10-01 02:37:43,595 INFO [1회차] embed 전체 37717 / 남은 30298
+2026-10-01 02:37:45,846 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 02:37:46,286 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 02:37:46,289 INFO   제출 batch_6abd48ea22208190a9fa8aef5f19cce3 (embed_requests_001.jsonl)
+2026-10-01 02:39:16,519 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:39:16,519 INFO   in_progress 진행 0/11151
+2026-10-01 02:40:46,892 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:40:46,892 INFO   in_progress 진행 0/11151
+2026-10-01 02:42:17,266 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:42:17,267 INFO   in_progress 진행 0/11151
+2026-10-01 02:43:48,219 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:43:48,219 INFO   in_progress 진행 0/11151
+2026-10-01 02:45:18,454 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:45:18,454 INFO   in_progress 진행 0/11151
+2026-10-01 02:46:48,824 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:46:48,825 INFO   in_progress 진행 0/11151
+2026-10-01 02:48:19,066 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:48:19,067 INFO   in_progress 진행 0/11151
+2026-10-01 02:49:49,299 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:49:49,299 INFO   in_progress 진행 0/11151
+2026-10-01 02:51:19,684 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:51:19,684 INFO   in_progress 진행 0/11151
+2026-10-01 02:52:50,049 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:52:50,050 INFO   in_progress 진행 466/11151
+2026-10-01 02:54:20,283 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:54:20,283 INFO   in_progress 진행 990/11151
+2026-10-01 02:55:50,659 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:55:50,660 INFO   in_progress 진행 1418/11151
+2026-10-01 02:57:20,886 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:57:20,887 INFO   in_progress 진행 1996/11151
+2026-10-01 02:58:51,279 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 02:58:51,280 INFO   in_progress 진행 2558/11151
+2026-10-01 03:00:21,641 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:00:21,641 INFO   in_progress 진행 3247/11151
+2026-10-01 03:01:51,871 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:01:51,872 INFO   in_progress 진행 3998/11151
+2026-10-01 03:03:22,236 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:03:22,236 INFO   in_progress 진행 4982/11151
+2026-10-01 03:04:52,469 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:04:52,469 INFO   in_progress 진행 5976/11151
+2026-10-01 03:06:22,830 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:06:22,830 INFO   in_progress 진행 6441/11151
+2026-10-01 03:07:53,072 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:07:53,073 INFO   in_progress 진행 7399/11151
+2026-10-01 03:09:23,439 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:09:23,439 INFO   in_progress 진행 8756/11151
+2026-10-01 03:10:53,674 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:10:53,675 INFO   in_progress 진행 9977/11151
+2026-10-01 03:12:24,036 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:12:24,037 INFO   in_progress 진행 11025/11151
+2026-10-01 03:13:54,407 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:13:54,407 INFO   in_progress 진행 11025/11151
+2026-10-01 03:15:24,777 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:15:24,778 INFO   in_progress 진행 11145/11151
+2026-10-01 03:16:55,151 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:16:55,152 INFO   in_progress 진행 11145/11151
+2026-10-01 03:18:25,524 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:18:25,525 INFO   in_progress 진행 11145/11151
+2026-10-01 03:19:55,893 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:19:55,894 INFO   in_progress 진행 11145/11151
+2026-10-01 03:21:26,137 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:21:26,138 INFO   in_progress 진행 11145/11151
+2026-10-01 03:22:56,373 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:22:56,373 INFO   in_progress 진행 11145/11151
+2026-10-01 03:24:26,629 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:24:26,630 INFO   in_progress 진행 11145/11151
+2026-10-01 03:25:56,857 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:25:56,858 INFO   in_progress 진행 11145/11151
+2026-10-01 03:27:27,229 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:27:27,229 INFO   in_progress 진행 11145/11151
+2026-10-01 03:28:57,596 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:28:57,596 INFO   in_progress 진행 11145/11151
+2026-10-01 03:30:27,969 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:30:27,969 INFO   in_progress 진행 11145/11151
+2026-10-01 03:31:58,342 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:31:58,342 INFO   in_progress 진행 11145/11151
+2026-10-01 03:33:28,728 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:33:28,729 INFO   in_progress 진행 11145/11151
+2026-10-01 03:34:58,967 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:34:58,967 INFO   in_progress 진행 11145/11151
+2026-10-01 03:36:29,205 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:36:29,206 INFO   in_progress 진행 11145/11151
+2026-10-01 03:37:59,577 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:37:59,578 INFO   in_progress 진행 11145/11151
+2026-10-01 03:39:29,952 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:39:29,953 INFO   in_progress 진행 11145/11151
+2026-10-01 03:41:00,205 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:41:00,205 INFO   in_progress 진행 11145/11151
+2026-10-01 03:42:30,754 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:42:30,754 INFO   in_progress 진행 11145/11151
+2026-10-01 03:44:01,128 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:44:01,129 INFO   in_progress 진행 11145/11151
+2026-10-01 03:45:31,359 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:45:31,359 INFO   in_progress 진행 11145/11151
+2026-10-01 03:47:02,322 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:47:02,322 INFO   finalizing 진행 11151/11151
+2026-10-01 03:48:32,713 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:48:32,713 INFO   finalizing 진행 11151/11151
+2026-10-01 03:50:02,949 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:50:02,949 INFO   finalizing 진행 11151/11151
+2026-10-01 03:51:33,359 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:51:33,360 INFO   finalizing 진행 11151/11151
+2026-10-01 03:53:03,740 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:53:03,741 INFO   finalizing 진행 11151/11151
+2026-10-01 03:54:34,121 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:54:34,122 INFO   finalizing 진행 11151/11151
+2026-10-01 03:56:04,357 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd48ea22208190a9fa8aef5f19cce3 "HTTP/1.1 200 OK"
+2026-10-01 03:56:04,358 INFO   completed — 완료 11151 실패 0
+2026-10-01 03:56:07,580 INFO HTTP Request: GET https://api.openai.com/v1/files/file-The9fSFSx383SUMR5z5Ucm/content "HTTP/1.1 200 OK"
+2026-10-01 03:57:38,277 INFO   news_cache.jsonl +11151건
+2026-10-01 03:57:43,031 INFO [2회차] embed 전체 37717 / 남은 19147
+2026-10-01 03:57:47,451 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 03:57:48,504 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 03:57:48,504 INFO   제출 batch_6abd5babb9c4819089b203f61caa8eba (embed_requests_002.jsonl)
+2026-10-01 03:59:18,743 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 03:59:18,744 INFO   in_progress 진행 0/11262
+2026-10-01 04:00:48,977 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:00:48,978 INFO   in_progress 진행 0/11262
+2026-10-01 04:02:19,354 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:02:19,355 INFO   in_progress 진행 2290/11262
+2026-10-01 04:03:49,728 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:03:49,729 INFO   in_progress 진행 3890/11262
+2026-10-01 04:05:20,106 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:05:20,107 INFO   in_progress 진행 4898/11262
+2026-10-01 04:06:50,377 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:06:50,379 INFO   in_progress 진행 6226/11262
+2026-10-01 04:08:20,680 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:08:20,681 INFO   in_progress 진행 6938/11262
+2026-10-01 04:09:51,066 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:09:51,066 INFO   in_progress 진행 8494/11262
+2026-10-01 04:11:21,452 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:11:21,452 INFO   in_progress 진행 10029/11262
+2026-10-01 04:12:51,766 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:12:51,767 INFO   in_progress 진행 11204/11262
+2026-10-01 04:14:22,133 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:14:22,134 INFO   finalizing 진행 11262/11262
+2026-10-01 04:15:52,389 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:15:52,389 INFO   finalizing 진행 11262/11262
+2026-10-01 04:17:22,618 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:17:22,619 INFO   finalizing 진행 11262/11262
+2026-10-01 04:18:52,993 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:18:52,993 INFO   finalizing 진행 11262/11262
+2026-10-01 04:20:23,228 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:20:23,229 INFO   finalizing 진행 11262/11262
+2026-10-01 04:21:53,616 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:21:53,617 INFO   finalizing 진행 11262/11262
+2026-10-01 04:23:23,852 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd5babb9c4819089b203f61caa8eba "HTTP/1.1 200 OK"
+2026-10-01 04:23:23,853 INFO   completed — 완료 11262 실패 0
+2026-10-01 04:23:29,613 INFO HTTP Request: GET https://api.openai.com/v1/files/file-9nkFRMJg5fvab8oaPAJAoW/content "HTTP/1.1 200 OK"
+2026-10-01 04:24:45,769 INFO   news_cache.jsonl +11262건
+2026-10-01 04:24:53,640 INFO [3회차] embed 전체 37717 / 남은 7885
+2026-10-01 04:24:55,685 INFO HTTP Request: POST https://api.openai.com/v1/files "HTTP/1.1 200 OK"
+2026-10-01 04:24:56,094 INFO HTTP Request: POST https://api.openai.com/v1/batches "HTTP/1.1 200 OK"
+2026-10-01 04:24:56,095 INFO   제출 batch_6abd6207ef64819088556d42f3078f32 (embed_requests_003.jsonl)
+2026-10-01 04:26:26,340 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:26:26,340 INFO   in_progress 진행 0/7885
+2026-10-01 04:27:56,712 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:27:56,713 INFO   in_progress 진행 0/7885
+2026-10-01 04:29:27,088 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:29:27,089 INFO   in_progress 진행 0/7885
+2026-10-01 04:30:57,459 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:30:57,460 INFO   in_progress 진행 0/7885
+2026-10-01 04:32:27,836 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:32:27,836 INFO   in_progress 진행 0/7885
+2026-10-01 04:33:58,209 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:33:58,210 INFO   in_progress 진행 0/7885
+2026-10-01 04:35:28,454 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:35:28,454 INFO   in_progress 진행 0/7885
+2026-10-01 04:36:58,827 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:36:58,828 INFO   in_progress 진행 0/7885
+2026-10-01 04:38:29,253 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:38:29,254 INFO   in_progress 진행 0/7885
+2026-10-01 04:39:59,628 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:39:59,628 INFO   in_progress 진행 0/7885
+2026-10-01 04:41:29,865 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:41:29,866 INFO   in_progress 진행 0/7885
+2026-10-01 04:43:00,241 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:43:00,241 INFO   in_progress 진행 0/7885
+2026-10-01 04:44:30,633 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:44:30,633 INFO   in_progress 진행 0/7885
+2026-10-01 04:46:00,864 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:46:00,864 INFO   in_progress 진행 0/7885
+2026-10-01 04:47:31,238 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:47:31,239 INFO   in_progress 진행 0/7885
+2026-10-01 04:49:01,479 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:49:01,480 INFO   in_progress 진행 0/7885
+2026-10-01 04:50:32,285 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:50:32,286 INFO   in_progress 진행 0/7885
+2026-10-01 04:52:02,527 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:52:02,527 INFO   in_progress 진행 0/7885
+2026-10-01 04:53:32,765 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:53:32,765 INFO   in_progress 진행 0/7885
+2026-10-01 04:55:02,999 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:55:02,999 INFO   in_progress 진행 0/7885
+2026-10-01 04:56:33,376 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:56:33,377 INFO   in_progress 진행 0/7885
+2026-10-01 04:58:03,611 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:58:03,612 INFO   in_progress 진행 0/7885
+2026-10-01 04:59:33,988 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 04:59:33,989 INFO   in_progress 진행 0/7885
+2026-10-01 05:01:04,366 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:01:04,367 INFO   in_progress 진행 0/7885
+2026-10-01 05:02:34,614 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:02:34,615 INFO   in_progress 진행 2499/7885
+2026-10-01 05:04:04,999 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:04:05,000 INFO   in_progress 진행 3420/7885
+2026-10-01 05:05:35,238 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:05:35,239 INFO   in_progress 진행 4986/7885
+2026-10-01 05:07:05,476 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:07:05,477 INFO   in_progress 진행 6364/7885
+2026-10-01 05:08:35,878 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:08:35,879 INFO   in_progress 진행 7833/7885
+2026-10-01 05:10:06,256 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:10:06,256 INFO   in_progress 진행 7833/7885
+2026-10-01 05:11:37,223 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:11:37,224 INFO   in_progress 진행 7833/7885
+2026-10-01 05:13:07,599 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:13:07,600 INFO   in_progress 진행 7833/7885
+2026-10-01 05:14:37,834 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:14:37,835 INFO   in_progress 진행 7833/7885
+2026-10-01 05:16:08,214 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:16:08,215 INFO   in_progress 진행 7833/7885
+2026-10-01 05:17:38,590 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:17:38,590 INFO   in_progress 진행 7833/7885
+2026-10-01 05:19:08,829 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:19:08,830 INFO   in_progress 진행 7833/7885
+2026-10-01 05:20:39,237 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:20:39,238 INFO   in_progress 진행 7833/7885
+2026-10-01 05:22:09,612 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:22:09,612 INFO   in_progress 진행 7833/7885
+2026-10-01 05:23:39,866 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:23:39,866 INFO   in_progress 진행 7833/7885
+2026-10-01 05:25:10,243 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:25:10,243 INFO   in_progress 진행 7833/7885
+2026-10-01 05:26:40,618 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:26:40,618 INFO   in_progress 진행 7833/7885
+2026-10-01 05:28:10,992 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:28:10,993 INFO   in_progress 진행 7833/7885
+2026-10-01 05:29:41,243 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:29:41,244 INFO   in_progress 진행 7833/7885
+2026-10-01 05:31:11,633 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:31:11,634 INFO   in_progress 진행 7833/7885
+2026-10-01 05:32:41,890 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:32:41,890 INFO   in_progress 진행 7833/7885
+2026-10-01 05:34:12,272 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:34:12,273 INFO   finalizing 진행 7885/7885
+2026-10-01 05:35:42,519 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:35:42,520 INFO   finalizing 진행 7885/7885
+2026-10-01 05:37:12,897 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:37:12,898 INFO   finalizing 진행 7885/7885
+2026-10-01 05:38:43,144 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:38:43,145 INFO   finalizing 진행 7885/7885
+2026-10-01 05:40:13,528 INFO HTTP Request: GET https://api.openai.com/v1/batches/batch_6abd6207ef64819088556d42f3078f32 "HTTP/1.1 200 OK"
+2026-10-01 05:40:13,529 INFO   completed — 완료 7885 실패 0
+2026-10-01 05:40:18,461 INFO HTTP Request: GET https://api.openai.com/v1/files/file-2kqypHvL9quSqSALhUUXTs/content "HTTP/1.1 200 OK"
+2026-10-01 05:42:20,734 INFO   news_cache.jsonl +7885건
+2026-10-01 05:42:30,043 INFO [4회차] embed 전체 37717 / 남은 0
+2026-10-01 05:42:30,043 INFO 전량 완료
+[2026-10-01 05:43:08] 크롤링 완료 대기
+[2026-10-01 06:38:05] 주가 데이터 내려받기
+[2026-10-01 06:38:40] 3단계 발행 시각 기반 재라벨링
+2026-10-01 06:38:50,462 INFO 레코드 37717건 / 복구된 시각 31543건
+2026-10-01 06:39:14,432 INFO 저장 37717건 → /root/jolup/jolup/.work/news_cache_timed.jsonl
+2026-10-01 06:39:14,448 INFO   시각없음_다음날           21998
+2026-10-01 06:39:14,448 INFO   마감전                10477
+2026-10-01 06:39:14,448 INFO   마감후                 5242
+2026-10-01 06:39:14,448 INFO 시각 복구분 중 마감 전 비율: 66.7%
+2026-10-01 06:39:14,584 INFO   next_day   27240건  라벨 평균 +0.141%  표준편차 6.05%
+2026-10-01 06:39:14,585 INFO   same_day   10477건  라벨 평균 +0.158%  표준편차 7.02%
+[2026-10-01 06:39:55] 4단계 학습
+2026-10-01 06:40:06,778 INFO 레코드 수 — 학습 19470 / 검증 7696 / 평가 10551
+2026-10-01 06:40:07,049 INFO 실행 조건: {"epochs": 30, "batch_size": 32, "lr": 0.0001, "weight_decay": 1e-05, "grad_clip": 1.0, "seed": 42, "d_model": 512, "lookback": 30}
+2026-10-01 06:40:07,049 INFO 학습 가능 파라미터: 3,554,305
+2026-10-01 06:41:18,143 INFO epoch 01 | train mse 0.007492 dir 0.499 | valid mse 0.000933 mae 0.020097 dir 0.457
+2026-10-01 06:41:18,164 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:42:26,267 INFO epoch 02 | train mse 0.007208 dir 0.503 | valid mse 0.000948 mae 0.021006 dir 0.464
+2026-10-01 06:43:34,332 INFO epoch 03 | train mse 0.007169 dir 0.506 | valid mse 0.000806 mae 0.017760 dir 0.488
+2026-10-01 06:43:34,359 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:44:43,177 INFO epoch 04 | train mse 0.007131 dir 0.505 | valid mse 0.000799 mae 0.017736 dir 0.511
+2026-10-01 06:44:43,244 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:45:51,511 INFO epoch 05 | train mse 0.006982 dir 0.511 | valid mse 0.000799 mae 0.017746 dir 0.524
+2026-10-01 06:45:51,529 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 06:46:59,653 INFO epoch 06 | train mse 0.006910 dir 0.517 | valid mse 0.000864 mae 0.018624 dir 0.467
+2026-10-01 06:48:08,153 INFO epoch 07 | train mse 0.006825 dir 0.521 | valid mse 0.000831 mae 0.018036 dir 0.494
+2026-10-01 06:49:16,439 INFO epoch 08 | train mse 0.006567 dir 0.515 | valid mse 0.000910 mae 0.018317 dir 0.492
+2026-10-01 06:50:25,428 INFO epoch 09 | train mse 0.006479 dir 0.519 | valid mse 0.001495 mae 0.020713 dir 0.522
+2026-10-01 06:51:34,143 INFO epoch 10 | train mse 0.006368 dir 0.517 | valid mse 0.000932 mae 0.019215 dir 0.466
+2026-10-01 06:52:42,568 INFO epoch 11 | train mse 0.006014 dir 0.525 | valid mse 0.000933 mae 0.019313 dir 0.463
+2026-10-01 06:53:51,469 INFO epoch 12 | train mse 0.005500 dir 0.523 | valid mse 0.000899 mae 0.019005 dir 0.460
+2026-10-01 06:55:00,185 INFO epoch 13 | train mse 0.005052 dir 0.522 | valid mse 0.000845 mae 0.018214 dir 0.464
+2026-10-01 06:56:08,941 INFO epoch 14 | train mse 0.005643 dir 0.518 | valid mse 0.000902 mae 0.019297 dir 0.456
+2026-10-01 06:57:18,515 INFO epoch 15 | train mse 0.005277 dir 0.522 | valid mse 0.000866 mae 0.018621 dir 0.481
+2026-10-01 06:58:27,503 INFO epoch 16 | train mse 0.004548 dir 0.526 | valid mse 0.000955 mae 0.018679 dir 0.490
+2026-10-01 06:59:36,068 INFO epoch 17 | train mse 0.003717 dir 0.529 | valid mse 0.000849 mae 0.018181 dir 0.471
+2026-10-01 07:00:46,013 INFO epoch 18 | train mse 0.003339 dir 0.531 | valid mse 0.001009 mae 0.018715 dir 0.529
+2026-10-01 07:01:54,914 INFO epoch 19 | train mse 0.003224 dir 0.530 | valid mse 0.000856 mae 0.018240 dir 0.514
+2026-10-01 07:03:04,315 INFO epoch 20 | train mse 0.003557 dir 0.534 | valid mse 0.000795 mae 0.017498 dir 0.516
+2026-10-01 07:03:04,382 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-server.pt
+2026-10-01 07:04:13,796 INFO epoch 21 | train mse 0.003658 dir 0.528 | valid mse 0.000895 mae 0.018469 dir 0.485
+2026-10-01 07:05:22,152 INFO epoch 22 | train mse 0.002697 dir 0.537 | valid mse 0.001094 mae 0.019358 dir 0.512
+2026-10-01 07:06:31,659 INFO epoch 23 | train mse 0.002282 dir 0.538 | valid mse 0.000850 mae 0.018032 dir 0.511
+2026-10-01 07:07:40,926 INFO epoch 24 | train mse 0.003201 dir 0.542 | valid mse 0.000876 mae 0.018639 dir 0.476
+2026-10-01 07:08:49,491 INFO epoch 25 | train mse 0.002234 dir 0.538 | valid mse 0.000868 mae 0.018628 dir 0.457
+2026-10-01 07:09:58,192 INFO epoch 26 | train mse 0.002494 dir 0.546 | valid mse 0.000911 mae 0.019143 dir 0.462
+2026-10-01 07:11:06,595 INFO epoch 27 | train mse 0.002394 dir 0.547 | valid mse 0.000858 mae 0.018320 dir 0.482
+2026-10-01 07:12:16,182 INFO epoch 28 | train mse 0.002961 dir 0.546 | valid mse 0.000850 mae 0.018551 dir 0.487
+2026-10-01 07:13:24,424 INFO epoch 29 | train mse 0.003141 dir 0.552 | valid mse 0.001015 mae 0.019207 dir 0.484
+2026-10-01 07:14:32,946 INFO epoch 30 | train mse 0.001971 dir 0.556 | valid mse 0.000883 mae 0.018683 dir 0.474
+2026-10-01 07:14:42,279 INFO 테스트 — mse 0.000724 mae 0.015911 dir_acc 0.512 corr 0.003 (기준선 대비 1.026)
+2026-10-01 07:14:42,280 INFO 로그 저장: experiments/fnspid-server
+[2026-10-01 07:14:43] 전체 완료
