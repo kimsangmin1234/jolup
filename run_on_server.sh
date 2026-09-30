@@ -57,6 +57,12 @@ python3 -c "import numpy, openai" 2>/dev/null || {
     log "  numpy, openai 설치"
     pip_install numpy openai
 }
+# modules 패키지가 torch 를 불러오므로 배치 단계에서도 필요하다.
+# GPU 가 없는 서버라 CPU 전용 휠을 받는다(용량이 훨씬 작다).
+python3 -c "import torch" 2>/dev/null || {
+    log "  torch(CPU) 설치"
+    pip_install torch --index-url https://download.pytorch.org/whl/cpu || pip_install torch
+}
 
 # ------------------------------------------------------- 본문 레코드 복원
 RECORDS="$WORK/records_article.jsonl"
