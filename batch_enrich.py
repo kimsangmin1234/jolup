@@ -320,6 +320,12 @@ def cmd_run(args) -> None:
                                    metadata={"stage": args.stage})
         logger.info("  제출 %s (%s)", batch.id, path.name)
 
+        # 배치 ID를 기록해 둔다. 중간에 프로세스가 죽어도 나중에 수거할 수 있다.
+        state_path = work / f"{args.stage}_batches.json"
+        state = json.loads(state_path.read_text()) if state_path.exists() else {"batches": []}
+        state["batches"].append({"id": batch.id, "file": path.name, "status": batch.status})
+        state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+
         # 완료까지 대기
         while True:
             time.sleep(args.poll)
