@@ -46,9 +46,16 @@ commit_push() {
 
 # ---------------------------------------------------------------- 의존성
 log "의존성 확인"
+# Ubuntu 24.04 부터는 시스템 파이썬에 pip 설치가 막혀 있다(PEP 668).
+# 22.04 는 --user 로, 24.04 는 --break-system-packages 로 설치된다.
+pip_install() {
+    pip3 install --quiet --user "$@" 2>/dev/null \
+        || pip3 install --quiet --user --break-system-packages "$@" 2>/dev/null \
+        || pip3 install --quiet --break-system-packages "$@"
+}
 python3 -c "import numpy, openai" 2>/dev/null || {
     log "  numpy, openai 설치"
-    pip3 install --quiet --user numpy openai || pip3 install --quiet numpy openai
+    pip_install numpy openai
 }
 
 # ------------------------------------------------------- 본문 레코드 복원
@@ -120,7 +127,7 @@ fi
 if [ "${SKIP_TRAIN:-0}" != "1" ]; then
     python3 -c "import torch" 2>/dev/null || {
         log "torch 설치"
-        pip3 install --quiet --user torch || pip3 install --quiet torch
+        pip_install torch
     }
     log "4단계 학습"
     python3 train.py --records "$CACHE" --indicators data/fnspid/indicators.npz \
