@@ -67,11 +67,25 @@ fi
 log "  레코드 $(wc -l < "$RECORDS")건"
 
 # --------------------------------------------- 이전 진행분 이어받기 (있으면)
-if [ ! -s "$WORK/batch/chat_results.jsonl" ] && [ -f "$LOGDIR/chat_results.jsonl.gz" ]; then
-    log "이전 요약·감성 진행분 복원"
-    mkdir -p "$WORK/batch"
-    gunzip -c "$LOGDIR/chat_results.jsonl.gz" > "$WORK/batch/chat_results.jsonl"
-    log "  $(wc -l < "$WORK/batch/chat_results.jsonl")건"
+# 다른 실험 폴더에 남은 결과도 찾는다. 파일이 클수록 처리분이 많으므로
+# 가장 큰 것을 고른다.
+CACHE="$WORK/news_cache.jsonl"
+if [ ! -s "$WORK/batch/chat_results.jsonl" ]; then
+    SRC="$(ls -S experiments/*/chat_results.jsonl.gz 2>/dev/null | head -1)"
+    if [ -n "$SRC" ]; then
+        log "이전 요약·감성 진행분 복원: $SRC"
+        mkdir -p "$WORK/batch"
+        gunzip -c "$SRC" > "$WORK/batch/chat_results.jsonl"
+        log "  $(wc -l < "$WORK/batch/chat_results.jsonl")건"
+    fi
+fi
+if [ ! -s "$CACHE" ]; then
+    SRC="$(ls -S experiments/*/news_cache.jsonl.gz 2>/dev/null | head -1)"
+    if [ -n "$SRC" ]; then
+        log "이전 임베딩 진행분 복원: $SRC"
+        gunzip -c "$SRC" > "$CACHE"
+        log "  $(wc -l < "$CACHE")건"
+    fi
 fi
 
 # ------------------------------------------------ 발행 시각 크롤링 (병렬)
@@ -95,7 +109,6 @@ commit_push "[$TAG] 요약·감성 $(wc -l < "$WORK/batch/chat_results.jsonl")�
 
 # -------------------------------------------------------- 2단계: 임베딩
 log "2단계 의미 임베딩 (Batch API)"
-CACHE="$WORK/news_cache.jsonl"
 python3 batch_enrich.py run --stage embed --work "$WORK/batch" --out "$CACHE" --poll 90
 gzip -c "$CACHE" > "$LOGDIR/news_cache.jsonl.gz"
 commit_push "[$TAG] 임베딩 $(wc -l < "$CACHE")건"
