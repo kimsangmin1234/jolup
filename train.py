@@ -131,6 +131,24 @@ def build_loaders(args, config: ModelConfig):
         "레코드 수 — 학습 %d / 검증 %d / 평가 %d", len(train_rec), len(valid_rec), len(test_rec)
     )
 
+    if getattr(args, "label_norm", "none") == "ticker":
+        # 종목마다 등락률 크기가 수십 배 다르다(KO 1% 대, GME 20% 대).
+        # 그대로 MSE 로 학습하면 변동이 큰 종목이 손실을 지배하므로, 학습 구간의
+        # 종목별 표준편차로 나눠 크기를 맞춘다. 평균은 빼지 않아 부호(방향)는 유지된다.
+        by_ticker: dict[str, list[float]] = {}
+        for r in train_rec:
+            by_ticker.setdefault(r["ticker"], []).append(float(r["label"]))
+        overall = float(np.std([float(r["label"]) for r in train_rec])) or 1.0
+        scale = {t: (float(np.std(v)) if len(v) >= 30 and np.std(v) > 0 else overall)
+                 for t, v in by_ticker.items()}
+        for group in (train_rec, valid_rec, test_rec):
+            for r in group:
+                r["label_raw"] = float(r["label"])
+                r["label"] = float(r["label"]) / scale.get(r["ticker"], overall)
+        args.label_scale = scale
+        logger.info("종목별 라벨 정규화 적용: %s",
+                    {t: round(v, 4) for t, v in sorted(scale.items())})
+
     # 스케일러는 반드시 학습 구간만으로 fit (미래 정보 누수 방지)
     scaler = fit_scaler_on_train(train_rec, indicators, date_index)
     if args.scaler_out:
@@ -180,6 +198,8 @@ def main() -> None:
                         help="학습 로그와 지표를 남길 디렉터리. "
                              "train.log 와 metrics.json 이 생성된다.")
     parser.add_argument("--tag", default="", help="실험 이름 (로그에 기록)")
+    parser.add_argument("--label-norm", choices=("none", "ticker"), default="none",
+                        help="ticker: 학습 구간의 종목별 표준편차로 라벨을 나눈다")
     parser.add_argument("--scaler-out", default="checkpoints/scaler.json")
     args = parser.parse_args()
 
@@ -240,6 +260,8 @@ def main() -> None:
             "test": len(test_loader.dataset),
         },
         "num_parameters": model.num_parameters(),
+        "label_norm": args.label_norm,
+        "label_scale": getattr(args, "label_scale", None),
         "epochs_log": [],
     }
     logger.info("실행 조건: %s", json.dumps(run_info["hyperparams"], ensure_ascii=False))

@@ -1,0 +1,37 @@
+2026-10-03 01:31:57,259 INFO 레코드 수 — 학습 17336 / 검증 7478 / 평가 9627
+2026-10-03 01:31:57,274 INFO 종목별 라벨 정규화 적용: {'AAPL': 0.0235, 'AMC': 0.2074, 'AMD': 0.0371, 'BA': 0.0318, 'BLNK': 0.0939, 'CVX': 0.0231, 'DIS': 0.024, 'FCEL': 0.0897, 'GE': 0.0266, 'GME': 0.2273, 'INTC': 0.0271, 'KO': 0.0118, 'MRK': 0.0178, 'MSFT': 0.0238, 'MU': 0.0328, 'NKLA': 0.0893, 'NVDA': 0.0395, 'TSLA': 0.0459, 'WMT': 0.0203}
+2026-10-03 01:31:57,351 INFO 실행 조건: {"epochs": 30, "batch_size": 32, "lr": 0.0001, "weight_decay": 1e-05, "grad_clip": 1.0, "seed": 42, "d_model": 512, "lookback": 30}
+2026-10-03 01:31:57,351 INFO 학습 가능 파라미터: 3,554,305
+2026-10-03 01:33:01,377 INFO epoch 01 | train mse 1.004838 dir 0.507 | valid mse 0.744050 mae 0.569424 dir 0.516
+2026-10-03 01:33:01,398 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-timed-norm.pt
+2026-10-03 01:34:02,703 INFO epoch 02 | train mse 0.996977 dir 0.521 | valid mse 0.786418 mae 0.585884 dir 0.461
+2026-10-03 01:35:04,115 INFO epoch 03 | train mse 0.993175 dir 0.525 | valid mse 0.747571 mae 0.575218 dir 0.509
+2026-10-03 01:36:05,254 INFO epoch 04 | train mse 0.984697 dir 0.537 | valid mse 0.774904 mae 0.581113 dir 0.486
+2026-10-03 01:37:05,451 INFO epoch 05 | train mse 0.968399 dir 0.555 | valid mse 0.785725 mae 0.594749 dir 0.509
+2026-10-03 01:38:05,278 INFO epoch 06 | train mse 0.945021 dir 0.561 | valid mse 0.769411 mae 0.587584 dir 0.511
+2026-10-03 01:39:05,630 INFO epoch 07 | train mse 0.913180 dir 0.579 | valid mse 0.782814 mae 0.595675 dir 0.508
+2026-10-03 01:40:06,112 INFO epoch 08 | train mse 0.863111 dir 0.596 | valid mse 0.822531 mae 0.619709 dir 0.497
+2026-10-03 01:41:06,659 INFO epoch 09 | train mse 0.811798 dir 0.618 | valid mse 0.846221 mae 0.636695 dir 0.509
+2026-10-03 01:42:06,657 INFO epoch 10 | train mse 0.737066 dir 0.641 | valid mse 0.880953 mae 0.652050 dir 0.508
+2026-10-03 01:43:06,787 INFO epoch 11 | train mse 0.680313 dir 0.659 | valid mse 0.878279 mae 0.648154 dir 0.513
+2026-10-03 01:44:06,987 INFO epoch 12 | train mse 0.625377 dir 0.676 | valid mse 0.955327 mae 0.674426 dir 0.487
+2026-10-03 01:45:07,249 INFO epoch 13 | train mse 0.565387 dir 0.692 | valid mse 0.892586 mae 0.652918 dir 0.494
+2026-10-03 01:46:07,626 INFO epoch 14 | train mse 0.511191 dir 0.705 | valid mse 0.902199 mae 0.664404 dir 0.502
+2026-10-03 01:47:08,067 INFO epoch 15 | train mse 0.469178 dir 0.715 | valid mse 1.066175 mae 0.736287 dir 0.502
+2026-10-03 01:48:08,328 INFO epoch 16 | train mse 0.429950 dir 0.724 | valid mse 1.029822 mae 0.703450 dir 0.490
+2026-10-03 01:49:08,551 INFO epoch 17 | train mse 0.401008 dir 0.737 | valid mse 1.031838 mae 0.714194 dir 0.484
+2026-10-03 01:50:08,707 INFO epoch 18 | train mse 0.375412 dir 0.744 | valid mse 1.088701 mae 0.753006 dir 0.492
+2026-10-03 01:51:09,392 INFO epoch 19 | train mse 0.345899 dir 0.755 | valid mse 1.156109 mae 0.772410 dir 0.477
+2026-10-03 01:52:09,683 INFO epoch 20 | train mse 0.322313 dir 0.764 | valid mse 1.038977 mae 0.723042 dir 0.488
+2026-10-03 01:53:10,172 INFO epoch 21 | train mse 0.302818 dir 0.768 | valid mse 1.247433 mae 0.809284 dir 0.486
+2026-10-03 01:54:10,254 INFO epoch 22 | train mse 0.284037 dir 0.777 | valid mse 1.060645 mae 0.738110 dir 0.488
+2026-10-03 01:55:10,573 INFO epoch 23 | train mse 0.271766 dir 0.783 | valid mse 1.089550 mae 0.739160 dir 0.490
+2026-10-03 01:56:10,475 INFO epoch 24 | train mse 0.256642 dir 0.782 | valid mse 1.102256 mae 0.755206 dir 0.489
+2026-10-03 01:57:10,860 INFO epoch 25 | train mse 0.239768 dir 0.796 | valid mse 1.116266 mae 0.753389 dir 0.498
+2026-10-03 01:58:11,133 INFO epoch 26 | train mse 0.223842 dir 0.798 | valid mse 1.041340 mae 0.728466 dir 0.490
+2026-10-03 01:59:11,116 INFO epoch 27 | train mse 0.216059 dir 0.799 | valid mse 1.105086 mae 0.750919 dir 0.487
+2026-10-03 02:00:11,251 INFO epoch 28 | train mse 0.210397 dir 0.805 | valid mse 1.158847 mae 0.769389 dir 0.488
+2026-10-03 02:01:11,349 INFO epoch 29 | train mse 0.194436 dir 0.813 | valid mse 1.054378 mae 0.734531 dir 0.499
+2026-10-03 02:02:11,413 INFO epoch 30 | train mse 0.186524 dir 0.819 | valid mse 1.073053 mae 0.736181 dir 0.500
+2026-10-03 02:02:18,631 INFO 테스트 — mse 0.454308 mae 0.463945 dir_acc 0.511 corr 0.029 (기준선 대비 0.999)
+2026-10-03 02:02:18,632 INFO 로그 저장: experiments/fnspid-timed-norm

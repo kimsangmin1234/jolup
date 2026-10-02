@@ -1,0 +1,38 @@
+2026-10-03 02:02:29,020 INFO 레코드 수 — 학습 17336 / 검증 7478 / 평가 9627
+2026-10-03 02:02:29,061 INFO 실행 조건: {"epochs": 30, "batch_size": 32, "lr": 0.0001, "weight_decay": 1e-05, "grad_clip": 1.0, "seed": 42, "d_model": 512, "lookback": 30}
+2026-10-03 02:02:29,062 INFO 학습 가능 파라미터: 3,554,305
+2026-10-03 02:03:31,553 INFO epoch 01 | train mse 0.007988 dir 0.500 | valid mse 0.001248 mae 0.021568 dir 0.467
+2026-10-03 02:03:31,567 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-timed-raw.pt
+2026-10-03 02:04:33,116 INFO epoch 02 | train mse 0.007610 dir 0.512 | valid mse 0.001359 mae 0.023405 dir 0.461
+2026-10-03 02:05:34,121 INFO epoch 03 | train mse 0.007546 dir 0.506 | valid mse 0.001284 mae 0.022131 dir 0.466
+2026-10-03 02:06:34,772 INFO epoch 04 | train mse 0.007474 dir 0.516 | valid mse 0.001349 mae 0.023329 dir 0.467
+2026-10-03 02:07:35,205 INFO epoch 05 | train mse 0.007452 dir 0.515 | valid mse 0.001186 mae 0.021666 dir 0.533
+2026-10-03 02:07:35,232 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-timed-raw.pt
+2026-10-03 02:08:35,819 INFO epoch 06 | train mse 0.007339 dir 0.516 | valid mse 0.001198 mae 0.020849 dir 0.481
+2026-10-03 02:09:36,794 INFO epoch 07 | train mse 0.007172 dir 0.512 | valid mse 0.001313 mae 0.022221 dir 0.471
+2026-10-03 02:10:37,850 INFO epoch 08 | train mse 0.006902 dir 0.505 | valid mse 0.001258 mae 0.021797 dir 0.468
+2026-10-03 02:11:38,202 INFO epoch 09 | train mse 0.006291 dir 0.515 | valid mse 0.001229 mae 0.021155 dir 0.468
+2026-10-03 02:12:39,238 INFO epoch 10 | train mse 0.005259 dir 0.512 | valid mse 0.001157 mae 0.020706 dir 0.534
+2026-10-03 02:12:39,263 INFO   ↳ 최고 성능 갱신, 체크포인트 저장: checkpoints/fnspid-timed-raw.pt
+2026-10-03 02:13:40,050 INFO epoch 11 | train mse 0.004965 dir 0.525 | valid mse 0.001202 mae 0.020815 dir 0.496
+2026-10-03 02:14:40,865 INFO epoch 12 | train mse 0.004269 dir 0.522 | valid mse 0.001278 mae 0.021779 dir 0.472
+2026-10-03 02:15:41,360 INFO epoch 13 | train mse 0.004139 dir 0.518 | valid mse 0.001168 mae 0.020504 dir 0.511
+2026-10-03 02:16:41,960 INFO epoch 14 | train mse 0.003669 dir 0.527 | valid mse 0.001175 mae 0.020663 dir 0.507
+2026-10-03 02:17:42,587 INFO epoch 15 | train mse 0.003185 dir 0.529 | valid mse 0.001193 mae 0.020734 dir 0.494
+2026-10-03 02:18:43,407 INFO epoch 16 | train mse 0.003010 dir 0.521 | valid mse 0.001288 mae 0.022076 dir 0.470
+2026-10-03 02:19:44,557 INFO epoch 17 | train mse 0.003090 dir 0.527 | valid mse 0.001194 mae 0.020743 dir 0.491
+2026-10-03 02:20:45,383 INFO epoch 18 | train mse 0.002991 dir 0.534 | valid mse 0.001180 mae 0.020685 dir 0.519
+2026-10-03 02:21:47,147 INFO epoch 19 | train mse 0.003019 dir 0.533 | valid mse 0.001181 mae 0.020651 dir 0.488
+2026-10-03 02:22:47,955 INFO epoch 20 | train mse 0.002721 dir 0.538 | valid mse 0.001193 mae 0.020781 dir 0.486
+2026-10-03 02:23:48,585 INFO epoch 21 | train mse 0.003280 dir 0.541 | valid mse 0.001218 mae 0.021031 dir 0.480
+2026-10-03 02:24:49,116 INFO epoch 22 | train mse 0.002436 dir 0.538 | valid mse 0.001187 mae 0.020778 dir 0.485
+2026-10-03 02:25:49,719 INFO epoch 23 | train mse 0.002371 dir 0.541 | valid mse 0.001236 mae 0.021146 dir 0.485
+2026-10-03 02:26:50,290 INFO epoch 24 | train mse 0.002835 dir 0.549 | valid mse 0.001278 mae 0.021730 dir 0.472
+2026-10-03 02:27:51,691 INFO epoch 25 | train mse 0.002162 dir 0.551 | valid mse 0.001218 mae 0.021022 dir 0.479
+2026-10-03 02:28:52,173 INFO epoch 26 | train mse 0.002099 dir 0.551 | valid mse 0.001254 mae 0.021690 dir 0.518
+2026-10-03 02:29:53,413 INFO epoch 27 | train mse 0.002056 dir 0.551 | valid mse 0.001244 mae 0.021224 dir 0.489
+2026-10-03 02:30:54,239 INFO epoch 28 | train mse 0.002014 dir 0.544 | valid mse 0.001302 mae 0.021690 dir 0.468
+2026-10-03 02:31:55,229 INFO epoch 29 | train mse 0.002016 dir 0.554 | valid mse 0.001297 mae 0.022000 dir 0.517
+2026-10-03 02:32:55,768 INFO epoch 30 | train mse 0.002067 dir 0.558 | valid mse 0.001237 mae 0.021166 dir 0.479
+2026-10-03 02:33:03,294 INFO 테스트 — mse 0.000851 mae 0.017753 dir_acc 0.519 corr 0.014 (기준선 대비 1.042)
+2026-10-03 02:33:03,295 INFO 로그 저장: experiments/fnspid-timed-raw
