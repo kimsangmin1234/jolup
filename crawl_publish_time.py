@@ -114,6 +114,9 @@ def main() -> None:
                         help="URL 순서를 섞는다(표본 조사용)")
     parser.add_argument("--retry-status", default="",
                         help="이 상태로 끝난 URL을 다시 시도한다. 쉼표 구분 (예: http_403)")
+    parser.add_argument("--socks", default="",
+                        help="SOCKS5 프록시 host:port. 다른 PC 의 IP 로 나가게 할 때 쓴다 "
+                             "(그 PC 에서 ssh -R 1080 서버 로 터널을 열어 둔다)")
     parser.add_argument("--block-streak", type=int, default=20,
                         help="403 이 이만큼 연속되면 IP 차단으로 보고 쉰다")
     parser.add_argument("--block-wait", type=int, default=1800,
@@ -124,6 +127,16 @@ def main() -> None:
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
+
+    if args.socks:
+        # 모든 소켓을 SOCKS5 로 보낸다. rdns=True 로 이름 풀이도 프록시 쪽에서 한다.
+        import socket
+
+        import socks
+        host, port = args.socks.rsplit(":", 1)
+        socks.set_default_proxy(socks.SOCKS5, host, int(port), rdns=True)
+        socket.socket = socks.socksocket
+        logger.info("SOCKS5 프록시 사용: %s", args.socks)
 
     if args.urls.endswith(".gz"):
         with gzip.open(args.urls, "rt", encoding="utf-8") as f:
