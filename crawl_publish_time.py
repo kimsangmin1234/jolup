@@ -78,7 +78,8 @@ def fetch(url: str, timeout: int) -> tuple[str | None, str]:
     return (m.group(1), "ok") if m else (None, "no_date_field")
 
 
-def load_done(path: Path) -> set[str]:
+def load_done(path: Path, retry: tuple[str, ...] = ()) -> set[str]:
+    """이미 처리한 URL. ``retry`` 에 든 상태(예: http_403)로 끝난 것은 다시 시도한다."""
     if not path.exists():
         return set()
     done = set()
@@ -87,9 +88,15 @@ def load_done(path: Path) -> set[str]:
             line = line.strip()
             if line:
                 try:
-                    done.add(json.loads(line)["url"])
-                except (json.JSONDecodeError, KeyError):
+                    row = json.loads(line)
+                except json.JSONDecodeError:
                     continue
+                if "url" not in row:
+                    continue
+                if row.get("status") in retry and not row.get("published_et"):
+                    done.discard(row["url"])
+                else:
+                    done.add(row["url"])
     return done
 
 
@@ -104,6 +111,8 @@ def main() -> None:
     parser.add_argument("--timeout", type=int, default=25)
     parser.add_argument("--shuffle", action="store_true",
                         help="URL 순서를 섞는다(표본 조사용)")
+    parser.add_argument("--retry-status", default="",
+                        help="이 상태로 끝난 URL을 다시 시도한다. 쉼표 구분 (예: http_403)")
     parser.add_argument("--workers", type=int, default=1,
                         help="동시 요청 수. 총 요청률은 workers/delay 가 된다. "
                              "robots.txt 의 Crawl-delay 를 고려해 정할 것.")
@@ -115,7 +124,8 @@ def main() -> None:
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    done = load_done(out_path)
+    retry = tuple(x.strip() for x in args.retry_status.split(",") if x.strip())
+    done = load_done(out_path, retry)
     pending = [u for u in urls if u not in done]
     if args.shuffle:
         random.seed(42)
