@@ -82,8 +82,12 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
     records = load_jsonl(Path(args.records))
-    times = {t["url"]: t["published_et"]
-             for t in load_jsonl(Path(args.times)) if t.get("published_et")}
+    # --times 는 쉼표로 여러 파일을 받는다(서버 수집분 + 로컬 PC 수집분).
+    times = {}
+    for path in args.times.split(","):
+        if path.strip() and Path(path.strip()).exists():
+            times.update({t["url"]: t["published_et"]
+                          for t in load_jsonl(Path(path.strip())) if t.get("published_et")})
     logger.info("레코드 %d건 / 복구된 시각 %d건", len(records), len(times))
 
     alias = {}

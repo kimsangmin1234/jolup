@@ -20,6 +20,7 @@ FNSPID 배포판은 뉴스 날짜만 남기고 시각을 버렸다(전체의 99.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import logging
 import queue
@@ -113,6 +114,10 @@ def main() -> None:
                         help="URL 순서를 섞는다(표본 조사용)")
     parser.add_argument("--retry-status", default="",
                         help="이 상태로 끝난 URL을 다시 시도한다. 쉼표 구분 (예: http_403)")
+    parser.add_argument("--block-streak", type=int, default=20,
+                        help="403 이 이만큼 연속되면 IP 차단으로 보고 쉰다")
+    parser.add_argument("--block-wait", type=int, default=1800,
+                        help="차단 감지 시 대기(초)")
     parser.add_argument("--workers", type=int, default=1,
                         help="동시 요청 수. 총 요청률은 workers/delay 가 된다. "
                              "robots.txt 의 Crawl-delay 를 고려해 정할 것.")
@@ -120,7 +125,12 @@ def main() -> None:
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
-    urls = [u.strip() for u in Path(args.urls).read_text().splitlines() if u.strip()]
+    if args.urls.endswith(".gz"):
+        with gzip.open(args.urls, "rt", encoding="utf-8") as f:
+            text = f.read()
+    else:
+        text = Path(args.urls).read_text(encoding="utf-8")
+    urls = [u.strip() for u in text.splitlines() if u.strip()]
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -144,6 +154,7 @@ def main() -> None:
 
     lock = threading.Lock()
     processed = [0]
+    streak = [0]      # 연속 403 횟수. 사이트가 IP 를 차단하면 전부 403 이 된다.
 
     def worker(out) -> None:
         while True:
@@ -153,6 +164,21 @@ def main() -> None:
                 return
 
             raw, status = fetch(url, args.timeout)
+
+            # 차단된 상태에서 계속 두드리면 차단만 길어진다. 403 이 연속되면
+            # 결과를 기록하지 않고 URL 을 되돌린 뒤 한참 쉰다.
+            with lock:
+                streak[0] = streak[0] + 1 if status == "http_403" else 0
+                blocked = streak[0] >= args.block_streak
+            if blocked:
+                todo.put(url)
+                logger.warning("403 이 %d회 연속 — 차단으로 보고 %d분 대기",
+                               streak[0], args.block_wait // 60)
+                time.sleep(args.block_wait)
+                with lock:
+                    streak[0] = 0
+                continue
+
             line = json.dumps({
                 "url": url,
                 "raw": raw,
