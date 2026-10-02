@@ -44,7 +44,7 @@ MAX_BYTES_PER_FILE = 150 * 1024 * 1024
 
 # 조직당 대기 토큰 상한. gpt-4o-mini 는 2,000,000 이며 이를 넘기면 배치가
 # token_limit_exceeded 로 즉시 실패한다. 여유를 두고 자른 뒤 순차 제출한다.
-MAX_ENQUEUED_TOKENS = 1_700_000
+MAX_ENQUEUED_TOKENS = 1_200_000
 
 
 def estimate_tokens(request: dict) -> int:
@@ -56,7 +56,7 @@ def estimate_tokens(request: dict) -> int:
     body = request["body"]
     if "messages" in body:
         chars = sum(len(m["content"]) for m in body["messages"])
-        return int(chars / 3.5) + 400
+        return int(chars / 3.0) + 500
     return int(len(str(body.get("input", ""))) / 3.5) + 20
 
 
@@ -91,6 +91,9 @@ def chat_request(record: dict, config: NewsEncoderConfig) -> dict:
                 article=article, language=LANGUAGE_SAME)}],
             "response_format": {"type": "json_object"},
             "temperature": 0.0,
+            # 요약 3문장 + 감성 점수면 충분하다. 상한을 두면 대기 토큰 산정이
+            # 안정되고 출력이 길어지는 일도 막는다.
+            "max_tokens": 500,
         },
     }
 
@@ -338,11 +341,18 @@ def cmd_run(args) -> None:
             logger.info("  %s 진행 %d/%d", batch.status, counts.completed, counts.total)
 
         if batch.status != "completed":
-            if batch.errors:
-                for err in (batch.errors.data or [])[:2]:
-                    logger.error("  %s: %s", err.code, str(err.message)[:200])
+            codes = [e.code for e in (batch.errors.data if batch.errors else [])]
+            for err in (batch.errors.data if batch.errors else [])[:2]:
+                logger.error("  %s: %s", err.code, str(err.message)[:200])
+            path.unlink(missing_ok=True)
+            # 대기 토큰 한도 초과는 앞선 배치의 토큰이 아직 반환되지 않아 생긴다.
+            # 기다렸다 다시 올리면 된다. 그 밖의 실패만 중단한다.
+            if "token_limit_exceeded" in codes:
+                logger.warning("  대기 토큰 한도 초과 — %d초 후 다시 제출", args.retry_wait)
+                time.sleep(args.retry_wait)
+                continue
             logger.error("배치가 %s 로 끝났습니다. 중단합니다.", batch.status)
-            return
+            raise SystemExit(2)
 
         # 수거
         content = api.files.content(batch.output_file_id).text
@@ -410,7 +420,9 @@ def main() -> None:
     parser.add_argument("--work", required=True, help="배치 작업 디렉터리")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--poll", type=int, default=60, help="run: 상태 확인 주기(초)")
-    parser.add_argument("--max-cycles", type=int, default=200,
+    parser.add_argument("--retry-wait", type=int, default=300,
+                        help="run: 대기 토큰 한도 초과 시 재제출 전 대기(초)")
+    parser.add_argument("--max-cycles", type=int, default=400,
                         help="run: 최대 반복 횟수")
     args = parser.parse_args()
 

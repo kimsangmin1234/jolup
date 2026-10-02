@@ -109,7 +109,18 @@ fi
 
 # ------------------------------------------------------ 1단계: 요약 + 감성
 log "1단계 요약·감성 (Batch API)"
-python3 batch_enrich.py run --stage chat --input "$RECORDS" --work "$WORK/batch" --poll 90
+# 요약·감성이 전부 끝나야 임베딩으로 넘어간다. 실패로 빠져나오면 다시 돈다.
+for attempt in 1 2 3 4 5; do
+    python3 batch_enrich.py run --stage chat --input "$RECORDS" --work "$WORK/batch" --poll 90 && break
+    log "  요약·감성 단계 재시도 $attempt"
+    sleep 300
+done
+DONE_CHAT=$(wc -l < "$WORK/batch/chat_results.jsonl")
+TOTAL=$(wc -l < "$RECORDS")
+if [ "$DONE_CHAT" -lt $((TOTAL * 95 / 100)) ]; then
+    log "요약·감성이 ${DONE_CHAT}/${TOTAL} 에서 멈췄습니다. 임베딩으로 넘어가지 않고 중단합니다."
+    exit 1
+fi
 gzip -c "$WORK/batch/chat_results.jsonl" > "$LOGDIR/chat_results.jsonl.gz"
 commit_push "[$TAG] 요약·감성 $(wc -l < "$WORK/batch/chat_results.jsonl")건"
 
