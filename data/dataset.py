@@ -173,3 +173,31 @@ def _last_train_row_per_ticker(
         if row is not None:
             last[ticker] = max(last.get(ticker, 0), row)
     return last
+
+
+def apply_label_file(records: Sequence[dict], path: str | Path) -> list[dict]:
+    """라벨 파일(apply_publish_time.py --labels-only 출력)로 라벨·앵커를 교체한다.
+
+    임베딩이 든 큰 캐시를 다시 만들지 않고 라벨 정의만 바꿔 실험하기 위함이다.
+    라벨 파일에 없는 레코드는 제외한다(날짜 불일치 등으로 걸러진 것).
+    """
+    import gzip
+
+    opener = gzip.open if str(path).endswith(".gz") else open
+    labels = {}
+    with opener(path, "rt", encoding="utf-8") as f:
+        for line in f:
+            if line.strip():
+                r = json.loads(line)
+                labels[r["news_id"]] = r
+    out = []
+    for record in records:
+        new = labels.get(record["news_id"])
+        if new is None:
+            continue
+        record = dict(record)
+        for key in ("label", "anchor", "horizon", "published_et"):
+            if key in new:
+                record[key] = new[key]
+        out.append(record)
+    return out

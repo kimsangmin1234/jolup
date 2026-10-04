@@ -3,12 +3,19 @@
 ``crawl_publish_time.py`` 가 모은 발행 시각을 레코드에 결합하고, 뉴스가
 장 마감(동부시간 16:00) 전인지 후인지에 따라 예측 대상을 나눈다.
 
-    장 마감 전 뉴스  →  당일  등락률  close[d]/close[d-1] - 1,  윈도우 d-1 까지
-    장 마감 후 뉴스  →  다음날 등락률  close[d+1]/close[d] - 1,  윈도우 d 까지
+    장 마감 전 뉴스  →  당일 시가→종가  close[d]/open[d] - 1,    윈도우 d-1 까지
+    장 마감 후 뉴스  →  다음날 등락률    close[d+1]/close[d] - 1, 윈도우 d 까지
 
-이렇게 하면 "당일 뉴스가 당일 주가에 미치는 영향"이라는 논문의 설정을
-지키면서도, 이미 실현된 등락률을 맞히는 누수를 피할 수 있다. 시각을 복구하지
-못한 레코드(기사 삭제 등)는 ``--fallback`` 정책에 따라 처리한다.
+장 마감 전 뉴스의 라벨을 전일 종가가 아닌 당일 시가에서 시작하는 이유:
+전일 종가→시가 갭은 장중 뉴스가 나오기 **전**에 끝난 움직임이다. 이를 라벨에
+넣으면 모델이 미래가 아니라 기사가 이미 보도한 움직임을 맞히게 된다
+(experiments/diagnosis/SENTIMENT_SIGNIFICANCE.md). 예전 방식(전일 종가→당일 종가)은
+``--intraday-label prev_close`` 로 재현할 수 있다.
+
+시각을 복구하지 못한 레코드(기사 삭제 등)는 ``--fallback`` 정책에 따라 처리한다.
+레코드에 ``published_et`` 가 이미 있으면 그 값을 쓴다(``--times`` 생략 가능).
+크롤링한 발행 날짜가 데이터셋 날짜와 다르면(약 3.5%) 실제 발행 시점을 확신할 수 없어
+기본으로 제외한다(``--date-mismatch``).
 
 사용 예::
 
@@ -61,6 +68,7 @@ def build_price_index(price_dir: Path, tickers: set[str], price_start: str,
         table[ticker] = {
             "dates": series["dates"],
             "close": series["close"],
+            "open": series["open"],
             "row": {d: i for i, d in enumerate(series["dates"])},
         }
     return table
@@ -69,7 +77,7 @@ def build_price_index(price_dir: Path, tickers: set[str], price_start: str,
 def main() -> None:
     parser = argparse.ArgumentParser(description="발행 시각 기반 재라벨링")
     parser.add_argument("--records", required=True, help="url 필드를 가진 레코드 JSONL")
-    parser.add_argument("--times", required=True, help="crawl_publish_time.py 출력")
+    parser.add_argument("--times", default="", help="crawl_publish_time.py 출력(쉼표로 여러 개)")
     parser.add_argument("--price-dir", required=True)
     parser.add_argument("--price-start", default="2020-07-06")
     parser.add_argument("--price-alias", default="GOOGL=GOOG")
@@ -78,6 +86,14 @@ def main() -> None:
                         help="시각을 복구하지 못한 레코드 처리 방식. 기본은 학습에서 제외(drop). "
                              "당일/다음날 중 어느 라벨이 맞는지 알 수 없기 때문이다.")
     parser.add_argument("--close-hour", type=int, default=MARKET_CLOSE_HOUR)
+    parser.add_argument("--intraday-label", choices=("open_close", "prev_close"), default="open_close",
+                        help="장 마감 전 뉴스 라벨. open_close: 당일 시가→종가(기본), "
+                             "prev_close: 전일 종가→당일 종가(예전 방식)")
+    parser.add_argument("--date-mismatch", choices=("drop", "keep"), default="drop",
+                        help="크롤링한 발행 날짜가 데이터셋 날짜와 다른 레코드 처리(약 3.5%%). "
+                             "어느 쪽이 맞는지 알 수 없어 기본은 제외한다.")
+    parser.add_argument("--labels-only", action="store_true",
+                        help="news_id·라벨·앵커·horizon 만 저장한다(임베딩을 다시 쓰지 않음)")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -115,7 +131,10 @@ def main() -> None:
             stats["거래일아님"] += 1
             continue
 
-        published = times.get(record.get("url", ""))
+        published = record.get("published_et") or times.get(record.get("url", ""))
+        if published and published[:10] != record["date"] and args.date_mismatch == "drop":
+            stats["날짜불일치_제외"] += 1
+            continue
         if published:
             hour = int(published[11:13])
             before_close = hour < args.close_hour
@@ -133,7 +152,14 @@ def main() -> None:
             if row < 1:
                 stats["구간부족"] += 1
                 continue
-            label = (close[row] - close[row - 1]) / close[row - 1]
+            if args.intraday_label == "open_close":
+                opened = table["open"][row]
+                if not np.isfinite(opened) or opened <= 0:
+                    stats["시가없음"] += 1
+                    continue
+                label = (close[row] - opened) / opened
+            else:
+                label = (close[row] - close[row - 1]) / close[row - 1]
             anchor = dates[row - 1]
         else:
             # 다음 거래일 등락률.
@@ -160,6 +186,9 @@ def main() -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8") as f:
         for record in out_records:
+            if args.labels_only:
+                record = {k: record.get(k) for k in
+                          ("news_id", "ticker", "date", "published_et", "horizon", "anchor", "label")}
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     logger.info("저장 %d건 → %s", len(out_records), out_path)

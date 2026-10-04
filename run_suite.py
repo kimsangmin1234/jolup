@@ -34,7 +34,7 @@ import torch
 import torch.nn as nn
 
 from config import ModelConfig
-from data.dataset import load_indicators
+from data.dataset import apply_label_file, load_indicators
 from data.technical_indicators import MinMaxScaler
 from model import NewsDrivenStockPredictor
 from modules import (AsymmetricCrossAttention, GatedResidualFusion,
@@ -78,7 +78,7 @@ def window_normalize(w: np.ndarray) -> np.ndarray:
 
 
 class Data:
-    def __init__(self, cache: str, npz: str) -> None:
+    def __init__(self, cache: str, npz: str, labels: str = "") -> None:
         meta, emb = [], []
         for path in sorted(glob.glob(cache)):
             with gzip.open(path, "rt", encoding="utf-8") as f:
@@ -86,6 +86,12 @@ class Data:
                     r = json.loads(line)
                     emb.append(np.asarray(r.pop("embedding"), dtype=np.float32))
                     meta.append(r)
+        if labels:
+            # 라벨 정의만 바꾼다. 라벨 파일에 없는 레코드는 뺀다.
+            for i, r in enumerate(meta):
+                r["_i"] = i
+            meta = apply_label_file(meta, labels)
+            emb = [emb[r.pop("_i")] for r in meta]
         self.indicators, self.date_index = load_indicators(npz)
 
         keep, wins, rows = [], [], []
@@ -436,7 +442,8 @@ def write_report(out: Path) -> None:
         results.update(json.loads(path.read_text()))
     rows = sorted(results.items(), key=lambda kv: -np.mean(kv[1]["fold_ic"]))
     lines = ["# 모델 비교 (walk-forward)", "",
-             "- 데이터: 발행 시각 확인 뉴스 34,441건(22종목). 장중 뉴스는 당일, 마감 후 뉴스는 다음 거래일 등락률이 라벨.",
+             "- 데이터: 발행 시각 확인 뉴스 33,225건(22종목, 발행 날짜 불일치 1,216건 제외).",
+             "- 라벨: 장 시작 전·장중 뉴스는 당일 시가→종가, 장 마감 후 뉴스는 당일 종가→다음날 종가.",
              "- 검증: 2022 1분기 ~ 2023 2분기 6개 분기 평균 IC 로 설정 선택. 각 폴드는 검증 시작 3일 전까지만 학습.",
              "- 평가: 2023 하반기(약 9,600건, 장중 약 6,800건). 평가 IC 의 표준오차는 약 ±0.010(장중 ±0.012)이며,",
              "  같은 종목·날짜 기사가 라벨을 공유하므로 실제 불확실성은 이보다 크다.",
@@ -471,6 +478,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default="experiments/fnspid-timed-norm/news_cache_timed.part*.jsonl.gz")
     ap.add_argument("--indicators", default="data/fnspid/indicators.npz")
+    ap.add_argument("--labels", default="data/fnspid/labels_open_close.jsonl.gz",
+                    help="라벨 교체 파일. 빈 값이면 캐시의 라벨을 그대로 쓴다.")
     ap.add_argument("--groups", default="linear,gbm,nn")
     ap.add_argument("--only", default="", help="이름 앞부분(예: N2,N3)으로 실험 제한")
     ap.add_argument("--out", default="experiments/suite")
@@ -485,7 +494,7 @@ def main() -> None:
                         handlers=[logging.StreamHandler(),
                                   logging.FileHandler(out / f"suite_{args.worker}.log", encoding="utf-8")])
     torch.set_num_threads(args.threads)
-    data = Data(args.cache, args.indicators)
+    data = Data(args.cache, args.indicators, args.labels)
 
     results_path = out / f"results_{args.worker}.json"
     results = json.loads(results_path.read_text()) if results_path.exists() else {}

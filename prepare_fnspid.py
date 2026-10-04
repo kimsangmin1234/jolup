@@ -75,7 +75,7 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
     열 이름을 소문자로 정규화해 두 형식을 모두 받아들인다.
     """
     dates: list[str] = []
-    rows: list[tuple[float, float, float, float]] = []
+    rows: list[tuple[float, float, float, float, float]] = []
 
     with path.open(encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
@@ -87,6 +87,7 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
             col_date = lookup["date"]
             col_high, col_low = lookup["high"], lookup["low"]
             col_close, col_volume = lookup["close"], lookup["volume"]
+            col_open = lookup.get("open")
         except KeyError as exc:
             raise ValueError(
                 f"{path}: 필요한 열을 찾지 못했습니다 {reader.fieldnames}"
@@ -98,12 +99,13 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
                 low = float(row[col_low])
                 close = float(row[col_close])
                 volume = float(row[col_volume])
+                opened = float(row[col_open]) if col_open and row[col_open] else float("nan")
             except (KeyError, TypeError, ValueError):
                 continue  # 결측/손상 행은 건너뛴다
             if not all(np.isfinite([high, low, close, volume])) or close <= 0:
                 continue
             dates.append(str(row[col_date])[:10])
-            rows.append((high, low, close, volume))
+            rows.append((high, low, close, volume, opened))
 
     if not rows:
         raise ValueError(f"{path}: 유효한 주가 행이 없습니다.")
@@ -116,6 +118,7 @@ def load_price_csv(path: Path) -> dict[str, np.ndarray]:
         "low": arr[:, 1],
         "close": arr[:, 2],
         "volume": arr[:, 3],
+        "open": arr[:, 4],      # 없거나 손상된 행은 NaN
     }
 
 

@@ -30,6 +30,7 @@ from torch.utils.data import DataLoader
 from config import ModelConfig
 from data.dataset import (
     NewsStockDataset,
+    apply_label_file,
     fit_scaler_on_train,
     load_indicators,
     load_records,
@@ -124,6 +125,9 @@ def run_epoch(
 
 def build_loaders(args, config: ModelConfig):
     records = load_records(args.records)
+    if getattr(args, "labels", ""):
+        records = apply_label_file(records, args.labels)
+        logger.info("라벨 파일 적용: %s → %d건", args.labels, len(records))
     indicators, date_index = load_indicators(args.indicators)
 
     train_rec, valid_rec, test_rec = split_by_date(records, args.train_end, args.valid_end)
@@ -201,6 +205,8 @@ def main() -> None:
     parser.add_argument("--label-norm", choices=("none", "ticker"), default="none",
                         help="ticker: 학습 구간의 종목별 표준편차로 라벨을 나눈다")
     parser.add_argument("--scaler-out", default="checkpoints/scaler.json")
+    parser.add_argument("--labels", default="",
+                        help="라벨 교체 파일 (예: data/fnspid/labels_open_close.jsonl.gz)")
     args = parser.parse_args()
 
     handlers: list[logging.Handler] = [logging.StreamHandler()]
