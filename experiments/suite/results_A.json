@@ -19,7 +19,10 @@
       "dir_raw": 0.48767761989342806,
       "n_intraday": 6247,
       "ic_intraday": 0.008084395204198219,
-      "dir_intraday": 0.5034416519929567
+      "dir_intraday": 0.5034416519929567,
+      "n_premarket": 615,
+      "ic_premarket": 0.06698286359865466,
+      "dir_premarket": 0.5170731707317073
     },
     "spec": {
       "sent": true
