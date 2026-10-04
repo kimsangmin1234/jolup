@@ -172,12 +172,14 @@ def _rank(v: np.ndarray) -> np.ndarray:
 
 
 def metrics(pred: np.ndarray, y: np.ndarray, intraday: np.ndarray) -> dict:
-    out = {"n": int(len(y)), "ic": _corr(pred, y), "rank_ic": _corr(_rank(pred), _rank(y)),
-           "dir": float((np.sign(pred - np.median(pred)) == np.sign(y)).mean())}
+    # 방향: 예측 중앙값 이상이면 상승으로 본다(예측 편향 제거). 동률은 상승 쪽에 넣는다.
+    up = pred >= np.median(pred)
+    hit = up == (y > 0)
     m = intraday
-    out.update({"n_intraday": int(m.sum()), "ic_intraday": _corr(pred[m], y[m]),
-                "dir_intraday": float((np.sign(pred[m] - np.median(pred)) == np.sign(y[m])).mean())})
-    return out
+    return {"n": int(len(y)), "ic": _corr(pred, y), "rank_ic": _corr(_rank(pred), _rank(y)),
+            "dir": float(hit.mean()), "dir_raw": float((np.sign(pred) == np.sign(y)).mean()),
+            "n_intraday": int(m.sum()), "ic_intraday": _corr(pred[m], y[m]),
+            "dir_intraday": float(hit[m].mean())}
 
 
 # --------------------------------------------------------------------------
