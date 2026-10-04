@@ -173,6 +173,10 @@ def main() -> None:
             tmp.rename(cache / f"{day}.csv")
             if n % 50 == 0:
                 logger.info("  %s %d/%d (%.1f초/일)", ticker, n, len(todo), (time.time() - t0) / n)
+            if args.commit and n % 100 == 0:
+                # 오래 걸리므로 중간 진행분도 올린다(컨테이너 회수 대비).
+                git_commit(write_year_files(ticker, cache, out),
+                           f"분봉 수집(Dukascopy) 진행: {ticker} {n}/{len(todo)}일")
         got = len(list(cache.glob("*.csv")))
         summary[ticker] = {"need": len(days), "got": got, "missing": len(missing)}
         logger.info("%s 완료: %d/%d일 확보, 없음 %d일", ticker, got, len(days), len(missing))
