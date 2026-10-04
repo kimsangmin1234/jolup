@@ -147,7 +147,7 @@ if [ "${SKIP_CRAWL:-0}" != "1" ]; then
     log "3단계 발행 시각 기반 재라벨링"
     python3 apply_publish_time.py --records "$CACHE" --times "$WORK/times.jsonl" \
         --price-dir "$WORK/price/full_history" --price-start 2020-07-06 \
-        --price-alias GOOGL=GOOG --out "$WORK/news_cache_timed.jsonl"
+        --price-alias GOOGL=GOOG --fallback drop --out "$WORK/news_cache_timed.jsonl"
     CACHE="$WORK/news_cache_timed.jsonl"
     gzip -c "$CACHE" > "$LOGDIR/news_cache_timed.jsonl.gz"
     commit_push "[$TAG] 시각 기반 재라벨링 $(wc -l < "$CACHE")건"

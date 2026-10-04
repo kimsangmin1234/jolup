@@ -1,5 +1,6 @@
 #!/bin/bash
-# 요약·감성이 빠진 나머지 레코드를 Batch API 로 처리하고 진행분을 깃에 올린다.
+# 발행 시각이 확인된 레코드 중 요약·감성이 빠진 것을 Batch API 로 처리하고
+# 진행분을 깃에 올린다. 발행 시각을 모르는 뉴스는 학습에 쓰지 않으므로 처리하지 않는다.
 #
 #   OPENAI_API_KEY=... ./run_remaining.sh
 #
@@ -71,9 +72,25 @@ log "기존 진행분 복원"
 python3 recover_batches.py --work "$WORK/batch" --out "$WORK/news_cache.jsonl" >> "$LOG" 2>&1 || exit 1
 BASE_EMB=$(wc -l < "$WORK/news_cache.jsonl")
 
-if [ ! -s "$WORK/records_article.jsonl" ]; then
-    gunzip -c data/fnspid/articles/records_article.part*.jsonl.gz > "$WORK/records_article.jsonl"
-fi
+# 발행 시각을 확인한 레코드만 남긴다(크롤링 결과 + 기존 캐시에 기록된 시각).
+python3 - "$WORK/records_article.jsonl" <<'PY'
+import glob, gzip, json, sys
+def lines(p):
+    f = gzip.open(p, "rt", encoding="utf-8") if p.endswith(".gz") else open(p, encoding="utf-8")
+    return (json.loads(l) for l in f if l.strip())
+timed = set()
+for p in glob.glob("data/fnspid/publish_times*.jsonl*"):
+    timed |= {r["url"] for r in lines(p) if r.get("published_et")}
+for p in glob.glob("experiments/*/news_cache_timed*.jsonl.gz"):
+    timed |= {r["url"] for r in lines(p) if r.get("published_et")}
+n = 0
+with open(sys.argv[1], "w", encoding="utf-8") as out:
+    for p in sorted(glob.glob("data/fnspid/articles/records_article.part*.jsonl.gz")):
+        for r in lines(p):
+            if r.get("url") in timed:
+                out.write(json.dumps(r, ensure_ascii=False) + "\n"); n += 1
+print(f"발행 시각 확인 레코드 {n}건", file=sys.stderr)
+PY
 TOTAL=$(wc -l < "$WORK/records_article.jsonl")
 
 log "요약·감성 (전체 $TOTAL건)"

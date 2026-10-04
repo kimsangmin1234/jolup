@@ -74,8 +74,9 @@ def main() -> None:
     parser.add_argument("--price-start", default="2020-07-06")
     parser.add_argument("--price-alias", default="GOOGL=GOOG")
     parser.add_argument("--out", required=True)
-    parser.add_argument("--fallback", choices=("next_day", "drop"), default="next_day",
-                        help="시각을 복구하지 못한 레코드 처리 방식")
+    parser.add_argument("--fallback", choices=("next_day", "drop"), default="drop",
+                        help="시각을 복구하지 못한 레코드 처리 방식. 기본은 학습에서 제외(drop). "
+                             "당일/다음날 중 어느 라벨이 맞는지 알 수 없기 때문이다.")
     parser.add_argument("--close-hour", type=int, default=MARKET_CLOSE_HOUR)
     args = parser.parse_args()
 
