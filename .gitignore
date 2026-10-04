@@ -24,3 +24,4 @@ checkpoints/
 checkpoints/*.pt
 
 !data/fnspid/*.jsonl
+.work/
