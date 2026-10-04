@@ -114,6 +114,8 @@ class Data:
         self.D = np.array([r["date"] for r in self.meta])
         self.T = np.array([r["ticker"] for r in self.meta])
         self.intraday = np.array([r.get("horizon") == "same_day" for r in self.meta])
+        # 장 시작 전(09:30 이전) 뉴스: 시가→종가 라벨이 발행 이후 구간만 포함하는 유일한 집단
+        self.premarket = np.array([r.get("published_et", "")[11:16] < "09:30" for r in self.meta])
         self._pca: dict = {}
         logger.info("레코드 %d건 (장중 %d / 마감 후 %d), 종목 %d개",
                     len(self.Y), self.intraday.sum(), (~self.intraday).sum(),
@@ -177,15 +179,21 @@ def _rank(v: np.ndarray) -> np.ndarray:
     return np.argsort(np.argsort(v)).astype(np.float64)
 
 
-def metrics(pred: np.ndarray, y: np.ndarray, intraday: np.ndarray) -> dict:
+def metrics(pred: np.ndarray, y: np.ndarray, intraday: np.ndarray,
+            premarket: np.ndarray | None = None) -> dict:
     # 방향: 예측 중앙값 이상이면 상승으로 본다(예측 편향 제거). 동률은 상승 쪽에 넣는다.
     up = pred >= np.median(pred)
     hit = up == (y > 0)
     m = intraday
-    return {"n": int(len(y)), "ic": _corr(pred, y), "rank_ic": _corr(_rank(pred), _rank(y)),
-            "dir": float(hit.mean()), "dir_raw": float((np.sign(pred) == np.sign(y)).mean()),
-            "n_intraday": int(m.sum()), "ic_intraday": _corr(pred[m], y[m]),
-            "dir_intraday": float(hit[m].mean())}
+    out = {"n": int(len(y)), "ic": _corr(pred, y), "rank_ic": _corr(_rank(pred), _rank(y)),
+           "dir": float(hit.mean()), "dir_raw": float((np.sign(pred) == np.sign(y)).mean()),
+           "n_intraday": int(m.sum()), "ic_intraday": _corr(pred[m], y[m]),
+           "dir_intraday": float(hit[m].mean())}
+    if premarket is not None:
+        out.update({"n_premarket": int(premarket.sum()),
+                    "ic_premarket": _corr(pred[premarket], y[premarket]),
+                    "dir_premarket": float(hit[premarket].mean())})
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -232,7 +240,7 @@ def run_linear(data: Data, spec: dict) -> dict:
     name, tr, te = splits[-1]
     p = ridge_fit_predict(feats[name][tr], data.Y[tr], feats[name][te], best)
     return {"choice": {"lambda": best}, "fold_ic": fold_ic[best],
-            "test": metrics(p, data.Y[te], data.intraday[te])}
+            "test": metrics(p, data.Y[te], data.intraday[te], data.premarket[te])}
 
 
 def run_gbm(data: Data, spec: dict) -> dict:
@@ -255,7 +263,7 @@ def run_gbm(data: Data, spec: dict) -> dict:
     booster = lgb.train(params, lgb.Dataset(x[tr], data.Y[tr]), num_boost_round=best)
     p = booster.predict(x[te])
     return {"choice": {"rounds": best}, "fold_ic": fold_ic[best],
-            "test": metrics(p, data.Y[te], data.intraday[te])}
+            "test": metrics(p, data.Y[te], data.intraday[te], data.premarket[te])}
 
 
 # --------------------------------------------------------------------------
@@ -385,8 +393,8 @@ def run_nn(data: Data, spec: dict) -> dict:
     for seed in test_seeds:
         preds = train_nn(spec, e, data.S, w, y, np.where(tr)[0], np.where(te)[0], seed, best + 1)
         test_preds.append(preds[best])
-    seed_metrics = [metrics(p, data.Y[te], data.intraday[te]) for p in test_preds]
-    ens = metrics(np.mean(test_preds, 0), data.Y[te], data.intraday[te])
+    seed_metrics = [metrics(p, data.Y[te], data.intraday[te], data.premarket[te]) for p in test_preds]
+    ens = metrics(np.mean(test_preds, 0), data.Y[te], data.intraday[te], data.premarket[te])
     avg = {k: float(np.mean([m[k] for m in seed_metrics])) for k in seed_metrics[0]}
     return {"choice": {"epochs": best + 1}, "fold_ic": curves[:, best].tolist(),
             "valid_curve": mean_curve.tolist(), "test": avg, "test_ensemble": ens,
@@ -449,14 +457,17 @@ def write_report(out: Path) -> None:
              "  같은 종목·날짜 기사가 라벨을 공유하므로 실제 불확실성은 이보다 크다.",
              "- 방향 적중은 예측값 중앙값을 기준으로 위/아래를 나눠 계산했다(예측 편향 제거).",
              "- 신경망 평가값은 시드 3개 평균(원래 크기 모델은 시드 1개). 축소판은 배치 256, 원래 크기는 논문대로 배치 32.", "",
-             "| 모델 | 검증 평균 IC | 분기별 IC | 선택 | 평가 IC | 평가 순위 IC | 평가 방향 | 장중 IC | 장중 방향 |",
-             "|---|---:|---|---|---:|---:|---:|---:|---:|"]
+             "- 장 시작 전 IC: 09:30 이전 발행 뉴스만. 라벨(시가→종가)이 발행 이후 구간만 포함하는 유일한 집단이다.",
+             "  장중 뉴스는 시가부터 발행 시각까지의 움직임이 라벨에 섞여 있다.", "",
+             "| 모델 | 검증 평균 IC | 분기별 IC | 선택 | 평가 IC | 평가 순위 IC | 평가 방향 | 마감 전 IC | 장 시작 전 IC | 장 시작 전 방향 |",
+             "|---|---:|---|---|---:|---:|---:|---:|---:|---:|"]
     for name, r in rows:
         t = r["test"]
         lines.append(
             f"| {name} | {np.mean(r['fold_ic']):+.4f} | {' '.join(f'{x:+.3f}' for x in r['fold_ic'])} | "
             f"{', '.join(f'{k}={v:g}' for k, v in r['choice'].items())} | {t['ic']:+.4f} | "
-            f"{t['rank_ic']:+.4f} | {t['dir']:.3f} | {t['ic_intraday']:+.4f} | {t['dir_intraday']:.3f} |")
+            f"{t['rank_ic']:+.4f} | {t['dir']:.3f} | {t['ic_intraday']:+.4f} | "
+            f"{t.get('ic_premarket', float('nan')):+.4f} | {t.get('dir_premarket', float('nan')):.3f} |")
     (out / "RESULTS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
