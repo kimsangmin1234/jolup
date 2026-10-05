@@ -443,6 +443,13 @@ EXPERIMENTS = {
 RUNNERS = {"linear": run_linear, "gbm": run_gbm, "nn": run_nn}
 
 
+# 보고서 머리말. main() 에서 라벨 파일에 맞게 바꾼다.
+DATA_NOTE = "발행 시각 확인 뉴스(22종목, 발행 날짜 불일치 제외)."
+LABEL_NOTE = "장 시작 전·장중 뉴스는 당일 시가→종가, 장 마감 후 뉴스는 당일 종가→다음날 종가."
+SUBSET_NOTE = ("장 시작 전 IC: 09:30 이전 발행 뉴스만. 라벨(시가→종가)이 발행 이후 구간만 포함하는 "
+               "유일한 집단이다. 장중 뉴스는 시가부터 발행 시각까지의 움직임이 라벨에 섞여 있다.")
+
+
 def write_report(out: Path) -> None:
     """작업자별 결과 파일(results_*.json)을 모아 하나의 표로 만든다."""
     results: dict = {}
@@ -450,15 +457,14 @@ def write_report(out: Path) -> None:
         results.update(json.loads(path.read_text()))
     rows = sorted(results.items(), key=lambda kv: -np.mean(kv[1]["fold_ic"]))
     lines = ["# 모델 비교 (walk-forward)", "",
-             "- 데이터: 발행 시각 확인 뉴스 33,225건(22종목, 발행 날짜 불일치 1,216건 제외).",
-             "- 라벨: 장 시작 전·장중 뉴스는 당일 시가→종가, 장 마감 후 뉴스는 당일 종가→다음날 종가.",
+             f"- 데이터: {DATA_NOTE}",
+             f"- 라벨: {LABEL_NOTE}",
              "- 검증: 2022 1분기 ~ 2023 2분기 6개 분기 평균 IC 로 설정 선택. 각 폴드는 검증 시작 3일 전까지만 학습.",
              "- 평가: 2023 하반기(약 9,600건, 장중 약 6,800건). 평가 IC 의 표준오차는 약 ±0.010(장중 ±0.012)이며,",
              "  같은 종목·날짜 기사가 라벨을 공유하므로 실제 불확실성은 이보다 크다.",
              "- 방향 적중은 예측값 중앙값을 기준으로 위/아래를 나눠 계산했다(예측 편향 제거).",
              "- 신경망 평가값은 시드 3개 평균(원래 크기 모델은 시드 1개). 축소판은 배치 256, 원래 크기는 논문대로 배치 32.", "",
-             "- 장 시작 전 IC: 09:30 이전 발행 뉴스만. 라벨(시가→종가)이 발행 이후 구간만 포함하는 유일한 집단이다.",
-             "  장중 뉴스는 시가부터 발행 시각까지의 움직임이 라벨에 섞여 있다.", "",
+             f"- {SUBSET_NOTE}", "",
              "| 모델 | 검증 평균 IC | 분기별 IC | 선택 | 평가 IC | 평가 순위 IC | 평가 방향 | 마감 전 IC | 장 시작 전 IC | 장 시작 전 방향 |",
              "|---|---:|---|---|---:|---:|---:|---:|---:|---:|"]
     for name, r in rows:
@@ -506,6 +512,13 @@ def main() -> None:
                                   logging.FileHandler(out / f"suite_{args.worker}.log", encoding="utf-8")])
     torch.set_num_threads(args.threads)
     data = Data(args.cache, args.indicators, args.labels)
+    global DATA_NOTE, LABEL_NOTE, SUBSET_NOTE
+    DATA_NOTE = f"발행 시각 확인 뉴스 {len(data.Y):,}건({len(set(data.T))}종목). 라벨 파일: `{args.labels}`."
+    if "minute" in args.labels:
+        LABEL_NOTE = ("장 시작 전 뉴스는 당일 시가→종가, 장중 뉴스는 발행 다음 분봉 시가→종가(Dukascopy 분봉), "
+                      "장 마감 후 뉴스는 당일 종가→다음날 종가. 분봉이 없는 장중 뉴스는 제외.")
+        SUBSET_NOTE = ("마감 전 IC: 장 시작 전 + 장중 뉴스. 분봉 라벨이라 모두 발행 이후 구간만 포함한다. "
+                       "장 시작 전 IC: 09:30 이전 발행 뉴스만.")
 
     results_path = out / f"results_{args.worker}.json"
     results = json.loads(results_path.read_text()) if results_path.exists() else {}
