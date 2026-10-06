@@ -16,7 +16,7 @@ Alpaca 무료(Basic) 플랜은 2016년 이후 전체 시장(SIP) 분봉을 제�
     python fetch_minute_bars.py --tickers AAPL,MSFT --start 2020-08-31 --end 2023-12-29
 
 결과: data/fnspid/minute/{TICKER}_{YEAR}.csv.gz
-    열: t(UTC, ISO), o, h, l, c, v  — 시간외(04:00~20:00 ET) 포함
+    열: t(UTC, ISO), o, h, l, c, v  — 기본은 정규장만(--session all 이면 시간외 포함)
 종목·연도 파일이 이미 있으면 건너뛰므로 중단 후 재실행해도 된다.
 """
 
@@ -32,9 +32,17 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 logger = logging.getLogger(__name__)
+ET = ZoneInfo("America/New_York")
+OPEN, CLOSE = "09:30", "16:00"
+
+
+def to_et_hm(ts: str) -> str:
+    return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(ET).strftime("%H:%M")
 
 URL = "https://data.alpaca.markets/v2/stocks/bars"
 DEFAULT_TICKERS = ("AAPL,AMC,AMD,AMZN,BA,BLNK,CVX,DIS,F,FCEL,GE,GM,GME,INTC,KO,MRK,"
@@ -89,6 +97,8 @@ def main() -> None:
     ap.add_argument("--end", default="2023-12-29")
     ap.add_argument("--feed", choices=("sip", "iex"), default="sip")
     ap.add_argument("--out", default="data/fnspid/minute")
+    ap.add_argument("--session", choices=("regular", "all"), default="regular",
+                    help="regular: 정규장(09:30~16:00 ET)만 저장(기본, 용량 절약). all: 시간외 포함")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
@@ -108,6 +118,8 @@ def main() -> None:
             end = min(args.end, f"{year}-12-31")
             t0 = time.time()
             bars = fetch(ticker, start, end, args.feed, key, secret)
+            if args.session == "regular":
+                bars = [b for b in bars if OPEN <= to_et_hm(b["t"]) < CLOSE]
             tmp = path.with_suffix(".tmp")
             with gzip.open(tmp, "wt", newline="") as f:
                 w = csv.writer(f)
