@@ -109,6 +109,13 @@ class EDData(ev.EventData):
             cols += [self.A[k][:, None] for k in ATTRS]
             onehot = np.eye(len(EVENT_TYPES))[self.etype]
             cols += [onehot, onehot * self.A["direction"][:, None], onehot * self.A["dir_x_core"][:, None]]
+        if spec.get("gate"):
+            # 이벤트 게이트: 핵심 이벤트(주인공+새 정보)의 방향을 발행 시점별로 따로 둔다.
+            # 이벤트 연구에서 나쁜 뉴스는 장 밖(장 시작 전·마감 후) 발행 뒤 지속 하락했다.
+            for kind in ("pre", "intra", "after"):
+                m = (self.kind == kind) & self.core
+                cols.append((m & (self.A["direction"] < 0)).astype(float)[:, None])
+                cols.append((m & (self.A["direction"] > 0)).astype(float)[:, None])
         if spec.get("hist"):
             cols += [np.log1p(v)[:, None] if k.endswith("_n") else v[:, None] for k, v in self.HAGG.items()]
         return np.hstack(cols)
@@ -278,6 +285,8 @@ EXPERIMENTS = {
         ("X3 X2 + 지표 30일", {"llm": True, "hist": True, "ind": "flat"}),
         ("X4 X3 + 감성·새로움 + 임베딩 PCA8", {"llm": True, "hist": True, "ind": "flat", "news": True, "k": 8}),
         ("X5 지표 30일만 (기준선)", {"ind": "flat"}),
+        ("X6 제안: 지표 30일 + 핵심 이벤트 게이트(발행 시점별 좋은·나쁜 뉴스)", {"ind": "flat", "gate": True}),
+        ("X7 핵심 이벤트 게이트만", {"gate": True}),
     ],
     "gbm": [
         ("XG LightGBM 이벤트 + 이력 + 반응 + 최근 지표", {"llm": True, "hist": True, "react": True, "ind": "last"}),
