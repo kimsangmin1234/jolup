@@ -1,0 +1,220 @@
+<title>뉴스 기반 주가 예측 검증</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 연구 보고서: 한 열 본문(최대 760px), 결론 → 근거 → 비교 → 한계 순. 숫자는 고정폭. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --ink:#1b2430; --muted:#5b6675; --line:#dfe3e8;
+  --accent:#2f5d8a; --accent-soft:#e7eef6;
+  --pos:#1f7a4d; --neg:#b3412f; --bar-a:#2f5d8a; --bar-b:#9aa7b6;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161c; --surface:#1a2029; --ink:#e4e8ee; --muted:#9aa5b3; --line:#2b333e;
+  --accent:#7fa8d1; --accent-soft:#1f2b3a; --pos:#5cc08f; --neg:#ec8a78; --bar-a:#7fa8d1; --bar-b:#5d6a7a;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161c; --surface:#1a2029; --ink:#e4e8ee; --muted:#9aa5b3; --line:#2b333e;
+  --accent:#7fa8d1; --accent-soft:#1f2b3a; --pos:#5cc08f; --neg:#ec8a78; --bar-a:#7fa8d1; --bar-b:#5d6a7a;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:40px 64px;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+h1{font-size:30px;line-height:1.3;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:20px;margin:0 0 12px;font-weight:600;text-wrap:balance}
+h3{font-size:15px;margin:0 0 6px;font-weight:600}
+p{margin:0}
+.lead{color:var(--muted);max-width:65ch}
+section{display:flex;flex-direction:column;gap:14px}
+.verdict{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.verdict ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.verdict b{font-weight:600}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.fact{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fact .v{font-family:var(--mono);font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.fact .k{font-size:12.5px;color:var(--muted)}
+.funnel{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.funnel div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.funnel span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12.5px;background:var(--accent-soft)}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .dim{color:var(--muted)}
+tr.hl td{background:var(--accent-soft)}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 12px 8px}
+.chart svg{display:block;width:100%;height:auto;max-width:100%}
+.chart text{font-family:var(--sans);fill:var(--muted);font-size:12px}
+.chart .val{font-family:var(--mono);fill:var(--ink);font-size:11.5px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding:4px 8px 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.note{font-size:13px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+code{font-family:var(--mono);font-size:12.5px;background:var(--accent-soft);padding:1px 5px;border-radius:3px;word-break:break-all}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">졸업작품 · 최종 실험 결과 · 2026년 10월</span>
+  <h1>뉴스 이벤트 기반 주가 예측, 엄밀하게 검증하면 무엇이 남는가</h1>
+  <p class="lead">논문 「뉴스 이벤트 기반 주식 가격 예측 모델」(김상민·성우제·유재수, 충북대)의 구조를 구현하고, FNSPID 데이터로 학습·평가했습니다. 기사 발행 시각을 분 단위로 맞춰 다시 평가하고, 선행 연구를 반영한 구조들과도 비교했습니다.</p>
+</header>
+
+<section>
+  <h2>결론</h2>
+  <div class="verdict">
+    <ol>
+      <li><b>처음 보였던 예측력은 대부분 '이미 보도된 움직임'이었습니다.</b> 기사 발행 전 주가 변동이 라벨에 섞여 있을 때 감성 점수의 평가 IC는 +0.050이었지만, 발행 이후 구간만 쓰면 +0.017로 떨어지고 통계적으로 0과 구분되지 않습니다.</li>
+      <li><b>LLM 감성·임베딩은 발행 이후 수익률을 예측하지 못했습니다.</b> 논문 구조 신경망, 이를 확장한 제안 구조, 트리 모델 모두 같은 결과입니다.</li>
+      <li><b>비교적 일관된 신호는 뉴스가 아니라 과거 30일 기술적 지표의 단기 반전이었습니다.</b> 단순 선형 모델이 평가 순위 IC +0.071을 냈습니다. 다만 거래비용 미반영, 22종목·6개월 평가라 실거래 수익으로 해석할 수 없습니다.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>데이터</h2>
+  <div class="facts">
+    <div class="fact"><span class="v">22</span><span class="k">종목 (대형주 + 소형주)</span></div>
+    <div class="fact"><span class="v">2020.09–2023.12</span><span class="k">기간</span></div>
+    <div class="fact"><span class="v">31,581</span><span class="k">최종 학습·평가 이벤트</span></div>
+    <div class="fact"><span class="v">1분봉</span><span class="k">Alpaca 전체 시장(SIP) 주가</span></div>
+  </div>
+  <div class="funnel">
+    <div><span>FNSPID 뉴스 원본</span><span>15,549,299건</span></div>
+    <div><span>대상 종목 · 기간 · 주가 정렬</span><span>82,903건</span></div>
+    <div><span>기사 페이지 크롤링으로 발행 시각 확인</span><span>34,441건</span></div>
+    <div><span>발행 날짜가 데이터셋 날짜와 다른 기사 제외</span><span>33,225건</span></div>
+    <div><span>시장 β·변동성 추정 기간(60거래일) 확보</span><span>31,581건</span></div>
+  </div>
+  <p class="note">발행 시각을 확인하지 못한 뉴스(접근 차단 33,676건, 기사 삭제 14,757건)는 당일·다음날 중 어느 라벨이 맞는지 알 수 없어 학습에서 뺐습니다. 감성 점수와 요약은 GPT-4o-mini, 임베딩은 text-embedding-3-small(1536차원)로 Batch API를 통해 만들었습니다.</p>
+</section>
+
+<section>
+  <h2>라벨을 엄밀하게 만들수록 뉴스 효과가 사라졌다</h2>
+  <p class="lead">같은 모델을 라벨 정의만 바꿔 평가했습니다. 오른쪽으로 갈수록 기사 발행 전 움직임이 라벨에서 빠집니다. 2023년 하반기 평가 구간의 IC입니다.</p>
+  <div class="chart">
+    <svg viewBox="0 0 620 280" role="img" aria-label="라벨 정의별 평가 IC 막대 그래프. 감성 점수만: 0.050, 0.014, 0.017. 논문 원래 구조: 0.028, -0.014, -0.013.">
+      <g stroke="var(--line)" stroke-width="1">
+        <line x1="50" y1="20" x2="610" y2="20"/><line x1="50" y1="70" x2="610" y2="70"/>
+        <line x1="50" y1="120" x2="610" y2="120"/><line x1="50" y1="220" x2="610" y2="220"/>
+      </g>
+      <line x1="50" y1="170" x2="610" y2="170" stroke="var(--muted)" stroke-width="1.2"/>
+      <g text-anchor="end">
+        <text x="44" y="24">+0.06</text><text x="44" y="74">+0.04</text><text x="44" y="124">+0.02</text>
+        <text x="44" y="174">0</text><text x="44" y="224">−0.02</text>
+      </g>
+      <!-- 감성 점수만 -->
+      <rect x="85"  y="45"    width="50" height="125"  fill="var(--bar-a)"/>
+      <rect x="285" y="135"   width="50" height="35"   fill="var(--bar-a)"/>
+      <rect x="485" y="127.5" width="50" height="42.5" fill="var(--bar-a)"/>
+      <!-- 논문 원래 구조 (N0) -->
+      <rect x="145" y="100" width="50" height="70"   fill="var(--bar-b)"/>
+      <rect x="345" y="170" width="50" height="35"   fill="var(--bar-b)"/>
+      <rect x="545" y="170" width="50" height="32.5" fill="var(--bar-b)"/>
+      <g text-anchor="middle">
+        <text class="val" x="110" y="39">+0.050</text><text class="val" x="310" y="129">+0.014</text><text class="val" x="510" y="121">+0.017</text>
+        <text class="val" x="170" y="94">+0.028</text><text class="val" x="370" y="219">−0.014</text><text class="val" x="570" y="217">−0.013</text>
+        <text x="140" y="246">① 전일 종가 → 종가</text><text x="140" y="263" font-size="11">발행 전 움직임 포함</text>
+        <text x="340" y="246">② 당일 시가 → 종가</text><text x="340" y="263" font-size="11">밤사이 갭 제외</text>
+        <text x="540" y="246">③ 발행 직후 → 종가</text><text x="540" y="263" font-size="11">분봉 사용, 발행 이후만</text>
+      </g>
+    </svg>
+    <div class="legend"><span><i style="background:var(--bar-a)"></i>감성 점수만 (선형)</span><span><i style="background:var(--bar-b)"></i>논문 원래 구조 (N0)</span></div>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>근거 (감성 점수와 수익률의 상관, 날짜 블록 부트스트랩)</th><th class="n">IC</th><th class="n">95% 신뢰구간</th></tr></thead>
+      <tbody>
+        <tr><td>장 마감 후 뉴스 → 그날 이미 끝난 수익률</td><td class="n pos">+0.105</td><td class="n">[+0.068, +0.198]</td></tr>
+        <tr><td>장 마감 후 뉴스 → 다음날 수익률 (발행 이후)</td><td class="n">+0.008</td><td class="n">[−0.022, +0.037]</td></tr>
+        <tr><td>장중 뉴스 → 발행 전에 끝난 시가 갭</td><td class="n pos">+0.047</td><td class="n">[+0.029, +0.091]</td></tr>
+        <tr><td>장중 뉴스 → 발행 직후~종가 (분봉)</td><td class="n">+0.010</td><td class="n">[−0.015, +0.035]</td></tr>
+        <tr><td>전체 → 발행 이후 구간 (분봉 라벨)</td><td class="n">+0.007</td><td class="n">[−0.007, +0.023]</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">감성 점수는 발행 전에 이미 일어난 움직임과 강하게 맞고, 발행 이후 움직임과는 맞지 않습니다. 요약문의 59%가 "주가가 N% 올랐다" 같은 표현을 담고 있었습니다.</p>
+</section>
+
+<section>
+  <h2>구조 비교</h2>
+  <p class="lead">예측 대상은 시장(SPY)을 뺀 종목 고유 수익률을 20일 변동성으로 나눈 값입니다. 검증 6개 분기(2022 1분기~2023 2분기) 평균으로 설정을 고르고, 2023 하반기에 한 번 평가했습니다.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>모델</th><th class="n">검증 순위 IC</th><th class="n">평가 순위 IC</th><th class="n">롱숏 bp/일</th><th class="n">t값</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>과거 30일 기술적 지표만</b> · 선형</td><td class="n pos">+0.026</td><td class="n pos">+0.071</td><td class="n">+16.5</td><td class="n">2.27</td></tr>
+        <tr><td>뉴스 + 임베딩 + 지표 · 선형</td><td class="n pos">+0.026</td><td class="n pos">+0.068</td><td class="n">+20.3</td><td class="n">2.82</td></tr>
+        <tr><td>발행 전 반응 + 뉴스 + 임베딩 + 지표 · 선형</td><td class="n pos">+0.024</td><td class="n pos">+0.071</td><td class="n">+19.8</td><td class="n">2.69</td></tr>
+        <tr><td>감성 점수만 · 선형</td><td class="n">+0.015</td><td class="n neg">−0.005</td><td class="n">+4.7</td><td class="n">1.07</td></tr>
+        <tr><td>뉴스 특징만 (감성·새로움·집중도) · 선형</td><td class="n neg">−0.002</td><td class="n neg">−0.019</td><td class="n">+1.5</td><td class="n">0.31</td></tr>
+        <tr><td>제안 신경망 (논문 구조 + 발행 전 반응 + 순위 손실)</td><td class="n">+0.005</td><td class="n neg">−0.006</td><td class="n">+2.3</td><td class="n">0.31</td></tr>
+        <tr><td>논문 구조 + 새 예측 대상 (발행 전 반응 없음)</td><td class="n">+0.002</td><td class="n neg">−0.017</td><td class="n">−1.2</td><td class="n">−0.23</td></tr>
+        <tr><td>LightGBM (반응 + 뉴스 + 임베딩 + 지표)</td><td class="n neg">−0.002</td><td class="n">+0.009</td><td class="n">+5.3</td><td class="n">0.67</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">순위 IC는 예측과 실제의 순서 일치도입니다. 롱숏은 날짜마다 예측 상위 1/3을 사고 하위 1/3을 판다고 가정한 초과수익률이며, 1bp는 0.01%입니다. 거래비용은 반영하지 않았습니다. 지표 모델은 같은 종목·날짜 기사를 하나로 묶어도 순위 IC +0.073(t=2.28)이 유지되며, 검증 6개 분기 중 4개가 양수입니다.</p>
+</section>
+
+<section>
+  <h2>논문 구조에서 확인한 것</h2>
+  <div class="cols">
+    <div class="card"><h3>구현</h3><p>LLM 주 신호(1537→512), TCN(9개 지표·30일, 팽창 1·2·4·8), 비대칭 교차 어텐션, 게이트 잔차 결합, MLP를 모듈별 파일로 구현했습니다. 학습 파라미터 355만 개입니다.</p></div>
+    <div class="card"><h3>고친 문제</h3><p>지표를 22종목 전체로 한꺼번에 MinMax 정규화해 저가 종목의 신호가 사라지는 문제를 30일 창 기준 정규화로 고쳤습니다. 배치 정규화의 미래 정보 누수도 가중치 정규화로 바꿨습니다.</p></div>
+    <div class="card"><h3>제거 실험</h3><p>어텐션 제거, 게이트 제거, 스케일링 없는 내적, 임베딩 8·32·1536차원 비교 모두 잡음 수준의 차이였습니다. 학습 데이터 약 2만 건에 비해 구조가 커서, TCN·어텐션을 뺀 단순 구조가 오히려 나았습니다.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>참고한 선행 연구</h2>
+  <ul class="plain">
+    <li><b>MacKinlay (1997)</b> 이벤트 연구 방법론 → 시장 조정 초과수익률을 예측 대상으로 사용</li>
+    <li><b>Chan (2003, JFE)</b> 뉴스가 있는 움직임은 지속, 없는 움직임은 반전 → 발행 전 주가 반응을 입력으로 추가</li>
+    <li><b>Tetlock (2011, RFS)</b> 반복 보도에 대한 과잉 반응과 반전 → 뉴스 새로움 점수</li>
+    <li><b>Lopez-Lira &amp; Tang (2023)</b>, <b>Chen·Kelly·Xiu</b> LLM 감성·임베딩의 수익률 예측력 → 감성·임베딩 유지</li>
+    <li><b>Feng et al. (2019, TOIS)</b> 종목 순위 학습 → 같은 날 이벤트 순위 손실</li>
+    <li><b>Hu et al. (2018, WSDM)</b> 여러 뉴스의 주의 기반 집계 → 최근 24시간 뉴스 집계</li>
+    <li><b>Jegadeesh (1990)</b>, <b>Lehmann (1990)</b> 단기 반전 → 지표 모델 신호의 해석</li>
+  </ul>
+</section>
+
+<section>
+  <h2>한계와 다음 단계</h2>
+  <div class="cols">
+    <div class="card"><h3>한계</h3><ul class="plain">
+      <li>22종목, 평가 구간 6개월로 표본이 작습니다.</li>
+      <li>발행 시각을 찾은 뉴스가 전체의 42%뿐입니다.</li>
+      <li>롱숏 수익은 거래비용을 반영하지 않았습니다.</li>
+    </ul></div>
+    <div class="card"><h3>다음 단계</h3><ul class="plain">
+      <li>종목을 수백 개로 늘려 소형주에서 뉴스 효과를 다시 확인</li>
+      <li>접근 차단된 기사 33,676건의 발행 시각을 다른 IP에서 재크롤링</li>
+      <li>지표 단기 반전 신호를 기준선으로 두고 뉴스의 추가 기여를 측정</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <h2>저장소에서 찾기</h2>
+  <ul class="plain">
+    <li>구조 비교 결과: <code>experiments/event_suite/RESULTS.md</code></li>
+    <li>라벨 정의별 비교: <code>experiments/suite_prevclose/</code> · <code>experiments/suite/</code> · <code>experiments/suite_minute/</code></li>
+    <li>감성 점수 유의성·사후 보도 검증: <code>experiments/diagnosis/SENTIMENT_SIGNIFICANCE.md</code></li>
+    <li>데이터셋 구성: <code>docs/DATASET.md</code></li>
+  </ul>
+</section>
+
+<footer>저장소 kimsangmin1234/jolup · 브랜치 claude/paper-technique-modular-code-rxj8uw</footer>
+
+</div>
