@@ -146,7 +146,11 @@ def run_nn(d, spec):
     y2 = (d.yz / d.yz[d.tr2].std()).astype(np.float32)
     tp = [ev.train_eventnet(spec, x2, d.S, w2, y2, day_codes, np.where(d.tr2)[0], np.where(d.te)[0], s, best + 1)[best]
           for s in spec.get("seeds", [0])]
-    return {"choice": f"에폭 {best + 1}", "valid_rank_ic": float(curve[best]), "test": metrics(d, d.te, np.mean(tp, 0))}
+    pred = np.mean(tp, 0)
+    return {"choice": f"에폭 {best + 1}", "valid_rank_ic": float(curve[best]), "test": metrics(d, d.te, pred),
+            "pred_test": pred.tolist(), "pred_valid": np.mean([ev.train_eventnet(spec, x, d.S, w, y, day_codes,
+            np.where(d.tr)[0], np.where(d.va)[0], s, best + 1)[best] for s in spec.get("seeds", [0])], 0).tolist()
+            if spec.get("save_valid") else None}
 
 
 def run_ridge(d, spec):
@@ -155,8 +159,25 @@ def run_ridge(d, spec):
     xv, xt = X(d.tr), X(d.tr2)
     lam = max((10, 100, 1e3, 1e4, 1e5), key=lambda l: ric(ridge(xv[d.tr], d.yz[d.tr], xv[d.va], l), d.y[d.va]))
     pv = ridge(xv[d.tr], d.yz[d.tr], xv[d.va], lam)
-    return {"choice": f"λ={lam:g}", "valid_rank_ic": ric(pv, d.y[d.va]),
-            "test": metrics(d, d.te, ridge(xt[d.tr2], d.yz[d.tr2], xt[d.te], lam))}
+    pt = ridge(xt[d.tr2], d.yz[d.tr2], xt[d.te], lam)
+    return {"choice": f"λ={lam:g}", "valid_rank_ic": ric(pv, d.y[d.va]), "test": metrics(d, d.te, pt),
+            "pred_test": pt.tolist(), "pred_valid": pv.tolist()}
+
+
+def run_ensemble(d, spec):
+    """같은 결과 폴더의 두 모델 예측을 순위로 바꿔 평균한다(검증 예측으로 가중치 선택)."""
+    res = {}
+    for p in sorted(Path(spec["dir"]).glob("results_*.json")):
+        res.update(json.loads(p.read_text()))
+    a, b = res[spec["a"]], res[spec["b"]]
+    rk = lambda v: np.argsort(np.argsort(v)) / (len(v) - 1)
+    best, bw = None, -9
+    for w_ in (0.0, 0.25, 0.5, 0.75, 1.0):
+        v = ric(w_ * rk(np.array(a["pred_valid"])) + (1 - w_) * rk(np.array(b["pred_valid"])), d.y[d.va])
+        if v > bw:
+            best, bw = w_, v
+    pt = best * rk(np.array(a["pred_test"])) + (1 - best) * rk(np.array(b["pred_test"]))
+    return {"choice": f"가중치 {best:g}", "valid_rank_ic": bw, "test": metrics(d, d.te, pt), "pred_test": pt.tolist()}
 
 
 SMALL = {"d": 64, "lr": 1e-3, "wd": 1e-4, "bs": 256, "rank": 1.0, "epochs": 12, "seeds": [0, 1, 2]}
@@ -167,6 +188,10 @@ EXPERIMENTS = [
     ("P3 └ 임베딩 제거", run_nn, {**SMALL, "emb": False}),
     ("P4 └ LLM 속성 제거", run_nn, {**SMALL, "llm": False}),
     ("P5 └ 순위 손실 제거", run_nn, {**SMALL, "rank": 0.0}),
+    ("P6 제안(P1) 재실행: 검증 예측 저장", run_nn, {**SMALL, "save_valid": True}),
+    ("R2 Ridge 재실행: 예측 저장", run_ridge, {}),
+    ("E1 앙상블: 제안(P6) + Ridge(R2)", run_ensemble, {"dir": "experiments/edt_suite",
+     "a": "P6 제안(P1) 재실행: 검증 예측 저장", "b": "R2 Ridge 재실행: 예측 저장"}),
     ("P0 논문 구조 그대로 (임베딩 1536 + 감성, d=512)", run_nn,
      {"raw_emb": True, "d": 512, "lr": 1e-4, "wd": 1e-5, "bs": 64, "rank": 0.0, "epochs": 10, "seeds": [0]}),
 ]
