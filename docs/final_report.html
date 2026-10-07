@@ -77,6 +77,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       <li><b>처음 보였던 예측력은 대부분 '이미 보도된 움직임'이었습니다.</b> 기사 발행 전 주가 변동이 라벨에 섞여 있을 때 감성 점수의 평가 IC는 +0.050이었지만, 발행 이후 구간만 쓰면 +0.017로 떨어지고 통계적으로 0과 구분되지 않습니다.</li>
       <li><b>LLM 감성·임베딩은 발행 이후 수익률을 예측하지 못했습니다.</b> 논문 구조 신경망, 이를 확장한 제안 구조, 트리 모델 모두 같은 결과입니다.</li>
       <li><b>비교적 일관된 신호는 뉴스가 아니라 과거 30일 기술적 지표의 단기 반전이었습니다.</b> 단순 선형 모델이 평가 순위 IC +0.071을 냈습니다. 다만 거래비용 미반영, 22종목·6개월 평가라 실거래 수익으로 해석할 수 없습니다.</li>
+      <li><b>신호가 있는 데이터(EDT 보도자료 5.4만 건)에서는 논문 구조가 작동했고, 제안 구조가 더 나았습니다.</b> 논문 구조는 평가 순위 IC +0.061, 주 신호 입력을 LLM 이벤트 속성·발행 시점·주가 수준으로 넓힌 제안 구조는 +0.085(같은 집단 안 +0.093)였고, TCN·교차 어텐션을 빼면 성능이 떨어졌습니다.</li>
       <li><b>뉴스를 '이벤트'로 걸러내면 의미 있는 신호가 나왔습니다.</b> LLM으로 기사 성격을 분류해 대상 종목의 새로운 나쁜 소식만 보면, 발행 이후 주가가 학습(t=−2.59)과 평가(t=−2.72) 두 구간 모두 유의하게 더 떨어졌습니다. 다만 이런 기사는 전체의 약 4%라, 모든 기사를 점수화하는 모델에는 효과가 묻혔습니다.</li>
     </ol>
   </div>
@@ -205,6 +206,36 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section>
+  <h2>더 큰 데이터로 재현: EDT 보도자료</h2>
+  <p class="lead">Trade the Event(Zhou et al. 2021)가 공개한 EDT에서, 발행사 종목이 본문에 확인되는 보도자료 62,846건(2020.03–2021.05, 4,244종목)을 썼습니다. 모두 분 단위 발행 시각이 있고, 회사가 직접 낸 1차 공시라 주가 재보도가 섞이지 않습니다.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>FNSPID에서 찾은 규칙을 학습 없이 적용</th><th class="n">1일</th><th class="n">2일</th><th class="n">3일</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>핵심 나쁜 뉴스면 매도</b></td><td class="n pos">+47bp (t=3.24)</td><td class="n pos">+47bp (t=2.01)</td><td class="n">+51bp (t=1.79)</td></tr>
+        <tr><td>LLM 방향대로 매수·매도</td><td class="n neg">−7bp (t=−0.61)</td><td class="n neg">−18bp</td><td class="n neg">−14bp</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">나쁜 뉴스 효과는 다른 기간·종목·출처에서도 재현됐습니다. 좋은 뉴스는 재현되지 않았고, 장 시작 전 보도자료와 주가 $5 미만 종목은 좋은 뉴스여도 그날 하락했습니다(t=−5.7, −8.0).</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>모델 (핵심 이벤트 54,266건, 평가 2021.03–05)</th><th class="n">검증 순위 IC</th><th class="n">평가 순위 IC</th><th class="n">같은 집단 안</th><th class="n">롱숏 bp/일 (t)</th></tr></thead>
+      <tbody>
+        <tr><td>논문 구조 그대로 (임베딩 1536 + 감성, d=512)</td><td class="n pos">+0.062</td><td class="n pos">+0.061</td><td class="n pos">+0.079</td><td class="n">+33 (1.36)</td></tr>
+        <tr class="hl"><td><b>제안 구조</b>: 주 신호 = 임베딩 + LLM 이벤트 속성 + 발행 시점·주가 수준, TCN·교차 어텐션·게이트</td><td class="n pos">+0.072</td><td class="n pos">+0.085</td><td class="n pos">+0.093</td><td class="n">+46 (2.08)</td></tr>
+        <tr><td>└ TCN·교차 어텐션 제거</td><td class="n">+0.057</td><td class="n">+0.077</td><td class="n">+0.072</td><td class="n">+64 (2.64)</td></tr>
+        <tr><td>└ 임베딩 제거</td><td class="n">+0.080</td><td class="n">+0.090</td><td class="n">+0.060</td><td class="n">+52 (2.22)</td></tr>
+        <tr><td>└ LLM 이벤트 속성 제거</td><td class="n">+0.054</td><td class="n">+0.086</td><td class="n">+0.073</td><td class="n">+78 (3.14)</td></tr>
+        <tr><td>발행 시점·주가 수준만 (뉴스 내용 없음) · Ridge</td><td class="n">+0.029</td><td class="n">+0.101</td><td class="n">+0.021</td><td class="n">+58 (2.54)</td></tr>
+        <tr><td>Ridge (문맥 + LLM + 임베딩)</td><td class="n">+0.061</td><td class="n">+0.091</td><td class="n">+0.080</td><td class="n">+78 (3.44)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">'같은 집단 안'은 발행 시점 × 주가 수준이 같은 종목끼리만 매긴 순위 IC입니다. 뉴스 내용이 없는 모델은 전체 IC는 높지만 같은 집단 안에서는 +0.021에 그쳐 "저가주는 대체로 하락"만 맞힌 것이고, 뉴스 내용을 쓴 모델은 +0.08~0.09로 같은 집단 안에서도 구분합니다. 제안 구조는 재실행에서도 평가 +0.087, 같은 집단 안 +0.098로 재현됐습니다. 평가 구간이 한 번(3개월)이라 0.01~0.02 차이는 잡음일 수 있고, 저가주가 많아 실제 거래비용은 클 수 있습니다.</p>
+</section>
+
+<section>
   <h2>논문 구조에서 확인한 것</h2>
   <div class="cols">
     <div class="card"><h3>구현</h3><p>LLM 주 신호(1537→512), TCN(9개 지표·30일, 팽창 1·2·4·8), 비대칭 교차 어텐션, 게이트 잔차 결합, MLP를 모듈별 파일로 구현했습니다. 학습 파라미터 355만 개입니다.</p></div>
@@ -233,14 +264,14 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2>한계와 다음 단계</h2>
   <div class="cols">
     <div class="card"><h3>한계</h3><ul class="plain">
-      <li>22종목, 평가 구간 6개월로 표본이 작습니다.</li>
-      <li>발행 시각을 찾은 뉴스가 전체의 42%뿐입니다.</li>
+      <li>FNSPID는 22종목, 평가 6개월이고 발행 시각을 찾은 뉴스가 42%뿐입니다.</li>
+      <li>EDT 평가 구간은 한 번(3개월)이며, 저가주가 많아 거래비용이 클 수 있습니다.</li>
       <li>롱숏 수익은 거래비용을 반영하지 않았습니다.</li>
     </ul></div>
     <div class="card"><h3>다음 단계</h3><ul class="plain">
-      <li>종목을 수백 개로 늘려 소형주에서 뉴스 효과를 다시 확인</li>
-      <li>접근 차단된 기사 33,676건의 발행 시각을 다른 IP에서 재크롤링</li>
-      <li>지표 단기 반전 신호를 기준선으로 두고 뉴스의 추가 기여를 측정</li>
+      <li>EDT를 여러 평가 구간으로 굴려(walk-forward) 제안 구조의 우위가 유지되는지 확인</li>
+      <li>거래비용(호가 차이)과 유동성 필터를 넣은 수익 검증</li>
+      <li>FNSPID 대형주와 EDT 소형주에서 뉴스 효과 크기 차이 분석</li>
     </ul></div>
   </div>
 </section>
@@ -250,6 +281,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <ul class="plain">
     <li>구조 비교 결과: <code>experiments/event_suite/RESULTS.md</code></li>
     <li>이벤트 기반 구조와 이벤트 연구: <code>experiments/eventdriven_suite/RESULTS.md</code> · <code>experiments/diagnosis/EVENT_STUDY.md</code></li>
+    <li>EDT 재현·제거 실험·구조 비교: <code>experiments/edt/RESULTS.md</code> · <code>experiments/edt/ABLATION.md</code> · <code>experiments/edt_suite/RESULTS.md</code></li>
     <li>라벨 정의별 비교: <code>experiments/suite_prevclose/</code> · <code>experiments/suite/</code> · <code>experiments/suite_minute/</code></li>
     <li>감성 점수 유의성·사후 보도 검증: <code>experiments/diagnosis/SENTIMENT_SIGNIFICANCE.md</code></li>
     <li>데이터셋 구성: <code>docs/DATASET.md</code></li>
