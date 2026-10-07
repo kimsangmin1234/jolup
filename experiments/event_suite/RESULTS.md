@@ -22,3 +22,39 @@
 | E3 반응 + 뉴스 | -0.0214 | -0.074 +0.015 -0.027 -0.014 -0.043 +0.016 | lambda=1 | +0.0305 | +0.0454 | +0.026 | +0.063 | +0.017 | 0.508 | +7.2 | +1.08 | +1.58 |
 | E1 진입 전 반응만 (갭·장중·단기 수익률·거래량) | -0.0220 | -0.059 -0.023 -0.037 -0.018 -0.038 +0.042 | lambda=10 | +0.0469 | +0.0493 | +0.070 | +0.076 | +0.038 | 0.510 | +1.7 | +0.24 | +0.35 |
 | G3 LightGBM 반응 + 뉴스 | -0.0234 | -0.056 -0.045 +0.004 -0.005 -0.067 +0.029 | rounds=25 | -0.0025 | -0.0125 | -0.002 | +0.034 | -0.046 | 0.507 | +1.9 | +0.26 | +0.38 |
+
+## 결론
+
+### 1. 제안 신경망(M1~M5)은 효과가 없었다
+논문 모듈의 주 신호 입력을 [임베딩 PCA, 뉴스 특징, 진입 전 반응]으로 넓히고 같은 날짜 순위 손실을 더한 M1 은
+검증 +0.005 / 평가 −0.006 으로 잡음 수준이다. 순위 손실(M1 vs M2), 진입 전 반응(M1 vs M3) 모두 의미 있는 차이를 만들지 못했다.
+TCN·어텐션을 뺀 단순 MLP(M5)가 오히려 평가에서 나았다(+0.032). 데이터(학습 약 2만 건)에 비해 구조가 크다.
+
+### 2. 뉴스 정보의 기여는 확인되지 않았다
+감성만(E0) −0.005, 뉴스 특징만(E2) −0.019. 지표 모델에 뉴스·임베딩을 더해도(E5 → E7) 평가 순위 IC 는 +0.071 → +0.068 로 같다.
+새로움·집중도·감성×반응 상호작용(Chan 2003, Tetlock 2011 기반)도 검증 구간에서 일관된 효과가 없었다.
+
+### 3. 진입 전 반응 특징은 구간마다 방향이 바뀐다
+반응만(E1) 검증 −0.022 / 평가 +0.047. 지표에 더하면(E6) 평가가 −0.002 로 떨어진다. 단기 반전·지속의 방향이 시기마다 달라 불안정하다.
+
+### 4. 가장 일관된 신호: 과거 30일 기술적 지표의 단기 반전(E5)
+- 검증 6개 분기 중 4개 양수(+0.009 −0.001 +0.064 −0.025 +0.086 +0.022), 평가 순위 IC +0.071, 롱숏 +16.5bp/일(t=2.27).
+- 같은 종목·날짜·유형을 하나로 묶어도 순위 IC +0.073, 롱숏 +24.3bp/일(t=2.28) 로 유지된다.
+- 계수를 보면 과거 종가·이동평균·볼린저 밴드가 현재 종가보다 높을수록(최근 하락) 이후 초과수익률이 높고, MACD 계수는 음수다.
+  즉 약 한 달 단위의 단기 반전(Jegadeesh 1990; Lehmann 1990)이다. 목표값이 시장 조정 초과수익률이라 시장 전체 등락 효과는 아니다.
+- 거래비용 미반영, 22종목·평가 6개월이라 실거래 수익성으로 해석하면 안 된다.
+
+### 5. 정리
+뉴스 기반 예측 구조를 여러 방식으로 바꿔도, 발행 이후 수익률을 엄밀히 평가하면 뉴스(LLM 감성·임베딩)의 예측력은 나타나지 않았다.
+예측력이 확인된 것은 뉴스가 아니라 가격 이력(단기 반전)이며, 단순 선형 모델이 복잡한 신경망보다 나았다.
+
+## 참고 문헌
+- MacKinlay, A. C. (1997). Event studies in economics and finance. *Journal of Economic Literature*.
+- Chan, W. S. (2003). Stock price reaction to news and no-news: drift and reversal after headlines. *JFE* 70(2).
+- Tetlock, P. C. (2011). All the news that's fit to reprint: Do investors react to stale information? *RFS*.
+- Lou, D., Polk, C., Skouras, S. (2019). A tug of war: Overnight versus intraday expected returns. *JFE*.
+- Jegadeesh, N. (1990). Evidence of predictable behavior of security returns. *JF*; Lehmann, B. (1990). Fads, martingales, and market efficiency. *QJE*.
+- Hu, Z. et al. (2018). Listening to Chaotic Whispers: news-oriented stock trend prediction. *WSDM*.
+- Feng, F. et al. (2019). Temporal Relational Ranking for Stock Prediction. *ACM TOIS*.
+- Lopez-Lira, A., Tang, Y. (2023). Can ChatGPT forecast stock price movements? arXiv:2304.07619.
+- Chen, Y., Kelly, B., Xiu, D. Expected returns and large language models. Working paper.
