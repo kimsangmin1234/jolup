@@ -77,6 +77,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       <li><b>처음 보였던 예측력은 대부분 '이미 보도된 움직임'이었습니다.</b> 기사 발행 전 주가 변동이 라벨에 섞여 있을 때 감성 점수의 평가 IC는 +0.050이었지만, 발행 이후 구간만 쓰면 +0.017로 떨어지고 통계적으로 0과 구분되지 않습니다.</li>
       <li><b>LLM 감성·임베딩은 발행 이후 수익률을 예측하지 못했습니다.</b> 논문 구조 신경망, 이를 확장한 제안 구조, 트리 모델 모두 같은 결과입니다.</li>
       <li><b>비교적 일관된 신호는 뉴스가 아니라 과거 30일 기술적 지표의 단기 반전이었습니다.</b> 단순 선형 모델이 평가 순위 IC +0.071을 냈습니다. 다만 거래비용 미반영, 22종목·6개월 평가라 실거래 수익으로 해석할 수 없습니다.</li>
+      <li><b>뉴스를 '이벤트'로 걸러내면 의미 있는 신호가 나왔습니다.</b> LLM으로 기사 성격을 분류해 대상 종목의 새로운 나쁜 소식만 보면, 발행 이후 주가가 학습(t=−2.59)과 평가(t=−2.72) 두 구간 모두 유의하게 더 떨어졌습니다. 다만 이런 기사는 전체의 약 4%라, 모든 기사를 점수화하는 모델에는 효과가 묻혔습니다.</li>
     </ol>
   </div>
 </section>
@@ -168,6 +169,42 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section>
+  <h2>뉴스 이벤트 기반 구조</h2>
+  <p class="lead">뉴스 이벤트 선행 연구(Ding 2014·2015, Zhou 2021, Deng 2019)를 따라, GPT-4o-mini로 기사 33,225건에서 이벤트 유형 27종과 방향·중요도, 대상 종목이 주인공인지, 새로운 사건인지, 주가 재보도인지를 뽑았습니다.</p>
+  <div class="facts">
+    <div class="fact"><span class="v">73%</span><span class="k">시장 논평·종목 추천·기타</span></div>
+    <div class="fact"><span class="v">30%</span><span class="k">이미 일어난 주가 움직임 재보도</span></div>
+    <div class="fact"><span class="v">16.7%</span><span class="k">핵심 이벤트 (주인공 + 새 정보)</span></div>
+    <div class="fact"><span class="v">4.3%</span><span class="k">핵심 나쁜 뉴스</span></div>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>핵심 이벤트의 발행 이후 초과수익률</th><th class="n">학습 (~2023.06)</th><th class="n">t</th><th class="n">평가 (2023 하반기)</th><th class="n">t</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>나쁜 뉴스</b> (방향 −1)</td><td class="n neg">−26bp</td><td class="n">−2.59</td><td class="n neg">−57bp</td><td class="n">−2.72</td></tr>
+        <tr><td>└ 장 밖(장 시작 전·마감 후) 발행</td><td class="n neg">−66bp</td><td class="n">−2.26</td><td class="n neg">−123bp</td><td class="n">−3.21</td></tr>
+        <tr><td>└ 장중 발행</td><td class="n">−5bp</td><td class="n dim">-</td><td class="n">−12bp</td><td class="n dim">-</td></tr>
+        <tr><td>좋은 뉴스 (방향 +1)</td><td class="n">≈0</td><td class="n">+0.17</td><td class="n">≈0</td><td class="n">−0.48</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">t는 같은 종목·날짜 이벤트를 하나로 묶은 뒤 계산했습니다. 나쁜 뉴스 뒤 지속 하락은 Chan(2003), 부정 뉴스에서 강한 예측력은 Lopez-Lira &amp; Tang(2023)의 결과와 같습니다. 유형별로는 실적 하회, 애널리스트 하향, 운영 문제가 두 구간 모두 같은 부호였습니다. '장 밖' 조건은 평가 구간을 포함한 표를 본 뒤 정했으므로 그 행은 완전한 표본 외 검증이 아닙니다.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>이벤트 기반 모델</th><th class="n">검증 순위 IC</th><th class="n">평가 순위 IC</th><th class="n">롱숏 bp/일 (t)</th></tr></thead>
+      <tbody>
+        <tr><td>제안: 이벤트 인코더 + 장·중·단기 이벤트 이력 어텐션 + TCN·교차 어텐션·게이트</td><td class="n">−0.001</td><td class="n">+0.015</td><td class="n">+8.8 (1.20)</td></tr>
+        <tr><td>└ 이벤트 이력 제거</td><td class="n">+0.016</td><td class="n">+0.012</td><td class="n">+6.9 (1.09)</td></tr>
+        <tr><td>└ LLM 이벤트 정보 제거 (감성·임베딩만)</td><td class="n">+0.003</td><td class="n neg">−0.015</td><td class="n">−4.3 (−0.64)</td></tr>
+        <tr><td>지표 30일 + 이벤트 이력 · 선형</td><td class="n pos">+0.023</td><td class="n pos">+0.062</td><td class="n">+19.4 (2.90)</td></tr>
+        <tr class="hl"><td>지표 30일만 · 선형 (기준선)</td><td class="n pos">+0.026</td><td class="n pos">+0.071</td><td class="n">+16.5 (2.27)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">이벤트 정보는 감성·임베딩보다는 나았지만, 모든 기사를 점수화하는 연속 예측 모델에서는 지표 기준선을 넘지 못했습니다. 뉴스는 드문 핵심 이벤트를 탐지해 조건부로 쓰는 구조(Trade the Event 방식)가 맞습니다.</p>
+</section>
+
+<section>
   <h2>논문 구조에서 확인한 것</h2>
   <div class="cols">
     <div class="card"><h3>구현</h3><p>LLM 주 신호(1537→512), TCN(9개 지표·30일, 팽창 1·2·4·8), 비대칭 교차 어텐션, 게이트 잔차 결합, MLP를 모듈별 파일로 구현했습니다. 학습 파라미터 355만 개입니다.</p></div>
@@ -179,6 +216,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 <section>
   <h2>참고한 선행 연구</h2>
   <ul class="plain">
+    <li><b>Ding et al. (2014 EMNLP; 2015 IJCAI)</b> 구조화된 뉴스 이벤트와 장·중·단기 영향 → LLM 이벤트 추출, 이벤트 이력 어텐션</li>
+    <li><b>Zhou, Ma, Liu (2021, Findings of ACL) Trade the Event</b> 기업 이벤트 탐지 후 발행 시점 거래 → 이벤트 유형 체계, 핵심 이벤트 조건부 평가</li>
+    <li><b>Deng et al. (2019, WWW) KDTCN</b> 이벤트 임베딩 + 가격 TCN → 이벤트 표현과 TCN을 교차 어텐션으로 결합</li>
     <li><b>MacKinlay (1997)</b> 이벤트 연구 방법론 → 시장 조정 초과수익률을 예측 대상으로 사용</li>
     <li><b>Chan (2003, JFE)</b> 뉴스가 있는 움직임은 지속, 없는 움직임은 반전 → 발행 전 주가 반응을 입력으로 추가</li>
     <li><b>Tetlock (2011, RFS)</b> 반복 보도에 대한 과잉 반응과 반전 → 뉴스 새로움 점수</li>
@@ -209,6 +249,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2>저장소에서 찾기</h2>
   <ul class="plain">
     <li>구조 비교 결과: <code>experiments/event_suite/RESULTS.md</code></li>
+    <li>이벤트 기반 구조와 이벤트 연구: <code>experiments/eventdriven_suite/RESULTS.md</code> · <code>experiments/diagnosis/EVENT_STUDY.md</code></li>
     <li>라벨 정의별 비교: <code>experiments/suite_prevclose/</code> · <code>experiments/suite/</code> · <code>experiments/suite_minute/</code></li>
     <li>감성 점수 유의성·사후 보도 검증: <code>experiments/diagnosis/SENTIMENT_SIGNIFICANCE.md</code></li>
     <li>데이터셋 구성: <code>docs/DATASET.md</code></li>
