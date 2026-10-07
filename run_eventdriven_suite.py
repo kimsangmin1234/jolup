@@ -114,8 +114,11 @@ class EDData(ev.EventData):
         return np.hstack(cols)
 
 
+_base_evaluate = ev.evaluate
+
+
 def evaluate(data, idx, pred):
-    out = ev.evaluate(data, idx, pred)
+    out = _base_evaluate(data, idx, pred)
     m = data.core[idx]
     out["n_core"] = int(m.sum())
     out["rank_ic_core"] = ev._rank_ic(pred[m], data.Y[idx][m]) if m.sum() > 20 else float("nan")

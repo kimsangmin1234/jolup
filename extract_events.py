@@ -122,6 +122,48 @@ def git_commit(path: str, message: str) -> None:
         time.sleep(delay)
 
 
+def run_realtime(api, pending, texts, done, save, args) -> None:
+    """일반 API 병렬 호출. 요청 한도(429)에 걸리면 지수 백오프로 기다린다."""
+    import random
+    import threading
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    lock = threading.Lock()
+
+    def one(nid):
+        body = request(nid, *texts[nid])["body"]
+        delay = 2.0
+        for _ in range(8):
+            try:
+                resp = api.chat.completions.create(**body)
+                return nid, parse({"choices": [{"message": {"content": resp.choices[0].message.content}}]})
+            except Exception as exc:                      # 한도·연결 오류는 재시도
+                if not any(k in type(exc).__name__ for k in ("RateLimit", "Connection", "Timeout", "InternalServer")):
+                    logger.warning("  %s 실패: %s", nid, type(exc).__name__)
+                    return nid, None
+                time.sleep(delay * (1 + random.uniform(-0.3, 0.3)))
+                delay = min(delay * 2, 60)
+        return nid, None
+
+    t0 = time.time()
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        futures = [pool.submit(one, n) for n in pending]
+        for k, fut in enumerate(as_completed(futures), 1):
+            nid, parsed = fut.result()
+            if parsed:
+                with lock:
+                    done[nid] = {"news_id": nid, **parsed}
+            if k % 1000 == 0 or k == len(futures):
+                save()
+                logger.info("  %d/%d (누적 %d건, %.0f건/분)", k, len(futures), len(done), k / (time.time() - t0) * 60)
+            if args.commit and k % 10000 == 0:
+                git_commit(args.out, f"이벤트 추출 진행: {len(done)}건")
+    save()
+    if args.commit:
+        git_commit(args.out, f"이벤트 추출 완료: {len(done)}건")
+    logger.info("전량 완료: %d건", len(done))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--labels", default="data/fnspid/labels_open_close.jsonl.gz")
@@ -130,6 +172,9 @@ def main() -> None:
     ap.add_argument("--work", default=".work/events")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--commit", action="store_true")
+    ap.add_argument("--mode", choices=("batch", "realtime"), default="batch",
+                    help="realtime: 일반 API 를 병렬 호출(빠르지만 비용 2배). 한도가 넉넉한 계정용")
+    ap.add_argument("--workers", type=int, default=32)
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
     from openai import OpenAI
@@ -155,6 +200,15 @@ def main() -> None:
     if args.limit:
         pending = pending[:args.limit]
     logger.info("대상 %d건 / 완료 %d건 / 남은 %d건", len(texts), len(done), len(pending))
+
+    def save():
+        with gzip.open(out_path, "wt", encoding="utf-8") as f:
+            for r in done.values():
+                f.write(json.dumps(r) + "\n")
+
+    if args.mode == "realtime":
+        run_realtime(api, pending, texts, done, save, args)
+        return
 
     cycle = 0
     while pending:
