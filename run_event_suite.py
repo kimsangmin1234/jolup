@@ -288,6 +288,9 @@ EXPERIMENTS = {
         ("E2 뉴스 특징만 (감성·새로움·집중도·상호작용)", {"news": True}),
         ("E3 반응 + 뉴스", {"react": True, "news": True}),
         ("E4 반응 + 뉴스 + 임베딩 PCA8 + 지표 30일", {"react": True, "news": True, "k": 8, "ind": "flat"}),
+        ("E5 지표 30일만", {"ind": "flat"}),
+        ("E6 반응 + 지표 30일", {"react": True, "ind": "flat"}),
+        ("E7 뉴스 + 임베딩 PCA8 + 지표 30일", {"news": True, "k": 8, "ind": "flat"}),
     ],
     "gbm": [
         ("G3 LightGBM 반응 + 뉴스", {"react": True, "news": True}),
