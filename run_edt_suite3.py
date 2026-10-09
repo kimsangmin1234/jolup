@@ -82,21 +82,34 @@ def run_ridge(d, spec, H, ys, save):
 
 
 def run_gbm(d, spec, H, ys, save):
-    """LightGBM (문맥 + LLM + 상호작용 + 임베딩 PCA32). 반복 수는 검증으로 고른다."""
+    """LightGBM (문맥 + LLM + 상호작용 + 임베딩 PCA). 반복 수는 검증으로 고른다.
+
+    spec: k(PCA 차원, 기본 32), target("rank" 면 일별 순위 목표값), ind(창 마지막 날 지표 9종 추가),
+          seeds(여러 시드 평균), leaves(잎 수)
+    """
     import lightgbm as lgb
-    params = {"objective": "huber", "alpha": 1.0, "learning_rate": 0.03, "num_leaves": 15, "min_data_in_leaf": 100,
-              "feature_fraction": 0.8, "bagging_fraction": 0.8, "bagging_freq": 1, "lambda_l2": 10.0, "verbose": -1,
-              "seed": 0, "num_threads": torch.get_num_threads()}
+    yt = day_rank_target(d) if spec.get("target") == "rank" else d.yz
     out, store = [], {}
     for k, (tr, va, tr2, te) in enumerate(s2.fold_masks(d)):
-        xv = np.hstack([d.ctx, d.content, d.inter, d.pca(tr, 32)])
-        xt = np.hstack([d.ctx, d.content, d.inter, d.pca(tr2, 32)])
-        bst = lgb.train(params, lgb.Dataset(xv[tr], d.yz[tr]), num_boost_round=600)
-        best = max(range(50, 601, 50), key=lambda r: ric(bst.predict(xv[va], num_iteration=r), d.y[va]))
-        pv = bst.predict(xv[va], num_iteration=best)
-        pt = lgb.train(params, lgb.Dataset(xt[tr2], d.yz[tr2]), num_boost_round=best).predict(xt[te])
+        def X(mask):
+            cols = [d.ctx, d.content, d.inter, d.pca(mask, spec.get("k", 32))]
+            if spec.get("ind"):
+                cols.append(d.windows(mask)[:, -1, :])
+            return np.hstack(cols)
+        xv, xt = X(tr), X(tr2)
+        pvs, pts, bests = [], [], []
+        for seed in spec.get("seeds", [0]):
+            params = {"objective": "huber", "alpha": 1.0, "learning_rate": 0.03, "num_leaves": spec.get("leaves", 15),
+                      "min_data_in_leaf": 100, "feature_fraction": 0.8, "bagging_fraction": 0.8, "bagging_freq": 1,
+                      "lambda_l2": 10.0, "verbose": -1, "seed": seed, "num_threads": torch.get_num_threads()}
+            bst = lgb.train(params, lgb.Dataset(xv[tr], yt[tr]), num_boost_round=600)
+            best = max(range(50, 601, 50), key=lambda r: ric(bst.predict(xv[va], num_iteration=r), d.y[va]))
+            pvs.append(bst.predict(xv[va], num_iteration=best))
+            pts.append(lgb.train(params, lgb.Dataset(xt[tr2], yt[tr2]), num_boost_round=best).predict(xt[te]))
+            bests.append(best)
+        pv, pt = np.mean(pvs, 0), np.mean(pts, 0)
         m = metrics(d, te, pt)
-        m.update(valid_rank_ic=ric(pv, d.y[va]), rounds=best)
+        m.update(valid_rank_ic=ric(pv, d.y[va]), rounds=bests)
         out.append(m)
         store[f"valid{k}"], store[f"test{k}"] = pv, pt
     np.savez_compressed(save, **store)
@@ -115,6 +128,9 @@ EXPERIMENTS = [
     ("V7 V3(뉴스 이력) + 일별 순위 목표값", run_nn, {**SMALL, "hist": True, "target": "rank"}),
     ("P0 논문 구조 그대로 (d=512)", run_nn,
      {"raw_emb": True, "d": 512, "lr": 1e-4, "wd": 1e-5, "bs": 64, "rank": 0.0, "epochs": 8, "seeds": [0]}),
+    ("G2 LightGBM + 일별 순위 목표값", run_gbm, {"target": "rank"}),
+    ("G3 LightGBM + 임베딩 PCA128 + 최근 지표", run_gbm, {"k": 128, "ind": True}),
+    ("G4 LightGBM 시드 5개 평균 (잎 31)", run_gbm, {"seeds": [0, 1, 2, 3, 4], "leaves": 31}),
 ]
 
 
@@ -180,8 +196,9 @@ def main():
         have = sorted(p.stem for p in (out / "preds").glob("*.npz"))
         logger.info("앙상블 대상: %s", have)
         r3 = ["P1", "R", "V3", "V4", "V5"]
+        r4 = ["G", "P0", "P1", "R", "V3", "V4", "V5", "V6", "V7"]
         for members, tag in ((["P1", "V4"], "E1"), (["P1", "V3", "V4", "R"], "E2"), (r3, "E3"),
-                             (have, "E4"), ([m for m in have if m != "P0"], "E5")):
+                             (r4, "E4"), ([m for m in r4 if m != "P0"], "E5"), (have, "E6")):
             members = [m for m in members if m in have]
             if len(members) >= 2:
                 res.update(ensemble(d, out, members, tag))
