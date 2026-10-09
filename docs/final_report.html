@@ -236,6 +236,26 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section>
+  <h2>평가 구간 3개로 다시 비교</h2>
+  <p class="lead">평가 구간 하나로는 0.01~0.02 차이를 잡음과 구분하기 어려워, 2020.11–12 / 2021.01–02 / 2021.03–05 세 구간으로 나눠 다시 비교했습니다. 모두 논문의 다섯 모듈을 바탕으로 한 구조입니다.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>모델</th><th class="n">평가 순위 IC (구간 1 / 2 / 3)</th><th class="n">평균</th><th class="n">같은 집단 안 평균</th><th class="n">롱숏 평균</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>개선 구조</b> (논문 구조 + 입력 확장)</td><td class="n">+0.068 / +0.075 / +0.085</td><td class="n pos">+0.076</td><td class="n pos">+0.082</td><td class="n">+27bp</td></tr>
+        <tr><td>└ + 임베딩 256차원</td><td class="n">+0.079 / +0.054 / +0.103</td><td class="n pos">+0.079</td><td class="n pos">+0.080</td><td class="n">+39bp</td></tr>
+        <tr><td>└ + 다중 과제 (1·2·3일 + 상승 여부)</td><td class="n">+0.060 / +0.072 / +0.076</td><td class="n">+0.070</td><td class="n">+0.076</td><td class="n">+39bp</td></tr>
+        <tr><td>└ + 문맥별 전문가 혼합</td><td class="n">+0.068 / +0.070 / +0.076</td><td class="n">+0.072</td><td class="n">+0.074</td><td class="n">+23bp</td></tr>
+        <tr><td>└ + 회사 뉴스 이력 어텐션 (30일)</td><td class="n">+0.077 / +0.058 / +0.075</td><td class="n">+0.070</td><td class="n">+0.073</td><td class="n">+56bp</td></tr>
+        <tr><td>논문 구조 그대로</td><td class="n">+0.079 / +0.066 / +0.033</td><td class="n">+0.060</td><td class="n">+0.077</td><td class="n">+43bp</td></tr>
+        <tr><td>Ridge 기준선</td><td class="n">+0.061 / +0.061 / +0.091</td><td class="n">+0.071</td><td class="n">+0.073</td><td class="n">+54bp</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">모든 구조가 세 구간 모두 양의 순위 IC를 냈습니다. 개선 구조가 가장 고르고 같은 집단 안 순위 IC 평균이 가장 높지만, 논문 구조와의 구간별 차이(−0.011, +0.009, +0.052)가 고르지 않아 우위를 확정할 수준은 아닙니다. 추가한 네 가지 변형은 개선 구조를 확실히 넘지 못했습니다. 롱숏 수익은 회사 뉴스 이력 어텐션과 Ridge가 가장 컸습니다.</p>
+</section>
+
+<section>
   <h2>논문 구조에서 확인한 것</h2>
   <div class="cols">
     <div class="card"><h3>구현</h3><p>LLM 주 신호(1537→512), TCN(9개 지표·30일, 팽창 1·2·4·8), 비대칭 교차 어텐션, 게이트 잔차 결합, MLP를 모듈별 파일로 구현했습니다. 학습 파라미터 355만 개입니다.</p></div>
@@ -269,7 +289,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       <li>롱숏 수익은 거래비용을 반영하지 않았습니다.</li>
     </ul></div>
     <div class="card"><h3>다음 단계</h3><ul class="plain">
-      <li>EDT를 여러 평가 구간으로 굴려(walk-forward) 개선 구조의 우위가 유지되는지 확인</li>
+      <li>순위 IC와 롱숏 수익을 함께 높이는 앙상블(개선 구조 + 뉴스 이력 + Ridge)</li>
       <li>거래비용(호가 차이)과 유동성 필터를 넣은 수익 검증</li>
       <li>FNSPID 대형주와 EDT 소형주에서 뉴스 효과 크기 차이 분석</li>
     </ul></div>
