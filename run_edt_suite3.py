@@ -81,6 +81,28 @@ def run_ridge(d, spec, H, ys, save):
     return out
 
 
+def run_gbm(d, spec, H, ys, save):
+    """LightGBM (문맥 + LLM + 상호작용 + 임베딩 PCA32). 반복 수는 검증으로 고른다."""
+    import lightgbm as lgb
+    params = {"objective": "huber", "alpha": 1.0, "learning_rate": 0.03, "num_leaves": 15, "min_data_in_leaf": 100,
+              "feature_fraction": 0.8, "bagging_fraction": 0.8, "bagging_freq": 1, "lambda_l2": 10.0, "verbose": -1,
+              "seed": 0, "num_threads": torch.get_num_threads()}
+    out, store = [], {}
+    for k, (tr, va, tr2, te) in enumerate(s2.fold_masks(d)):
+        xv = np.hstack([d.ctx, d.content, d.inter, d.pca(tr, 32)])
+        xt = np.hstack([d.ctx, d.content, d.inter, d.pca(tr2, 32)])
+        bst = lgb.train(params, lgb.Dataset(xv[tr], d.yz[tr]), num_boost_round=600)
+        best = max(range(50, 601, 50), key=lambda r: ric(bst.predict(xv[va], num_iteration=r), d.y[va]))
+        pv = bst.predict(xv[va], num_iteration=best)
+        pt = lgb.train(params, lgb.Dataset(xt[tr2], d.yz[tr2]), num_boost_round=best).predict(xt[te])
+        m = metrics(d, te, pt)
+        m.update(valid_rank_ic=ric(pv, d.y[va]), rounds=best)
+        out.append(m)
+        store[f"valid{k}"], store[f"test{k}"] = pv, pt
+    np.savez_compressed(save, **store)
+    return out
+
+
 SMALL = s2.SMALL
 EXPERIMENTS = [
     ("R  Ridge 기준선", run_ridge, {}),
@@ -88,6 +110,11 @@ EXPERIMENTS = [
     ("V3 P1 + 회사 뉴스 이력 어텐션", run_nn, {**SMALL, "hist": True}),
     ("V4 P1 + 임베딩 PCA256", run_nn, {**SMALL, "k": 256}),
     ("V5 P1 + 일별 순위 목표값", run_nn, {**SMALL, "target": "rank"}),
+    ("G  LightGBM (문맥 + LLM + 임베딩 PCA32)", run_gbm, {}),
+    ("V6 V4(PCA256) + 일별 순위 목표값", run_nn, {**SMALL, "k": 256, "target": "rank"}),
+    ("V7 V3(뉴스 이력) + 일별 순위 목표값", run_nn, {**SMALL, "hist": True, "target": "rank"}),
+    ("P0 논문 구조 그대로 (d=512)", run_nn,
+     {"raw_emb": True, "d": 512, "lr": 1e-4, "wd": 1e-5, "bs": 64, "rank": 0.0, "epochs": 8, "seeds": [0]}),
 ]
 
 
@@ -152,7 +179,9 @@ def main():
     if a.ensemble:
         have = sorted(p.stem for p in (out / "preds").glob("*.npz"))
         logger.info("앙상블 대상: %s", have)
-        for members, tag in ((["P1", "V4"], "E1"), (["P1", "V3", "V4", "R"], "E2"), (have, "E3")):
+        r3 = ["P1", "R", "V3", "V4", "V5"]
+        for members, tag in ((["P1", "V4"], "E1"), (["P1", "V3", "V4", "R"], "E2"), (r3, "E3"),
+                             (have, "E4"), ([m for m in have if m != "P0"], "E5")):
             members = [m for m in members if m in have]
             if len(members) >= 2:
                 res.update(ensemble(d, out, members, tag))
