@@ -280,6 +280,36 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section>
+  <h2>최종 모델 해석과 실거래 검증</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>이벤트 (평가 구간, 대표 집단)</th><th class="n">건수</th><th class="n">평균 예측 백분위</th><th class="n">실제 1일 초과수익률</th></tr></thead>
+      <tbody>
+        <tr><td>자사주 매입 (긍정)</td><td class="n">179</td><td class="n pos">0.91</td><td class="n pos">+80bp</td></tr>
+        <tr><td>배당 증가 (긍정)</td><td class="n">2,111</td><td class="n pos">0.79</td><td class="n pos">+18bp</td></tr>
+        <tr><td>실적 상회 (긍정)</td><td class="n">2,634</td><td class="n">0.51</td><td class="n neg">−27bp</td></tr>
+        <tr><td>신규 계약·제휴 (긍정)</td><td class="n">4,528</td><td class="n">0.41</td><td class="n neg">−32bp</td></tr>
+        <tr><td>임상·규제 승인 (긍정)</td><td class="n">1,356</td><td class="n neg">0.19</td><td class="n neg">−100bp</td></tr>
+        <tr><td>실적 하회 (부정)</td><td class="n">656</td><td class="n neg">0.13</td><td class="n neg">−113bp</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">모델은 LLM이 '긍정'으로 분류한 임상 승인·신규 계약·제품 출시 보도자료를 하락으로 예측했고, 실제로 하락했습니다. 반면 자사주 매입·배당 증가는 상승으로 예측해 맞혔습니다. 유형별 평균 예측과 실제 수익의 상관은 +0.88입니다. 예측 근거는 기사 내용 임베딩이 73%로 가장 크고, 비대칭 교차 어텐션은 과거 30일에 거의 균등한 가중치로 TCN 출력을 요약하며, 게이트는 지표 문맥을 약 45% 받아들입니다.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>유동성 집단</th><th class="n">순위 IC</th><th class="n">롱숏 총수익 (t)</th><th class="n">손익분기 비용</th></tr></thead>
+      <tbody>
+        <tr><td>전체</td><td class="n pos">+0.092</td><td class="n">+44bp (4.14)</td><td class="n">44bp</td></tr>
+        <tr><td>거래대금 $10M 이상</td><td class="n pos">+0.068</td><td class="n">+33bp (3.85)</td><td class="n">33bp</td></tr>
+        <tr><td>주가 $20 이상</td><td class="n pos">+0.048</td><td class="n">+16bp (1.42)</td><td class="n">16bp</td></tr>
+        <tr><td>주가 $5 미만</td><td class="n pos">+0.206</td><td class="n">+132bp (7.43)</td><td class="n">132bp</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">예측력은 유동성이 높은 종목에서도 유지되지만 저가주에 몰려 있습니다. 고가·저가로 추정한 호가 스프레드(Corwin–Schultz)를 비용으로 빼면 모든 집단에서 손실입니다. 이 추정치는 변동성이 큰 2020–21년에 과대 추정되는 경향이 있어 보수적인 상한으로 봐야 하지만, 실거래 수익성은 입증되지 않았습니다. 결과는 통계적 예측력으로 해석해야 합니다.</p>
+</section>
+
+<section>
   <h2>논문 구조에서 확인한 것</h2>
   <div class="cols">
     <div class="card"><h3>구현</h3><p>LLM 주 신호(1537→512), TCN(9개 지표·30일, 팽창 1·2·4·8), 비대칭 교차 어텐션, 게이트 잔차 결합, MLP를 모듈별 파일로 구현했습니다. 학습 파라미터 355만 개입니다.</p></div>
