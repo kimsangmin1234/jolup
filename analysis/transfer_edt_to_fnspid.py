@@ -173,6 +173,21 @@ def main():
             L.append(f"| {name} | {ric(pm, ym):+.4f} | {group_ric(pm, ym, fgrp[mask]):+.4f} | "
                      + " | ".join(f"{c:+.3f}" for c in cells) + f" | {bp:+.1f} | {t:+.2f} |")
         L.append("")
+    # 이후 기간 순위 IC 의 날짜 블록 부트스트랩 신뢰구간
+    later = fdays >= SPLIT
+    ld, ly = fdays[later], fy[later]
+    ud, inv = np.unique(ld, return_inverse=True)
+    groups = [np.where(inv == i)[0] for i in range(len(ud))]
+    rng = np.random.default_rng(0)
+    samples = [np.concatenate([groups[i] for i in rng.integers(0, len(groups), len(groups))]) for _ in range(2000)]
+    L += ["## 이후 기간 순위 IC 신뢰구간 (거래일 블록 부트스트랩 2,000회)", "",
+          "| 모델 | 순위IC | 95% 신뢰구간 | 0 이하 확률 |", "|---|---:|---|---:|"]
+    for name, p in preds.items():
+        pl = p[later]
+        bs = np.array([ric(pl[s_], ly[s_]) for s_ in samples])
+        lo, hi = np.percentile(bs, [2.5, 97.5])
+        L.append(f"| {name} | {ric(pl, ly):+.4f} | [{lo:+.4f}, {hi:+.4f}] | {(bs <= 0).mean():.3f} |")
+    L.append("")
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text("\n".join(L) + "\n", encoding="utf-8")
     print("\n".join(L))

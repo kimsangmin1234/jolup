@@ -100,7 +100,9 @@ def tstat_by_day(vals, days):
 
 
 def rank(v):
-    return np.argsort(np.argsort(v)).astype(float)
+    """동률은 평균 순위(스피어만)."""
+    from run_suite import _rank
+    return _rank(v)
 
 
 def ric(p, y):

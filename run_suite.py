@@ -176,7 +176,14 @@ def _corr(a: np.ndarray, b: np.ndarray) -> float:
 
 
 def _rank(v: np.ndarray) -> np.ndarray:
-    return np.argsort(np.argsort(v)).astype(np.float64)
+    """동률은 평균 순위로 처리한다(스피어만 순위 상관 정의). 이산 예측(−1/0/+1 규칙)의 순위 IC 를 정확히 낸다."""
+    v = np.asarray(v)
+    order = np.argsort(v, kind="mergesort")
+    ranks = np.empty(len(v), dtype=np.float64)
+    ranks[order] = np.arange(len(v), dtype=np.float64)
+    _, inv, counts = np.unique(v, return_inverse=True, return_counts=True)
+    sums = np.bincount(inv, weights=ranks)
+    return (sums / counts)[inv]
 
 
 def metrics(pred: np.ndarray, y: np.ndarray, intraday: np.ndarray,
