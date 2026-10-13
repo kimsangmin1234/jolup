@@ -87,7 +87,7 @@ text([
   { text: "김상민 · 성우제", options: { color: C.background1 } },
 ], { x: M, y: 2.33, w: FW, h: 0.5, fontSize: 25, align: "center", valign: "middle" });
 
-const Y1 = 3.2, H1 = 4.8;
+const Y1 = 3.2, HA = V === "B" ? 10.6 : 10.0, H1 = 4.75;
 
 // ---------- 1. 연구 내용 ----------
 let a = card(M, Y1, CW, H1, 1, "연구 내용");
@@ -99,102 +99,101 @@ bullets([
 ], { ...a, fontSize: 19, gap: 7 });
 
 // ---------- 2. 원리 ----------
-a = card(X2, Y1, CW, H1, 2, "원리");
+a = card(M, Y1 + H1 + 0.3, CW, HA - H1 - 0.3, 2, "원리");
 const principles = [
-  ["① 주 신호", "GPT-4o-mini 요약·감성 + 임베딩(1536차원) → 512차원"],
-  ["② 보조 신호", "지표 9종 × 30일 → 인과적 TCN(미래 차단) → 30 × 512"],
-  ["③ 비대칭 교차 어텐션", "뉴스(Q)가 30일 지표(K·V) 중 관련 시점을 가중 평균"],
-  ["④ 게이트 잔차 결합", "h = p + σ(W[p; c]) ⊙ c → MLP로 등락률 예측"],
+  ["① LLM 기반 주 신호", "GPT-4o-mini 요약·감성 점수 + 요약문 임베딩(1536차원) → 완전연결층 → 512차원"],
+  ["② TCN 기반 보조 벡터", "기술적 지표 9종 × 30일 → 인과적 TCN → 시점별 512차원"],
+  ["③ 비대칭 교차 어텐션", "주 신호(Q)로 30개 보조 벡터(K·V)를 softmax 가중 평균"],
+  ["④ 게이트 기반 잔차 결합", "h = p + σ(W[p; c]) ⊙ c, 보조 정보 반영 정도를 학습"],
+  ["⑤ 등락률 예측", "MLP 512 → 256 → 64 → 1"],
 ];
-if (V === "B") principles.push(["⑤ 확장·앙상블", "이벤트 27종·발행 시점 입력, 순위 손실, 12개 모델 앙상블"]);
-bullets(principles, { ...a, fontSize: V === "B" ? 18 : 19, gap: V === "B" ? 4 : 9 });
+if (V === "B") principles.push(["⑥ 확장·앙상블", "이벤트 27종·순위 손실 추가, 12개 모델 검증 가중 앙상블"]);
+bullets(principles, { ...a, fontSize: V === "B" ? 17 : 18, gap: V === "B" ? 4 : 7 });
 
-// ---------- 3. 구조 ----------
-const Y3 = Y1 + H1 + 0.3, H3 = V === "B" ? 5.4 : 4.55;
-a = card(M, Y3, FW, H3, 3, V === "B" ? "구조 (논문 모델 + 확장 · 앙상블)" : "구조 (논문 제안 모델)");
+// ---------- 3. 구조 (졸업 논문 그림 1) ----------
+a = card(X2, Y1, CW, HA, 3, V === "B" ? "구조 (논문 모델 + 앙상블)" : "구조");
 {
-  const x0 = a.x + 0.05, ws = [1.75, 2.15, 2.15, 2.1, 1.8, 1.5, 1.4], gap = 0.33;
-  const xs = []; let cx = x0; ws.forEach((w) => { xs.push(cx); cx += w + gap; });
-  const top = a.y + 0.05, bot = a.y + 1.85, bh = 1.05, mid = a.y + 0.85, mh = 1.25;
-  const N = "DCE8F6", T = "E1F0E3", O = "FBE8D0";
-  box(xs[0], top, ws[0], bh, "뉴스 본문\n(발행 시각)", N);
-  box(xs[1], top, ws[1], bh, V === "B" ? "GPT-4o-mini\n요약·감성·이벤트" : "GPT-4o-mini\n요약 · 감성 점수", N);
-  box(xs[2], top, ws[2], bh, V === "B" ? "주 신호 512\n임베딩·감성·이벤트" : "주 신호 512\n임베딩 + 감성", N, { bold: true, line: HEX.navy });
-  box(xs[0], bot, ws[0], bh, "기술적 지표\n9종 × 30일", T);
-  box(xs[1], bot, ws[1], bh, "TCN\n(인과적 합성곱)", T);
-  box(xs[2], bot, ws[2], bh, "보조 신호\n30 × 512", T, { bold: true, line: HEX.green });
-  box(xs[3], mid, ws[3], mh, "비대칭\n교차 어텐션\nQ=뉴스 K·V=지표", O, { bold: true, line: HEX.gold });
-  box(xs[4], mid, ws[4], mh, "게이트 기반\n잔차 결합", O, { bold: true, line: HEX.gold });
-  box(xs[5], mid, ws[5], mh, V === "B" ? "MLP\n순위 손실" : "MLP\n512→256\n→64→1", O);
-  box(xs[6], mid, ws[6], mh, V === "B" ? "개선 구조\n예측" : "1일 등락률\n예측", HEX.navy, { color: C.background1, bold: true });
-  for (const y of [top, bot]) for (let i = 0; i < 2; i++) arrow(xs[i] + ws[i], y + bh / 2, xs[i + 1], y + bh / 2);
-  arrow(xs[2] + ws[2], top + bh / 2, xs[3], mid + 0.35);
-  arrow(xs[2] + ws[2], bot + bh / 2, xs[3], mid + mh - 0.35);
-  for (let i = 3; i < 6; i++) arrow(xs[i] + ws[i], mid + mh / 2, xs[i + 1], mid + mh / 2);
-  // 잔차: 주 신호 → 게이트
-  const ry = top + 0.22, gx = xs[4] + ws[4] / 2;
-  arrow(xs[2] + ws[2], ry, gx, ry, { dash: "dash", color: HEX.gray, width: 1.75, noHead: true });
-  arrow(gx, ry, gx, mid, { dash: "dash", color: HEX.gray, width: 1.75 });
-  text("잔차: 주 신호 보존", { x: xs[3] + 0.1, y: ry - 0.42, w: 2.6, h: 0.36, fontSize: 15, color: HEX.gray });
-  text("Q = 뉴스 1개, K·V = 30개 시점 (비대칭)", { x: xs[3], y: mid + mh + 0.12, w: 4.6, h: 0.4, fontSize: 15, color: HEX.gray });
+  const strip = V === "B" ? 1.4 : 0;
+  const Hd = a.h - strip, k = Hd / 9.45, X = (f) => a.x + f * a.w, Y = (u) => a.y + u * k;
+  const W1 = "FFFFFF", GA = "EAF1FA", GB = "E8F3EA", O = "FBE8D0";
+  const nb = (x1, y1, x2, y2, t, o = {}) => box(X(x1), Y(y1), X(x2) - X(x1), (y2 - y1) * k, t, o.fill || W1, { fs: 15.5, line: o.line || "8A94A6", ...o });
+  const ln = (x1, y1, x2, y2, head = true) => arrow(X(x1), Y(y1), X(x2), Y(y2), { noHead: !head, width: 1.75 });
+  // 그룹 바깥 틀
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: X(0.03), y: Y(0.75), w: X(0.58) - X(0.03), h: 3.3 * k, rectRadius: 0.08, fill: { color: GA }, line: { color: HEX.navy, width: 1.5 }, objectName: nm("group") });
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: X(0.64), y: Y(1.95), w: X(0.97) - X(0.64), h: 2.1 * k, rectRadius: 0.08, fill: { color: GB }, line: { color: HEX.green, width: 1.5 }, objectName: nm("group") });
+  text("1. LLM 기반 주 신호 생성", { x: X(0.03), y: Y(0.8), w: X(0.58) - X(0.03), h: 0.45 * k, fontSize: 16, bold: true, color: C.accent1, align: "center", valign: "middle" });
+  text("2. TCN 기반\n보조 벡터 생성", { x: X(0.64), y: Y(2.0), w: X(0.97) - X(0.64), h: 0.7 * k, fontSize: 16, bold: true, color: C.accent1, align: "center", valign: "middle", lineSpacingMultiple: 0.95 });
+  nb(0.16, 0, 0.48, 0.55, "이벤트 발생 (뉴스)", { line: HEX.navy });
+  ln(0.32, 0.55, 0.32, 0.75);
+  nb(0.21, 1.3, 0.41, 1.8, "LLM");
+  ln(0.31, 1.8, 0.31, 1.97, false); ln(0.19, 1.97, 0.425, 1.97, false);
+  ln(0.19, 1.97, 0.19, 2.15); ln(0.425, 1.97, 0.425, 2.15);
+  nb(0.08, 2.15, 0.30, 2.65, "뉴스 요약"); nb(0.32, 2.15, 0.53, 2.65, "감성 점수");
+  ln(0.19, 2.65, 0.19, 2.9); nb(0.08, 2.9, 0.30, 3.3, "임베딩 생성");
+  ln(0.19, 3.3, 0.19, 3.5); ln(0.425, 2.65, 0.425, 3.5);
+  nb(0.06, 3.5, 0.55, 3.9, "완전 연결층");
+  nb(0.68, 2.75, 0.93, 3.15, "기술적 지표"); ln(0.805, 3.15, 0.805, 3.45); nb(0.68, 3.45, 0.93, 3.85, "TCN");
+  ln(0.305, 4.05, 0.305, 4.3); ln(0.805, 4.05, 0.805, 4.3);
+  nb(0.03, 4.3, 0.58, 4.9, "주 신호: 512차원 벡터", { line: HEX.navy, bold: true });
+  nb(0.64, 4.3, 0.97, 4.9, "보조 신호:\n(T, 512)차원 벡터", { line: HEX.green, bold: true, fs: 14.5 });
+  ln(0.305, 4.9, 0.305, 5.12, false); ln(0.805, 4.9, 0.805, 5.12, false); ln(0.305, 5.12, 0.805, 5.12, false);
+  ln(0.55, 5.12, 0.55, 5.4);
+  nb(0.19, 5.4, 0.91, 5.95, "3. 비대칭 교차 어텐션", { fill: O, line: HEX.gold, bold: true, fs: 17 });
+  ln(0.55, 5.95, 0.55, 6.2); nb(0.30, 6.2, 0.80, 6.6, "보조 문맥 벡터: 512차원");
+  ln(0.55, 6.6, 0.55, 6.85);
+  nb(0.19, 6.85, 0.91, 7.4, "4. 게이트 기반 잔차 결합", { fill: O, line: HEX.gold, bold: true, fs: 17 });
+  ln(0.03, 4.6, -0.03, 4.6, false); ln(-0.03, 4.6, -0.03, 7.125, false); ln(-0.03, 7.125, 0.19, 7.125);
+  ln(0.55, 7.4, 0.55, 7.65); nb(0.30, 7.65, 0.80, 8.05, "통합 표현 벡터: 512차원");
+  ln(0.55, 8.05, 0.55, 8.3);
+  nb(0.19, 8.3, 0.91, 8.85, "5. 등락률 예측", { fill: O, line: HEX.gold, bold: true, fs: 17 });
+  ln(0.55, 8.85, 0.55, 9.05);
+  nb(0.34, 9.05, 0.76, 9.45, V === "B" ? "등락률 (개선 구조)" : "등락률", { fill: HEX.navy, line: HEX.navy, color: C.background1, bold: true });
   if (V === "B") {
-    const ey = bot + bh + 0.3, eh = 0.95;
-    text("최종 예측", { x: xs[0], y: ey, w: ws[0], h: eh, fontSize: 19, bold: true, color: C.accent1, valign: "middle" });
-    const ens = [["신경망 8종\n(논문 구조 포함)", N, 2.6], ["LightGBM 4종\n(임베딩 PCA 등)", T, 2.2], ["Ridge\n선형 기준선", T, 1.6], ["검증 순위 IC 비례\n가중 순위 평균", O, 2.55], ["최종 예측 E6", HEX.navy, 1.85]];
-    let ex = a.x + 1.85;
-    ens.forEach(([t, f, w], i) => {
-      box(ex, ey, w, eh, t, f, { fs: 16, bold: i >= 3, color: i === 4 ? C.background1 : C.text1, line: i === 3 ? HEX.gold : f });
-      if (i < 2) text("+", { x: ex + w, y: ey, w: 0.4, h: eh, fontSize: 26, bold: true, color: C.accent1, align: "center", valign: "middle" });
-      else if (i < 4) arrow(ex + w + 0.05, ey + eh / 2, ex + w + 0.35, ey + eh / 2);
-      ex += w + 0.4;
+    const ey = a.y + Hd + 0.15;
+    text("최종 예측: 위 신경망을 포함한 12개 모델의 앙상블", { x: a.x, y: ey, w: a.w, h: 0.38, fontSize: 15, bold: true, color: C.accent1, valign: "middle" });
+    const ens = [["신경망 8종", 1.5], ["LightGBM 4종", 1.55], ["Ridge", 0.95], ["가중 순위 앙상블", 1.85]];
+    let ex = a.x; const by = ey + 0.48, bh2 = 0.7;
+    ens.forEach(([t, w], i) => {
+      box(ex, by, w, bh2, t, i === 3 ? HEX.navy : W1, { fs: 14.5, bold: i === 3, color: i === 3 ? C.background1 : C.text1, line: i === 3 ? HEX.navy : "8A94A6" });
+      if (i < 2) text("+", { x: ex + w, y: by, w: 0.28, h: bh2, fontSize: 22, bold: true, color: C.accent1, align: "center", valign: "middle" });
+      else if (i === 2) arrow(ex + w + 0.03, by + bh2 / 2, ex + w + 0.25, by + bh2 / 2);
+      ex += w + 0.28;
     });
   }
 }
 
-// ---------- 4. Source Program / 6. 결론 (왼쪽), 5. 성능평가 (오른쪽) ----------
-const Y4 = Y3 + H3 + 0.3, BOT = H - 0.5, H4 = V === "B" ? 4.95 : 5.75;
-a = card(M, Y4, CW, H4, 4, "Source Program");
+// ---------- 아래 줄: 5. 성능평가 (왼쪽), 4. Source Program · 6. 결론 (오른쪽) ----------
+const Y4 = Y1 + HA + 0.3, BOT = H - 0.5, H4 = V === "B" ? 4.95 : 4.6;
+a = card(X2, Y4, CW, H4, 4, "Source Program");
 {
-  const code = V === "B" ? [
+  const code = [
     "# module 3: asymmetric cross-attention",
-    "q, k, v = Wq(news), Wk(market), Wv(market)",
+    "q = self.query_proj(news)           # (B, 512)",
+    "k = self.key_proj(market)           # (B, 30, 512)",
+    "v = self.value_proj(market)",
     "w = softmax(einsum('bd,btd->bt', q, k) * scale)",
-    "c = einsum('bt,btd->bd', w, v)   # (B, 512)",
+    "c = einsum('bt,btd->bd', w, v)      # (B, 512)",
     "# module 4: gated residual fusion",
-    "h = news + sigmoid(gate([news, c])) * c",
+    "g = sigmoid(self.gate_net(cat([news, c], -1)))",
+    "h = news + g * c                    # (B, 512)",
+  ].concat(V === "B" ? [
     "# final: validation-IC weighted rank ensemble",
-    "wt = [max(ric(p_val[m], y_val), 0) for m in M]",
-    "final = sum(w * rank(p_test[m]) for w, m in zip(wt, M))",
-  ] : [
-    "class AsymmetricCrossAttention(nn.Module):",
-    "  def forward(self, news, market):",
-    "    q = self.query_proj(news)     # (B, 512)",
-    "    k = self.key_proj(market)     # (B, 30, 512)",
-    "    v = self.value_proj(market)",
-    "    s = einsum('bd,btd->bt', q, k) * self.scale",
-    "    w = softmax(s, dim=-1)        # 30-day weights",
-    "    return einsum('bt,btd->bd', w, v), w",
-    "class GatedResidualFusion(nn.Module):",
-    "  def forward(self, p, c):",
-    "    g = sigmoid(self.gate_net(cat([p, c], -1)))",
-    "    return p + g * c, g",
-  ];
-  const ch = V === "B" ? 2.25 : 3.0;
+    "final = sum(w[m] * rank(p_test[m]) for m in M)",
+  ] : []);
+  const ch = V === "B" ? 2.55 : 2.15;
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: a.x, y: a.y, w: a.w, h: ch, rectRadius: 0.08, fill: { color: "1E2533" }, line: { color: "1E2533" }, objectName: nm("code-bg") });
-  text(code.map((l, i) => ({ text: l, options: { color: l.trim().startsWith("#") || l.startsWith("class") ? (l.startsWith("class") ? "F2C46D" : "8FA3BF") : "E8EDF4", breakLine: i < code.length - 1 } })),
-    { x: a.x + 0.22, y: a.y + 0.15, w: a.w - 0.4, h: ch - 0.3, fontFace: "Courier New", fontSize: V === "B" ? 13.5 : 13.5, lineSpacingMultiple: 1.0, valign: "middle" });
+  text(code.map((l, i) => ({ text: l, options: { color: l.startsWith("#") ? "8FA3BF" : "E8EDF4", breakLine: i < code.length - 1 } })),
+    { x: a.x + 0.22, y: a.y + 0.12, w: a.w - 0.4, h: ch - 0.24, fontFace: "Courier New", fontSize: 13, lineSpacingMultiple: 1.0, valign: "middle" });
   text([
     { text: "GitHub  ", options: { bold: true, color: C.accent1 } },
     { text: "github.com/kimsangmin1234/jolup", options: { color: C.accent3, breakLine: true } },
     { text: "modules/  ", options: { bold: true, color: C.accent1, fontFace: "Courier New" } },
-    { text: "논문 모듈 1~5 (news_encoder, tcn_encoder, cross_attention, gated_fusion, return_predictor)", options: { breakLine: true } },
-    { text: V === "B" ? "run_edt_suite3.py  " : "run_edt_suite2.py  ", options: { bold: true, color: C.accent1, fontFace: "Courier New" } },
-    { text: V === "B" ? "개선 구조 학습 · 앙상블 · 평가" : "EDT 표본 외 학습 · 평가" },
-  ], { x: a.x, y: a.y + ch + 0.2, w: a.w, h: a.h - ch - 0.2, fontSize: 15, lineSpacingMultiple: 1.05, paraSpaceAfter: 4 });
+    { text: "논문 모듈 1~5 (news_encoder, tcn_encoder, cross_attention, gated_fusion, return_predictor)" },
+  ], { x: a.x, y: a.y + ch + 0.15, w: a.w, h: a.h - ch - 0.15, fontSize: 15, lineSpacingMultiple: 1.05, paraSpaceAfter: 4 });
 }
 
 const Y6 = Y4 + H4 + 0.3;
-a = card(M, Y6, CW, BOT - Y6, 6, "결론");
+a = card(X2, Y6, CW, BOT - Y6, 6, "결론");
 bullets(V === "B" ? [
   ["성과", "이벤트 정보·순위 손실·앙상블로 순위 IC 0.060 → 0.092 (차이 유의)"],
   ["해석", "자사주 매입은 상승, 임상 승인·신규 계약 같은 홍보성 호재는 하락을 학습"],
@@ -203,10 +202,10 @@ bullets(V === "B" ? [
   ["성과", "감성 점수만으로는 예측력이 없지만(−0.006), 제안 구조는 유의한 예측력(0.060)"],
   ["한계", "최근 구간 약화(0.033), 거래비용 반영 시 수익 소멸, 어텐션은 30일에 고르게 분포"],
   ["향후", "입력 확장·앙상블로 0.092까지 개선 확인 → 비용을 고려한 전략 검증"],
-], { ...a, fontSize: 17.5, gap: 5 });
+], { ...a, fontSize: V === "B" ? 18 : 19, gap: V === "B" ? 6 : 8 });
 
 // ---------- 5. 성능평가 결과 ----------
-a = card(X2, Y4, CW, BOT - Y4, 5, "성능평가 결과");
+a = card(M, Y4, CW, BOT - Y4, 5, "성능평가 결과");
 {
   let y = a.y;
   text([
@@ -231,7 +230,7 @@ a = card(X2, Y4, CW, BOT - Y4, 5, "성능평가 결과");
     showTitle: true, titleFontSize: 17, titleColor: HEX.navy, valAxisLabelFormatCode: "0.00" };
   const lab = V === "B" ? ["감성 점수만", "논문 구조 (P0)", "개선 구조 (P1)", "최종 앙상블 (E6)"] : ["감성 점수만", "LLM 방향 규칙", "논문 구조 (P0)", "추가 개선 실험"];
   const val = V === "B" ? [-0.006, 0.060, 0.078, 0.092] : [-0.006, 0.000, 0.060, 0.092];
-  const h1 = V === "B" ? 2.2 : 2.85;
+  const h1 = V === "B" ? 2.3 : 2.6;
   s.addChart(pres.charts.BAR, [{ name: "순위 IC", labels: lab, values: val }], {
     x: a.x, y, w: a.w, h: h1, barDir: "bar", ...axis, title: "모델별 순위 IC (3개 구간 합산)",
     chartColors: V === "B" ? [HEX.gray, HEX.teal, HEX.teal, HEX.gold] : [HEX.gray, HEX.gray, HEX.gold, "9AA6B5"],
