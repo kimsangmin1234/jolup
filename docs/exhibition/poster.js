@@ -163,33 +163,31 @@ a = card(X2, Y1, CW, HA, 3, V === "B" ? "구조 (논문 모델 + 앙상블)" : "
 }
 
 // ---------- 아래 줄: 5. 성능평가 (왼쪽), 4. Source Program · 6. 결론 (오른쪽) ----------
-const Y4 = Y1 + HA + 0.3, BOT = H - 0.5, H4 = V === "B" ? 4.95 : 4.6;
+const Y4 = Y1 + HA + 0.3, BOT = H - 0.5, H4 = 5.1;
 a = card(X2, Y4, CW, H4, 4, "Source Program");
 {
-  const code = [
-    "# module 3: asymmetric cross-attention",
-    "q = self.query_proj(news)           # (B, 512)",
-    "k = self.key_proj(market)           # (B, 30, 512)",
-    "v = self.value_proj(market)",
-    "w = softmax(einsum('bd,btd->bt', q, k) * scale)",
-    "c = einsum('bt,btd->bd', w, v)      # (B, 512)",
-    "# module 4: gated residual fusion",
-    "g = sigmoid(self.gate_net(cat([news, c], -1)))",
-    "h = news + g * c                    # (B, 512)",
-  ].concat(V === "B" ? [
-    "# final: validation-IC weighted rank ensemble",
-    "final = sum(w[m] * rank(p_test[m]) for m in M)",
-  ] : []);
-  const ch = V === "B" ? 2.55 : 2.15;
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: a.x, y: a.y, w: a.w, h: ch, rectRadius: 0.08, fill: { color: "1E2533" }, line: { color: "1E2533" }, objectName: nm("code-bg") });
-  text(code.map((l, i) => ({ text: l, options: { color: l.startsWith("#") ? "8FA3BF" : "E8EDF4", breakLine: i < code.length - 1 } })),
-    { x: a.x + 0.22, y: a.y + 0.12, w: a.w - 0.4, h: ch - 0.24, fontFace: "Courier New", fontSize: 13, lineSpacingMultiple: 1.0, valign: "middle" });
+  const qs = 1.5;
+  s.addImage({ path: "qr_github.png", x: a.x, y: a.y, w: qs, h: qs, altText: "GitHub 저장소 QR 코드", objectName: "qr" });
   text([
-    { text: "GitHub  ", options: { bold: true, color: C.accent1 } },
-    { text: "github.com/kimsangmin1234/jolup", options: { color: C.accent3, breakLine: true } },
-    { text: "modules/  ", options: { bold: true, color: C.accent1, fontFace: "Courier New" } },
-    { text: "논문 모듈 1~5 (news_encoder, tcn_encoder, cross_attention, gated_fusion, return_predictor)" },
-  ], { x: a.x, y: a.y + ch + 0.15, w: a.w, h: a.h - ch - 0.15, fontSize: 15, lineSpacingMultiple: 1.05, paraSpaceAfter: 4 });
+    { text: "GitHub 저장소", options: { bold: true, color: C.accent1, breakLine: true } },
+    { text: "github.com/kimsangmin1234/jolup", options: { color: C.accent3, bold: true, breakLine: true } },
+    { text: "개발 환경  ", options: { bold: true, color: C.accent1, fontSize: 15 } },
+    { text: "Python · PyTorch · LightGBM · OpenAI API", options: { fontSize: 15 } },
+  ], { x: a.x + qs + 0.3, y: a.y, w: a.w - qs - 0.3, h: qs, fontSize: 17, valign: "middle", paraSpaceAfter: 6 });
+  const rows = [
+    ["modules/news_encoder.py", "① LLM 기반 주 신호"],
+    ["modules/tcn_encoder.py", "② TCN 기반 보조 벡터"],
+    ["modules/cross_attention.py", "③ 비대칭 교차 어텐션"],
+    ["modules/gated_fusion.py", "④ 게이트 기반 잔차 결합"],
+    ["modules/return_predictor.py", "⑤ 등락률 예측"],
+    V === "B" ? ["run_edt_suite3.py", "학습 · 앙상블 · 평가"] : ["run_edt_suite2.py", "학습 · 평가"],
+  ];
+  const ty = a.y + qs + 0.15;
+  s.addTable(rows.map(([f, m]) => [
+    { text: f, options: { fontFace: "Courier New", fontSize: 13, color: C.accent1, bold: true } },
+    { text: m, options: { fontSize: 14.5, color: C.text1 } },
+  ]), { x: a.x, y: ty, w: a.w, colW: [3.25, a.w - 3.25], rowH: 0.32, valign: "middle", margin: [0, 0.08, 0, 0.08],
+        border: { type: "solid", pt: 0.75, color: HEX.grid }, fill: { color: "FFFFFF" }, objectName: "src-table" });
 }
 
 const Y6 = Y4 + H4 + 0.3;
@@ -202,7 +200,7 @@ bullets(V === "B" ? [
   ["성과", "감성 점수만으로는 예측력이 없지만(−0.006), 제안 구조는 유의한 예측력(0.060)"],
   ["한계", "최근 구간 약화(0.033), 거래비용 반영 시 수익 소멸, 어텐션은 30일에 고르게 분포"],
   ["향후", "입력 확장·앙상블로 0.092까지 개선 확인 → 비용을 고려한 전략 검증"],
-], { ...a, fontSize: V === "B" ? 18 : 19, gap: V === "B" ? 6 : 8 });
+], { ...a, fontSize: V === "B" ? 17 : 19, gap: V === "B" ? 4 : 8 });
 
 // ---------- 5. 성능평가 결과 ----------
 a = card(M, Y4, CW, BOT - Y4, 5, "성능평가 결과");
