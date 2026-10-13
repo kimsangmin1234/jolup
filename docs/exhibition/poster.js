@@ -163,17 +163,16 @@ a = card(X2, Y1, CW, HA, 3, V === "B" ? "구조 (논문 모델 + 앙상블)" : "
 }
 
 // ---------- 아래 줄: 5. 성능평가 (왼쪽), 4. Source Program · 6. 결론 (오른쪽) ----------
-const Y4 = Y1 + HA + 0.3, BOT = H - 0.5, H4 = 5.1;
+const Y4 = Y1 + HA + 0.3, BOT = H - 0.5, H4 = 4.7;
 a = card(X2, Y4, CW, H4, 4, "Source Program");
 {
-  const qs = 1.5;
-  s.addImage({ path: "qr_github.png", x: a.x, y: a.y, w: qs, h: qs, altText: "GitHub 저장소 QR 코드", objectName: "qr" });
+  const qs = 1.1;
   text([
-    { text: "GitHub 저장소", options: { bold: true, color: C.accent1, breakLine: true } },
+    { text: "GitHub  ", options: { bold: true, color: C.accent1 } },
     { text: "github.com/kimsangmin1234/jolup", options: { color: C.accent3, bold: true, breakLine: true } },
     { text: "개발 환경  ", options: { bold: true, color: C.accent1, fontSize: 15 } },
     { text: "Python · PyTorch · LightGBM · OpenAI API", options: { fontSize: 15 } },
-  ], { x: a.x + qs + 0.3, y: a.y, w: a.w - qs - 0.3, h: qs, fontSize: 17, valign: "middle", paraSpaceAfter: 6 });
+  ], { x: a.x, y: a.y, w: a.w, h: qs, fontSize: 17, valign: "middle", paraSpaceAfter: 6 });
   const rows = [
     ["modules/news_encoder.py", "① LLM 기반 주 신호"],
     ["modules/tcn_encoder.py", "② TCN 기반 보조 벡터"],
@@ -200,7 +199,7 @@ bullets(V === "B" ? [
   ["성과", "감성 점수만으로는 예측력이 없지만(−0.006), 제안 구조는 유의한 예측력(0.060)"],
   ["한계", "최근 구간 약화(0.033), 거래비용 반영 시 수익 소멸, 어텐션은 30일에 고르게 분포"],
   ["향후", "입력 확장·앙상블로 0.092까지 개선 확인 → 비용을 고려한 전략 검증"],
-], { ...a, fontSize: V === "B" ? 17 : 19, gap: V === "B" ? 4 : 8 });
+], { ...a, fontSize: V === "B" ? 18 : 19, gap: V === "B" ? 6 : 8 });
 
 // ---------- 5. 성능평가 결과 ----------
 a = card(M, Y4, CW, BOT - Y4, 5, "성능평가 결과");
