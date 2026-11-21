@@ -27,3 +27,5 @@ checkpoints/*.pt
 .work/
 experiments/sentiment_ablation/*.log
 experiments/sentiment_ablation/nohup_*.out
+experiments/market_baselines/*.log
+experiments/market_baselines/nohup_*.out

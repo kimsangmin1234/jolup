@@ -6,12 +6,16 @@
 
     full  임베딩 1536 + 감성 1  → 주 신호 512   (P0 와 같은 설정)
     sent  감성 1               → 주 신호 512   (임베딩 크기 0)
+    tech  뉴스 입력 없음        (임베딩 크기 0, 감성 점수 0 → 기술적 지표 30일만 남는다)
+
+보고서에는 기술적 지표 30일 × 9종을 펼친 270개 값으로 학습한 Ridge 기준선도 함께 넣는다.
 
 시장 지수(SPY) 분봉은 저장소의 정규장 자료(2020-08-31~)만 쓰므로, 학습은 2020-09 부터 시작하고
 평가 구간은 패널의 2·3번째 구간(2021-01~02, 2021-03~05)을 그대로 쓴다.
 
     python analysis/sentiment_only_ablation.py --model full --out experiments/sentiment_ablation
     python analysis/sentiment_only_ablation.py --model sent --out experiments/sentiment_ablation
+    python analysis/sentiment_only_ablation.py --model tech --out experiments/sentiment_ablation
     python analysis/sentiment_only_ablation.py --report --out experiments/sentiment_ablation
 """
 import argparse
@@ -27,7 +31,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_edt_suite2 as s2  # noqa: E402
-from edt_study import ric  # noqa: E402
+from edt_study import ric, ridge  # noqa: E402
 from run_edt_suite import EDT  # noqa: E402
 
 SPY = "data/fnspid/minute"
@@ -52,8 +56,10 @@ s2.FOLDS = FOLDS
 
 
 def run(model, out):
-    spec = dict(P0, sent_only=(model == "sent"))
+    spec = dict(P0, sent_only=(model in ("sent", "tech")))
     d = EDT(SPY)
+    if model == "tech":
+        d.S = np.zeros_like(d.S)   # 감성 점수도 지워 뉴스 쪽 입력이 상수가 되게 한다
     ys, H = s2.extra_targets(d)
     _, day_codes = np.unique(d.D, return_inverse=True)
     save = {}
@@ -79,11 +85,19 @@ def run(model, out):
 def report(out):
     d = EDT(SPY)
     rk = lambda v: np.argsort(np.argsort(v)) / max(len(v) - 1, 1)
-    P = {m: np.load(out / f"pred_{m}.npz") for m in ("full", "sent")}
+    P = {m: np.load(out / f"pred_{m}.npz") for m in ("full", "sent", "tech") if (out / f"pred_{m}.npz").exists()}
     folds = s2.fold_masks(d)
     idx = np.concatenate([np.where(te)[0] for _, _, _, te in folds])
     y, D = d.y[idx], d.D[idx]
     direction = np.array([r["direction"] for r in d.rows], float)
+
+    def ridge_tech(k, tr, va, tr2, te):
+        flat = lambda m: d.windows(m).reshape(len(d.y), -1)
+        f = flat(tr)
+        lam = max((10.0 ** e for e in range(0, 7)), key=lambda l: ric(ridge(f[tr], d.yz[tr], f[va], l), d.y[va]))
+        f = flat(tr2)
+        logger.info("Ridge 지표만 구간 %d: lambda=%g", k + 1, lam)
+        return ridge(f[tr2], d.yz[tr2], f[te], lam)
 
     def pooled(get):
         return np.concatenate([rk(get(k, te)) for k, (_, _, _, te) in enumerate(folds)])
@@ -91,9 +105,15 @@ def report(out):
     preds = {
         "논문 구조 (임베딩 + 감성) · 시드 3개 평균": pooled(lambda k, te: np.mean([P["full"][f"test{k}_seed{s}"] for s in SEEDS], 0)),
         "같은 구조, 감성 점수만 · 시드 3개 평균": pooled(lambda k, te: np.mean([P["sent"][f"test{k}_seed{s}"] for s in SEEDS], 0)),
+    }
+    if "tech" in P:
+        preds["같은 구조, 기술적 지표만 (뉴스 입력 없음) · 시드 3개 평균"] = pooled(
+            lambda k, te: np.mean([P["tech"][f"test{k}_seed{s}"] for s in SEEDS], 0))
+    preds["Ridge, 기술적 지표만 (30일 × 9종)"] = pooled(lambda k, te: ridge_tech(k, *folds[k]))
+    preds.update({
         "규칙: 감성 점수 그대로 (학습 없음)": np.concatenate([d.S[te].astype(float) for *_, te in folds]),
         "규칙: LLM 호재·악재 판단 그대로 (학습 없음)": np.concatenate([direction[te] for *_, te in folds]),
-    }
+    })
     ud, inv = np.unique(D, return_inverse=True)
     groups = [np.where(inv == i)[0] for i in range(len(ud))]
     rng = np.random.default_rng(0)
@@ -103,7 +123,7 @@ def report(out):
         bs = np.array([ric(p[s], y[s]) for s in samples])
         return np.percentile(bs, [2.5, 97.5]), (bs <= 0).mean()
 
-    L = ["# 같은 구조에서 입력만 바꾼 비교: 감성 점수만 vs 임베딩 + 감성", "",
+    L = ["# 같은 구조에서 입력만 바꾼 비교: 기술적 지표만 / 감성 점수만 / 임베딩 + 감성", "",
          "논문 구조(주 신호 FC → TCN → 교차 어텐션 → 게이트 잔차 결합 → MLP)와 학습 설정(학습률 1e-4, 배치 64, MSE, "
          "에폭은 검증으로 선택)을 그대로 두고 주 신호 입력만 바꿨다. 시드 3개.", "",
          "SPY 분봉은 저장소의 정규장 자료(2020-08-31~)만 있어 학습은 2020-09 부터 시작한다. 평가 구간은 패널의 2·3번째 구간과 같다.",
@@ -120,12 +140,20 @@ def report(out):
             parts.append(ric(p[o:o + n], y[o:o + n]))
             o += n
         L.append("| %s | %+.4f | [%+.4f, %+.4f] | %.3f | %+.3f | %+.3f |" % (name, ric(p, y), lo, hi, p0, *parts))
-    diff = np.array([ric(preds[list(preds)[0]][s], y[s]) - ric(preds[list(preds)[1]][s], y[s]) for s in samples])
-    dv = ric(preds[list(preds)[0]], y) - ric(preds[list(preds)[1]], y)
-    L += ["", "**임베딩의 기여 (논문 구조 − 감성만): %+.4f, 95%% 신뢰구간 [%+.4f, %+.4f], 0 이하 확률 %.3f**"
-          % (dv, *np.percentile(diff, [2.5, 97.5]), (diff <= 0).mean()), "",
-          "## 시드별 순위 IC (두 구간 합산)", "", "| 모델 | 시드 0 | 시드 1 | 시드 2 |", "|---|---:|---:|---:|"]
-    for m, label in (("full", "논문 구조"), ("sent", "감성만")):
+    names = list(preds)
+    pairs = [(0, 1, "임베딩의 기여 (논문 구조 − 감성만)")]
+    if "tech" in P:
+        pairs += [(0, 2, "뉴스 전체의 기여 (논문 구조 − 기술적 지표만)"), (1, 2, "감성 점수의 기여 (감성만 − 기술적 지표만)")]
+    L += [""]
+    for i, j, label in pairs:
+        diff = np.array([ric(preds[names[i]][s], y[s]) - ric(preds[names[j]][s], y[s]) for s in samples])
+        dv = ric(preds[names[i]], y) - ric(preds[names[j]], y)
+        L += ["- **%s: %+.4f**, 95%% 신뢰구간 [%+.4f, %+.4f], 0 이하 확률 %.3f"
+              % (label, dv, *np.percentile(diff, [2.5, 97.5]), (diff <= 0).mean())]
+    L += ["", "## 시드별 순위 IC (두 구간 합산)", "", "| 모델 | 시드 0 | 시드 1 | 시드 2 |", "|---|---:|---:|---:|"]
+    for m, label in (("full", "논문 구조"), ("sent", "감성만"), ("tech", "기술적 지표만")):
+        if m not in P:
+            continue
         vals = [ric(np.concatenate([rk(P[m][f"test{k}_seed{s}"]) for k in range(len(folds))]), y) for s in SEEDS]
         L.append("| %s | %s |" % (label, " | ".join("%+.4f" % v for v in vals)))
     L += ["", "선택된 에폭: " + ", ".join("%s 구간%d=%d" % (m, k + 1, int(P[m][f"best{k}"])) for m in P for k in range(len(folds)))]
@@ -135,7 +163,7 @@ def report(out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", choices=("full", "sent"))
+    ap.add_argument("--model", choices=("full", "sent", "tech"))
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--threads", type=int, default=2)
     ap.add_argument("--out", default="experiments/sentiment_ablation")
