@@ -111,7 +111,7 @@ def report(out):
     for k, (tr, va, tr2, te) in enumerate(folds):
         L.append("| %d | 2020-09 ~ %s | ~%s | ~%s | %d |" % (k + 1, FOLDS[k][0], FOLDS[k][1], FOLDS[k][2], te.sum()))
     L += ["", "## 결과 (평가 %d건, 거래일 %d일)" % (len(y), len(ud)), "",
-          "| 모델 | 순위 IC | 95%% 신뢰구간 | 0 이하 확률 | 구간 1 | 구간 2 |", "|---|---:|---|---:|---:|---:|"]
+          "| 모델 | 순위 IC | 95% 신뢰구간 | 0 이하 확률 | 구간 1 | 구간 2 |", "|---|---:|---|---:|---:|---:|"]
     for name, p in preds.items():
         (lo, hi), p0 = ci(p)
         parts, o = [], 0
