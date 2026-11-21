@@ -25,3 +25,5 @@ checkpoints/*.pt
 
 !data/fnspid/*.jsonl
 .work/
+experiments/sentiment_ablation/*.log
+experiments/sentiment_ablation/nohup_*.out
